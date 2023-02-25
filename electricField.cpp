@@ -9,7 +9,7 @@ void  electricField::setG3Cd(float inputDistance){  G3Cd  = inputDistance; }
 
 
 void  electricField::setPlasmaPotential(float inputPlasmaPotential){ plasmaPotential = inputPlasmaPotential; }
-	
+
 void  electricField::setG0(float inputG0){ G0 = inputG0; }
 void  electricField::setG1(float inputG1){ G1 = inputG1; }
 void  electricField::setG2(float inputG2){ G2 = inputG2; }

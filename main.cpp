@@ -5,22 +5,22 @@ using namespace std;
 
 int main()
 {  
-  electricField plasmaRFEA;
+  electricField fieldEz;
   
-  plasmaRFEA.setSheathSize(2.0E-2); 
-  plasmaRFEA.setG0G1d(100.E-6);
-  plasmaRFEA.setG1G2d(200.E-6);
-  plasmaRFEA.setG2G3d(200.E-6);
-  plasmaRFEA.setG3Cd(100.E-6);
+  fieldEz.setSheathSize(2.0E-2); 
+  fieldEz.setG0G1d(100.E-6);
+  fieldEz.setG1G2d(200.E-6);
+  fieldEz.setG2G3d(200.E-6);
+  fieldEz.setG3Cd(100.E-6);
   
-  plasmaRFEA.setPlasmaPotential(1000.);
-  plasmaRFEA.setG0(0.);
-  plasmaRFEA.setG1(-20.);
-  plasmaRFEA.setG2(+500.);
-  plasmaRFEA.setG3(-20.);
-  plasmaRFEA.setC(-10.);
+  fieldEz.setPlasmaPotential(1000.);
+  fieldEz.setG0(0.);
+  fieldEz.setG1(-20.);
+  fieldEz.setG2(+500.);
+  fieldEz.setG3(-20.);
+  fieldEz.setC(-10.);
   
-	
+  
   float z, zhigh, zlow, dz;
   const int n = 100;
   int i;
@@ -33,7 +33,7 @@ int main()
   for (i=0; i<n; i++)
     {
       z = zhigh - float(i)*dz;
-      cout << z << " , "  << plasmaRFEA.returnElectricField(z) << endl;
+      cout << z << " , "  << fieldEz.returnElectricField(z) << endl;
     }
   return 0;
 }
