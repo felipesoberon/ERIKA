@@ -1,6 +1,6 @@
 CC      = g++
 CFLAGS  = -O3 -std=c++11
-EXE     = RFEA.x
+EXE     = rfea
 OBJECTS = electricField.o rfea.o ion.o
 INSTDIR = /usr/bin
 

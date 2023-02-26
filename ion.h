@@ -5,12 +5,6 @@
 
 class ion
 {
-public:
-  
-  
-  
-  
-  
 private:
   
   const float mass = 6.6335209e-26;   // Mass of Argon ion in kg
@@ -18,6 +12,14 @@ private:
   float z;
   float vz;
   float E_z;
+  
+  
+  
+  
+public:
+  
+  
+  
   
   
 };

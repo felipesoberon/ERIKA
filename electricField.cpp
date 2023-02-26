@@ -8,6 +8,17 @@ void  electricField::setG2G3d(float inputDistance){ G2G3d = inputDistance; }
 void  electricField::setG3Cd(float inputDistance){  G3Cd  = inputDistance; }
 
 
+void  electricField::setCoordinate(void)
+{
+  zP = sheathSize;
+  z0 = 0;
+  z1 = -G0G1d;
+  z2 = -(G0G1d+G1G2d);
+  z3 = -(G0G1d+G1G2d+G2G3d);
+  zC = -(G0G1d+G1G2d+G2G3d+G3Cd);
+}
+
+
 void  electricField::setPlasmaPotential(float inputPlasmaPotential){ plasmaPotential = inputPlasmaPotential; }
 
 void  electricField::setG0(float inputG0){ G0 = inputG0; }
@@ -21,12 +32,33 @@ void  electricField::setC(float inputC){ C = inputC; }
 
 float electricField::returnElectricField(float z) 
 {  
-  if                   ( z >= 0)                                        E_z = -(plasmaPotential-G0)/sheathSize ; //The Sheath DC voltage
-  else if ( 0     > z && z >= -G0G1d )                                  E_z = -(G0-G1)/G0G1d;   //Electron repulsion region G0-G1
-  else if (-G0G1d > z && z >= -(G0G1d+G1G2d) )                          E_z = -(G1-G2)/G1G2d;  //Retarding field G1-G2
-  else if (-(G0G1d+G1G2d) > z && z >= -(G0G1d+G1G2d+G2G3d) )            E_z = -(G2-G3)/G2G3d;  //Sec. e from collector repulsion G2-G3
-  else if (-(G0G1d+G1G2d+G2G3d) > z && z >= -(G0G1d+G1G2d+G2G3d+G3Cd) ) E_z = -(G3-C)/G3Cd;   //Collector G3-C
-  else                                                                  E_z = 0.0;
+  if      ( zP >= z && z >= z0)  E_z = -(plasmaPotential-G0)/sheathSize ; //The Sheath DC voltage
+  else if ( z0 > z  && z >= z1 ) E_z = -(G0-G1)/G0G1d;   //Electron repulsion region G0-G1
+  else if ( z1 > z  && z >= z2 ) E_z = -(G1-G2)/G1G2d;  //Retarding field G1-G2
+  else if ( z2 > z  && z >= z3 ) E_z = -(G2-G3)/G2G3d;  //Sec. e from collector repulsion G2-G3
+  else if ( z3 > z  && z >= zC ) E_z = -(G3-C)/G3Cd;   //Collector G3-C
+  else                           E_z = 0.0;
   
   return E_z;
+}
+
+
+
+
+void electricField::showElectricField(void)
+{
+  float z, zhigh, zlow, dz;
+  int n;
+  
+  zhigh = zP;
+  zlow  = zC;
+  dz    = 10E-6;
+  n     = int( floor( (zhigh - zlow)/dz ) );
+  
+  cout << "z, Electric Field (Newton/Coulomb)" << endl;
+  for (int i=0; i<n; i++)
+    {
+      z = zhigh - float(i)*dz;
+      cout << z << " , "  << returnElectricField(z) << endl;
+    }
 }
