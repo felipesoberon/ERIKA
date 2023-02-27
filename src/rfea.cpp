@@ -41,5 +41,5 @@ void rfea::setElectricField(void)
   
   Ez.setCoordinate();
   
-  Ez.showElectricField();
+  Ez.showVoltageAndElectricField();
 }

@@ -16,8 +16,11 @@ private:
   float zP, z0, z1, z2, z3, zC;
   float plasmaPotential;
   float G0, G1, G2, G3, C;
-  float E_z;
-  
+  float E_z, V_z;
+
+  struct point {float x, y;};  
+  float interpolate(point p1, point p2, float x);
+
   
 public:
   
@@ -39,9 +42,9 @@ public:
   void  setC(float inputC);
   
   float returnElectricField(float z);
+  float returnVoltage(float z);
   
-  void  showElectricField(void);
-  
+  void  showVoltageAndElectricField(void);
   
   
 };

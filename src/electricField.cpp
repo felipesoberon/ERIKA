@@ -1,5 +1,25 @@
 #include "electricField.h"
 
+
+
+
+float electricField::interpolate(point p1, point p2, float x)
+{
+  float y, slope, y_intercept;
+
+  if (p1.x == p2.x)  y = p1.y;
+  else
+    {
+      slope = (p2.y - p1.y) / (p2.x - p1.x);
+      y_intercept = p1.y - slope * p1.x;
+      y = slope * x + y_intercept;
+    }
+  return y;
+}
+
+
+
+
 void  electricField::setSheathSize(float inputSheathSize){ sheathSize = inputSheathSize; }
 
 void  electricField::setG0G1d(float inputDistance){ G0G1d = inputDistance; }
@@ -44,21 +64,45 @@ float electricField::returnElectricField(float z)
 
 
 
+float electricField::returnVoltage(float z)
+{
+  if      ( zP >= z && z >= z0)  V_z = interpolate({zP,plasmaPotential},{z0,G0},z);
+  else if ( z0 > z  && z >= z1 ) V_z = interpolate({z0,G0},{z1,G1},z);
+  else if ( z1 > z  && z >= z2 ) V_z = interpolate({z1,G1},{z2,G2},z);
+  else if ( z2 > z  && z >= z3 ) V_z = interpolate({z2,G2},{z3,G3},z);
+  else if ( z3 > z  && z >= zC ) V_z = interpolate({z3,G3},{zC,C},z);
+  else                           V_z = 0.0;
+  
+  return V_z;
+}
 
-void electricField::showElectricField(void)
+
+
+
+
+void electricField::showVoltageAndElectricField(void)
 {
   float z, zhigh, zlow, dz;
   int n;
   
   zhigh = zP;
   zlow  = zC;
-  dz    = 10E-6;
-  n     = int( floor( (zhigh - zlow)/dz ) );
+  dz    = 5E-6;
+  n     = int( floor( (zhigh - zlow)/dz ) ) + 1;
   
-  cout << "z, Electric Field (Newton/Coulomb)" << endl;
+  cout << "z, Voltage (V), Electric Field (Newton/Coulomb)" << endl;
   for (int i=0; i<n; i++)
     {
       z = zhigh - float(i)*dz;
-      cout << z << " , "  << returnElectricField(z) << endl;
+      cout << z;
+      cout << " , " << returnVoltage(z);
+      cout << " , " << returnElectricField(z);
+      cout << endl;
     }
 }
+
+
+
+
+
+
