@@ -41,5 +41,31 @@ void rfea::setElectricField(void)
   
   Ez.setCoordinate();
   
-  Ez.showVoltageAndElectricField();
+  //Ez.showVoltageAndElectricField();
+
+  integrateIonTrajectory();
+}
+
+
+
+
+void rfea::integrateIonTrajectory(void)
+{
+  float z = 2.E-2;        // Initial position of the particle in m
+  float v = 0.0;          // Initial velocity of the particle in m/s
+  float t = 0.0;          // Initial time in seconds
+  float Efz = 0.0;
+  float dt = ionAr.returndt();
+  float zC = Ez.returnzC();
+
+  cout << "Time(s), z(m), vz(m/s)" << endl;
+  while (t < 1.0e-6 && z > zC)
+    {
+      Efz = Ez.returnElectricField(z);
+      ionAr.rungeKutta4th(z, v, t, Efz);
+      cout  << t << " ,  ";
+      cout  << z << " ,  ";
+      cout  << v << endl;
+      t = t + dt;
+    }
 }

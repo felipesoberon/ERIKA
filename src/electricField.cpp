@@ -48,6 +48,13 @@ void  electricField::setG3(float inputG3){ G3 = inputG3; }
 void  electricField::setC(float inputC){ C = inputC; }
 
 
+float electricField::returnzG0(void){ return z0;}
+float electricField::returnzG1(void){ return z1;}
+float electricField::returnzG2(void){ return z2;}
+float electricField::returnzG3(void){ return z3;}
+float electricField::returnzC(void){ return zC;}
+
+
 
 
 float electricField::returnElectricField(float z) 

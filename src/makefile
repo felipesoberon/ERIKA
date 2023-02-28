@@ -11,7 +11,7 @@ $(EXE):		main.cpp $(OBJECTS)
 electricField.o:electricField.h electricField.cpp
 		$(CC) $(CFLAGS) -c electricField.cpp
 
-rfea.o:	rfea.h rfea.cpp
+rfea.o:	rfea.h rfea.cpp ion.o electricField.o
 		$(CC) $(CFLAGS) -c rfea.cpp
 
 ion.o:	ion.h ion.cpp

@@ -40,6 +40,12 @@ public:
   void  setG2(float inputG2);
   void  setG3(float inputG3);
   void  setC(float inputC);
+
+  float returnzG0(void);
+  float returnzG1(void);
+  float returnzG2(void);
+  float returnzG3(void);
+  float returnzC(void);
   
   float returnElectricField(float z);
   float returnVoltage(float z);
