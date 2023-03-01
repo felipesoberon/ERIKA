@@ -23,6 +23,8 @@ public:
   void setDistanceSheathG0123C(float dS, float d01, float d12, float d23, float d3C);
   void setVoltagePlasma0123C(float pp, float g0, float g1, float g2, float g3, float c);
   void setElectricField(void);
+  void setG2(float g2);
+  
   void integrateIonTrajectory(void);
   
 };

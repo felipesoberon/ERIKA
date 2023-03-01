@@ -41,9 +41,16 @@ void rfea::setElectricField(void)
   
   Ez.setCoordinate();
   
-  //Ez.showVoltageAndElectricField();
+  Ez.saveVoltageAndElectricField("output/VEz.csv");
+}
 
-  integrateIonTrajectory();
+
+
+
+void rfea::setG2(float g2)
+{
+  G2 = g2;
+  Ez.setG2(G2);
 }
 
 
@@ -51,15 +58,18 @@ void rfea::setElectricField(void)
 
 void rfea::integrateIonTrajectory(void)
 {
-  float z = 2.E-2;        // Initial position of the particle in m
-  float v = 0.0;          // Initial velocity of the particle in m/s
-  float t = 0.0;          // Initial time in seconds
-  float Efz = 0.0;
   float dt = ionAr.returndt();
   float zC = Ez.returnzC();
+  float zP = Ez.returnzP();
+
+  float z = zP;           // Initial position of the particle in m
+  float v = 0.0;          // Initial velocity of the particle in m/s
+  float t = 0.0;          // Initial time in seconds
+
+  float Efz = 0.0;
 
   cout << "Time(s), z(m), vz(m/s)" << endl;
-  while (t < 1.0e-6 && z > zC)
+  while (t < 10.0e-6 && zP >= z && z > zC)
     {
       Efz = Ez.returnElectricField(z);
       ionAr.rungeKutta4th(z, v, t, Efz);

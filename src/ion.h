@@ -12,7 +12,7 @@ private:
   
   const float mass = 6.6335209e-26;    // Mass of Argon ion in kg
   const float charge = 1.60217662e-19; // Charge of Argon ion in Coulombs
-  const float dt = 1.0e-9;  //time step  
+  const float dt = 1.0e-10;  //time step  
   
 public:
 

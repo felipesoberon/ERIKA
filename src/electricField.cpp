@@ -48,6 +48,7 @@ void  electricField::setG3(float inputG3){ G3 = inputG3; }
 void  electricField::setC(float inputC){ C = inputC; }
 
 
+float electricField::returnzP(void) { return zP;}
 float electricField::returnzG0(void){ return z0;}
 float electricField::returnzG1(void){ return z1;}
 float electricField::returnzG2(void){ return z2;}
@@ -87,25 +88,27 @@ float electricField::returnVoltage(float z)
 
 
 
-void electricField::showVoltageAndElectricField(void)
+void electricField::saveVoltageAndElectricField(const string& fileName)
 {
   float z, zhigh, zlow, dz;
   int n;
+  ofstream file(fileName);
   
   zhigh = zP;
   zlow  = zC;
   dz    = 5E-6;
   n     = int( floor( (zhigh - zlow)/dz ) ) + 1;
   
-  cout << "z, Voltage (V), Electric Field (Newton/Coulomb)" << endl;
+  file << "z, Voltage (V), Electric Field (Newton/Coulomb)" << endl;
   for (int i=0; i<n; i++)
     {
       z = zhigh - float(i)*dz;
-      cout << z;
-      cout << " , " << returnVoltage(z);
-      cout << " , " << returnElectricField(z);
-      cout << endl;
+      file << z;
+      file << " , " << returnVoltage(z);
+      file << " , " << returnElectricField(z);
+      file << endl;
     }
+  file.close();
 }
 
 

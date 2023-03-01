@@ -2,6 +2,8 @@
 #define ELECTRICFIELD_H
 
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <cmath>
 
 using namespace std;
@@ -41,6 +43,7 @@ public:
   void  setG3(float inputG3);
   void  setC(float inputC);
 
+  float returnzP(void);
   float returnzG0(void);
   float returnzG1(void);
   float returnzG2(void);
@@ -50,7 +53,7 @@ public:
   float returnElectricField(float z);
   float returnVoltage(float z);
   
-  void  showVoltageAndElectricField(void);
+  void  saveVoltageAndElectricField(const string& fileName);
   
   
 };
