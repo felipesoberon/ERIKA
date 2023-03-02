@@ -6,7 +6,7 @@
 float electricField::interpolate(point p1, point p2, float x)
 {
   float y, slope, y_intercept;
-
+  
   if (p1.x == p2.x)  y = p1.y;
   else
     {
@@ -110,9 +110,4 @@ void electricField::saveVoltageAndElectricField(const string& fileName)
     }
   file.close();
 }
-
-
-
-
-
 

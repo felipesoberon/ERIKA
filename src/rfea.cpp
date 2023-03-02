@@ -56,26 +56,36 @@ void rfea::setG2(float g2)
 
 
 
-void rfea::integrateIonTrajectory(void)
+void rfea::integrateIonTrajectory(bool saveTrajectory)
 {
   float dt = ionAr.returndt();
   float zC = Ez.returnzC();
   float zP = Ez.returnzP();
-
+  
   float z = zP;           // Initial position of the particle in m
   float v = 0.0;          // Initial velocity of the particle in m/s
   float t = 0.0;          // Initial time in seconds
-
+  
   float Efz = 0.0;
-
-  cout << "Time(s), z(m), vz(m/s)" << endl;
-  while (t < 10.0e-6 && zP >= z && z > zC)
+  
+  ofstream file("output/trajectory.csv");
+  if(saveTrajectory) file << "Time(s), z(m), vz(m/s)" << endl;
+  
+  while ( zP >= z && z >= zC && v <= 0.0)
     {
       Efz = Ez.returnElectricField(z);
       ionAr.rungeKutta4th(z, v, t, Efz);
-      cout  << t << " ,  ";
-      cout  << z << " ,  ";
-      cout  << v << endl;
+      if(saveTrajectory) file  << t << ","<< z << ","<< v << endl;
       t = t + dt;
+    }
+  file.close();
+  
+  if ( z <= zC )
+    {
+      cout << G2 << "," << 1 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
+    }
+  else
+    {
+      cout << G2 << "," << 0 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
     }
 }

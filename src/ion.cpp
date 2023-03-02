@@ -1,11 +1,10 @@
 #include "ion.h"
 
 
-float ion::returndt(void)
-{
-  return dt;
-}
+float ion::returndt(void) { return dt; }
 
+float ion::returnMass(void) { return mass; }
+float ion::returnCharge(void) { return charge; }
 
 void ion::derivative(float z, float vz, float& dzdt, float& dvzdt, float Ez)
 {

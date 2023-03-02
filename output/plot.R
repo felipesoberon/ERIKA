@@ -17,3 +17,13 @@ grid()
 plot(with(traj, vz ~ z), type = "l")
 grid()
 
+
+
+
+ionCount <- read.csv("ionCount.csv", header=TRUE, colClasses = c("numeric","numeric","numeric"))
+colnames(ionCount) <- c("G2","Count","Energy(ev)")
+
+plot(with(ionCount, Count ~ G2), type = "l")
+grid()
+
+

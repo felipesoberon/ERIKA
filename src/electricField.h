@@ -19,10 +19,10 @@ private:
   float plasmaPotential;
   float G0, G1, G2, G3, C;
   float E_z, V_z;
-
+  
   struct point {float x, y;};  
   float interpolate(point p1, point p2, float x);
-
+  
   
 public:
   
@@ -42,7 +42,7 @@ public:
   void  setG2(float inputG2);
   void  setG3(float inputG3);
   void  setC(float inputC);
-
+  
   float returnzP(void);
   float returnzG0(void);
   float returnzG1(void);

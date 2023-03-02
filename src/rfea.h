@@ -4,6 +4,11 @@
 #include "electricField.h"
 #include "ion.h"
 
+#include <fstream>
+#include <string>
+
+using namespace std;
+
 class rfea
 {
 private:
@@ -25,7 +30,7 @@ public:
   void setElectricField(void);
   void setG2(float g2);
   
-  void integrateIonTrajectory(void);
+  void integrateIonTrajectory(bool saveTrajectory);
   
 };
 
