@@ -3,6 +3,7 @@
 
 #include "electricField.h"
 #include "ion.h"
+#include "random.h"
 
 #include <fstream>
 #include <string>
@@ -30,7 +31,7 @@ public:
   void setElectricField(void);
   void setG2(float g2);
   
-  void integrateIonTrajectory(bool saveTrajectory);
+  void integrateIonTrajectory(bool saveTrajectory, long randomSeed);
   
 };
 

@@ -56,7 +56,7 @@ void rfea::setG2(float g2)
 
 
 
-void rfea::integrateIonTrajectory(bool saveTrajectory)
+void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
 {
   float dt = ionAr.returndt();
   float zC = Ez.returnzC();
@@ -68,24 +68,41 @@ void rfea::integrateIonTrajectory(bool saveTrajectory)
   
   float Efz = 0.0;
   
+  float collisionProbability;
+  float crossSection = 40E-20; //m2
+  float k = 1.3806503E-23; //m2 kg s-1 K-1
+  float T = 300; //Kelvin
+  float P = 0.5;  //Pascal
+  float nGas = P / (k * T); //m-3
+  float collisionRate;
+  float collisionsindt;
+
+  collisionRate = nGas * crossSection; //* abs(v)
+  
   ofstream file("output/trajectory.csv");
   if(saveTrajectory) file << "Time(s), z(m), vz(m/s)" << endl;
   
   while ( zP >= z && z >= zC && v <= 0.0)
     {
-      Efz = Ez.returnElectricField(z);
-      ionAr.rungeKutta4th(z, v, t, Efz);
+      collisionsindt = collisionRate * abs(v) * dt; 
+      collisionProbability = ran2(randomSeed);
+      if (collisionProbability < collisionsindt)
+	{
+	  v = -1.0;
+	}
+      else
+	{
+	  Efz = Ez.returnElectricField(z);
+	  ionAr.rungeKutta4th(z, v, t, Efz);
+	}
+      
       if(saveTrajectory) file  << t << ","<< z << ","<< v << endl;
       t = t + dt;
     }
   file.close();
-  
-  if ( z <= zC )
-    {
-      cout << G2 << "," << 1 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
-    }
-  else
-    {
-      cout << G2 << "," << 0 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
-    }
+
+  ofstream file2("output/ionCount.csv", ios::app);
+  if ( z <= zC ) file2 << G2 << "," << 1 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
+  else           file2 << G2 << "," << 0 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
+  file2.close();
 }
