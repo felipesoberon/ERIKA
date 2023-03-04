@@ -1,6 +1,43 @@
 #include "rfea.h"
 
 
+void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueOfArgument[])
+{
+  cout << "\nCOMMAND_LINE_INPUT_PARAMETERS\n\n";
+  
+  commandLine.setArgumentList(numberOfArguments, valueOfArgument);
+  commandLine.printArgumentList();
+  
+  commandLine.setFlagName("-max_eV", "Scan's maximum energy in eV.");
+  commandLine.setFlagName("-step_eV", "Scan's energy step in eV.");
+  commandLine.setFlagName("-no._ion", "Scan's number of ions per step.");
+  commandLine.setFlagName("-pressure_Pa", "Argon gas pressure in Pa.");
+  commandLine.setFlagName("-sim_time", "Maximum simulation time per ion (s).");
+  commandLine.printFlagNameList();
+  
+  commandLine.setFlagValues();
+  commandLine.printFlagValues();
+  
+  if (commandLine.flagValueIsNumber(0))
+    maxEnergy = int( commandLine.returnFloatFlagValue(0) );
+  
+  if (commandLine.flagValueIsNumber(1))
+    stepEnergy = int(  commandLine.returnFloatFlagValue(1) );
+  
+  if (commandLine.flagValueIsNumber(2))
+    ionsPerEnergy =  int( commandLine.returnFloatFlagValue(2) );
+  
+  if (commandLine.flagValueIsNumber(3))
+    pressurePa =  commandLine.returnFloatFlagValue(3);
+  
+  if (commandLine.flagValueIsNumber(4))
+    simulationTime =  commandLine.returnFloatFlagValue(4);
+    
+  cout << endl;
+}
+
+
+
 void rfea::setDistanceSheathG0123C(float dS, float d01, float d12, float d23, float d3C)
 {
   sheathSize = dS;
@@ -59,6 +96,7 @@ void rfea::setG2(float g2)
 void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
 {
   float dt = ionAr.returndt();
+  float zG0 = Ez.returnzG0();
   float zC = Ez.returnzC();
   float zP = Ez.returnzP();
   
@@ -72,17 +110,17 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   float crossSection = 40E-20; //m2
   float k = 1.3806503E-23; //m2 kg s-1 K-1
   float T = 300; //Kelvin
-  float P = 0.5;  //Pascal
-  float nGas = P / (k * T); //m-3
+  float nGas = pressurePa / (k * T); //m-3
   float collisionRate;
   float collisionsindt;
-
+  bool  crossedzG0 = false;
+  
   collisionRate = nGas * crossSection; //* abs(v)
   
   ofstream file("output/trajectory.csv");
   if(saveTrajectory) file << "Time(s), z(m), vz(m/s)" << endl;
   
-  while ( zP >= z && z >= zC && v <= 0.0)
+  while ( zP >= z && z >= zC && v <= 0.0 && t < simulationTime )
     {
       collisionsindt = collisionRate * abs(v) * dt; 
       collisionProbability = ran2(randomSeed);
@@ -97,12 +135,37 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
 	}
       
       if(saveTrajectory) file  << t << ","<< z << ","<< v << endl;
+      
+      if( z < zG0 && !crossedzG0 )
+	{
+	  crossedzG0 = true;
+	  ofstream file3("output/ionEnergy.csv", ios::app);
+	  file3 << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
+	  file3.close();
+	} 
+      
       t = t + dt;
     }
   file.close();
-
+  
   ofstream file2("output/ionCount.csv", ios::app);
   if ( z <= zC ) file2 << G2 << "," << 1 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
   else           file2 << G2 << "," << 0 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
   file2.close();
+}
+
+
+
+
+void rfea::energyScan(void)
+{
+  for (int i=0; i<maxEnergy; i=i+stepEnergy)
+    {
+      cout << "Energy (eV) = " << i << endl;
+      for(int j=1; j<=ionsPerEnergy; j++)
+	{
+	  setG2( float(i) );
+	  integrateIonTrajectory(false, long(i+1+j));
+	}
+    }
 }

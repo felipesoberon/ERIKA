@@ -15,3 +15,6 @@ clean:
 	-$(MAKE) -C src clean
 	@echo "\nCleaning in this directory..."
 	-rm -f $(EXE) *~ .*
+	@echo "\nCleaning the output directory..."
+	cd output
+	-rm -f .*	
