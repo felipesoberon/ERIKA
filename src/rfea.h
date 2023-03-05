@@ -5,7 +5,6 @@
 #include "electricField.h"
 #include "ion.h"
 #include "random.h"
-#include "collision.h"
 
 #include <fstream>
 #include <string>

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 maximumEnergy=1500
-stepEnergy=25
-numberIons=200
-pressurePa=0.75
+stepEnergy=50
+numberIons=5000
+pressurePa=1.0
 simulationTime=1E-6
 
 rm output/*.csv

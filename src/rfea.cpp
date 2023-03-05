@@ -101,7 +101,8 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   float zP = Ez.returnzP();
   
   float z = zP;           // Initial position of the particle in m
-  float v = 0.0;          // Initial velocity of the particle in m/s
+  float v = 0.0;          // Vz of the particle in m/s
+  float v_= 0.0;          // Vperpendicular 
   float t = 0.0;          // Initial time in seconds
   
   float Efz = 0.0;
@@ -122,11 +123,12 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   
   while ( zP >= z && z >= zC && v <= 0.0 && t < simulationTime )
     {
-      collisionsindt = collisionRate * abs(v) * dt; 
+      collisionsindt = collisionRate * ionAr.magnitude(v, v_, 0.0) * dt; 
       collisionProbability = ran2(randomSeed);
+      
       if (collisionProbability < collisionsindt)
 	{
-	  v = collision(v);
+	  ionAr.collision(v, v_);
 	}
       else
 	{
@@ -140,7 +142,9 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
 	{
 	  crossedzG0 = true;
 	  ofstream file3("output/ionEnergy.csv", ios::app);
-	  file3 << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
+	  file3 << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << ",";
+	  file3 << 0.5 * ionAr.returnMass() * ionAr.magnitudeSquare(v, v_, 0.0) / ionAr.returnCharge();
+	  file3 << endl;
 	  file3.close();
 	} 
       
@@ -149,8 +153,9 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   file.close();
   
   ofstream file2("output/ionCount.csv", ios::app);
-  if ( z <= zC ) file2 << G2 << "," << 1 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
-  else           file2 << G2 << "," << 0 << "," << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << endl;
+  float energy = 0.5 * ionAr.returnMass() * ionAr.magnitudeSquare(v, v_, 0.0) / ionAr.returnCharge();
+  if ( z <= zC ) file2 << G2 << "  ,  " << 1 << "  ,  " << energy << endl;
+  else           file2 << G2 << "  ,  " << 0 << "  ,  " << energy << endl;
   file2.close();
 }
 
