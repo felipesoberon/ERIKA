@@ -1,7 +1,6 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
-
 #define IM1 2147483563
 #define IM2 2147483399
 #define AM (1.0/IM1)
@@ -17,6 +16,11 @@
 #define EPS 1.2e-7
 #define RNMX (1.0-EPS)
 
+#include <random>
+
+using namespace std;
+
+float random01(void);
 float ran2(long idum);
 
 #endif //RANDOM_H

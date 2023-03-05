@@ -126,7 +126,7 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
       collisionProbability = ran2(randomSeed);
       if (collisionProbability < collisionsindt)
 	{
-	  v = -1.0;
+	  v = collision(v);
 	}
       else
 	{

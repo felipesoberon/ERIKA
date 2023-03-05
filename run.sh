@@ -2,8 +2,8 @@
 
 maximumEnergy=1500
 stepEnergy=25
-numberIons=50
-pressurePa=1.0
+numberIons=200
+pressurePa=0.75
 simulationTime=1E-6
 
 rm output/*.csv

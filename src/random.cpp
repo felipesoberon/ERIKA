@@ -1,5 +1,19 @@
 #include "random.h"
 
+
+/* mt19937 engine: a Mersenne Twister 
+   algorithm-based generator.*/
+float random01(void)
+{
+  random_device rd;
+  mt19937 gen(rd());
+  uniform_real_distribution<> dis(0, 1);
+  return dis(gen);
+}
+
+
+
+
 /*Subroutine taken form Numerical recipies in C*/
 float ran2(long idum)
 {
