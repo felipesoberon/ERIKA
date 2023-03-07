@@ -52,6 +52,45 @@ float ion::totalKineticEnergy(float v1x, float v1y, float v1z, float v2x, float 
 }
 
 
+
+void ion::randomAverageVelocityVector(float& vx, float& vy, float& vz)
+{
+  float meanV  = averageVelocity();
+  float psi    = M_PI * random01();
+  float theta  = 2 * M_PI * random01();
+  
+  vx = meanV * cos(psi);
+  vy = meanV * sin(psi) * cos(theta);
+  vz = meanV * sin(psi) * sin(theta); 
+}
+
+
+
+void ion::collision(float& v1z, float& v1y, float& v1x)
+{
+  float vx,  vy,  vz;
+  float v2x, v2y, v2z;
+  randomAverageVelocityVector(v2z, v2y, v2x);
+  subtractVectors(vx,  vy,  vz,
+		  v1x, v1y, v1z,
+		  v2x, v2y, v2z);
+  float beta = alpha(vz, vy);
+  rotateVector(vz, vy, beta);
+  float v = vz;
+  float theta = 0.5 * M_PI * random01();
+  float costheta = cos(theta);
+  float sintheta = sin(theta);
+  vz = v * costheta * costheta;
+  vy = v * costheta * sintheta;
+  rotateVector(vz, vy, -beta);
+  addVectors(v1x, v1y, v1z,
+	     vx,  vy,  vz,
+	     v2x, v2y, v2z);
+}
+
+
+
+
 void ion::collision(float& v, float& v_)
 {
   // Define the initial velocities of the particles

@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include "random.h"
+#include "functions.h"
 
 using namespace std;
 
@@ -31,7 +32,10 @@ public:
   float magnitudeSquare(float x, float y, float z);
   void normalize(float& x, float& y, float& z);
   float totalKineticEnergy(float v1x, float v1y, float v1z, float v2x, float v2y, float v2z);
+  void randomAverageVelocityVector(float& vx, float& vy, float& vz);
 
+  void collision(float& v1z, float& v1y, float& v1x);
+  
   void collision(float& v, float& v_);
   
 };

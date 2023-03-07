@@ -116,19 +116,21 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   float collisionsindt;
   bool  crossedzG0 = false;
   
-  collisionRate = nGas * crossSection; //* abs(v)
+  collisionRate = nGas * crossSection; // x abs(v)
   
   ofstream file("output/trajectory.csv");
   if(saveTrajectory) file << "Time(s), z(m), vz(m/s)" << endl;
   
-  while ( zP >= z && z >= zC && v <= 0.0 && t < simulationTime )
+  while ( zP >= z && z >= zC /*&& v <= 0.0*/ && t < simulationTime )
     {
       collisionsindt = collisionRate * ionAr.magnitude(v, v_, 0.0) * dt; 
       collisionProbability = ran2(randomSeed);
       
       if (collisionProbability < collisionsindt)
 	{
-	  ionAr.collision(v, v_);
+	  /*ionAr.collision(v, v_);*/
+	  float v__ = 0.0;
+	  ionAr.collision(v, v_, v__);
 	}
       else
 	{
