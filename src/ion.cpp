@@ -142,3 +142,32 @@ void ion::collision(float& v, float& v_)
 
 
 
+
+void ion::setCrossSection(int n, float factor)
+{
+  process = new XSection[n+1];
+  numberCollisionProcesses = n;
+  crossSectionFactor = factor;
+}
+
+
+void ion::setCrossSection(int i, char * name) { process[i].Setup(name); }
+
+
+float ion::sigma(int i, float energy)
+{
+  float temp;
+  temp = process[i].sigma_(energy) * crossSectionFactor;
+  return temp;
+}
+
+
+float ion::crossSectionThreshold(int i) { return process[i].threshold_(); }
+
+
+void ion::printCollisionProcess(int i) { process[i].printProcessName(); }
+
+
+char * ion::collisionProcessName(int i) { return process[i].process__(); }
+
+

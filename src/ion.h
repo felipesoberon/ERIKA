@@ -5,6 +5,7 @@
 #include <iostream>
 #include "random.h"
 #include "functions.h"
+#include "XSection.h"
 
 using namespace std;
 
@@ -17,6 +18,10 @@ private:
   const float mass = 6.6335209e-26;    // Mass of Argon ion in kg
   const float charge = 1.60217662e-19; // Charge of Argon ion in Coulombs
   const float dt = 1.0e-10;  //time step  
+
+  XSection * process;            //Array of cross sections for all collision processes of the specie
+  int numberCollisionProcesses;  //Number of collision processes to be considered per specie
+  float crossSectionFactor;      //Order of magnitude factor to get the area in m^2
   
 public:
   
@@ -37,6 +42,13 @@ public:
   void collision(float& v1z, float& v1y, float& v1x);
   
   void collision(float& v, float& v_);
+  
+  void  setCrossSection(int n, float factor);
+  void  setCrossSection(int i, char * name);
+  float crossSectionThreshold(int i);
+  float sigma(int i, float energy);
+  void  printCollisionProcess(int i);
+  char * collisionProcessName(int i);
   
 };
 

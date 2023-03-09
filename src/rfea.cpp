@@ -13,6 +13,10 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   commandLine.setFlagName("-no._ion", "Scan's number of ions per step.");
   commandLine.setFlagName("-pressure_Pa", "Argon gas pressure in Pa.");
   commandLine.setFlagName("-sim_time", "Maximum simulation time per ion (s).");
+  commandLine.setFlagName("-ion_traj", "simulate and save an ion trajectory (0/1)");
+  commandLine.setFlagName("-RFEA_scan", "simulate an RFEA scan (0/1)");
+  commandLine.setFlagName("-G2", "Grid 2 voltage");
+
   commandLine.printFlagNameList();
   
   commandLine.setFlagValues();
@@ -32,7 +36,16 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   
   if (commandLine.flagValueIsNumber(4))
     simulationTime =  commandLine.returnFloatFlagValue(4);
-    
+
+  if (commandLine.flagValueIsNumber(5))
+    trajectory =  bool( commandLine.returnFloatFlagValue(5) );
+
+  if (commandLine.flagValueIsNumber(6))
+    scan =  bool( commandLine.returnFloatFlagValue(6) );
+
+  if (commandLine.flagValueIsNumber(7))
+    G2 =  commandLine.returnFloatFlagValue(7);
+
   cout << endl;
 }
 
@@ -93,6 +106,16 @@ void rfea::setG2(float g2)
 
 
 
+void rfea::setIon(void)
+{
+	ionAr.setCrossSection(2, 1.e-20);
+    ionAr.setCrossSection(1,(char *)"Xsections/Ar++Ar.elastic.txt");
+    ionAr.setCrossSection(2,(char *)"Xsections/Ar++Ar.charge.exchange.txt");
+}
+
+
+
+
 void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
 {
   float dt = ionAr.returndt();
@@ -103,6 +126,7 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   float z = zP;           // Initial position of the particle in m
   float v = 0.0;          // Vz of the particle in m/s
   float v_= 0.0;          // Vperpendicular 
+  float v__ = 0.0;        // Third velocity component (ignored)
   float t = 0.0;          // Initial time in seconds
   
   float Efz = 0.0;
@@ -121,7 +145,7 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   ofstream file("output/trajectory.csv");
   if(saveTrajectory) file << "Time(s), z(m), vz(m/s)" << endl;
   
-  while ( zP >= z && z >= zC /*&& v <= 0.0*/ && t < simulationTime )
+  while ( zP >= z && z >= zC && t < simulationTime )
     {
       collisionsindt = collisionRate * ionAr.magnitude(v, v_, 0.0) * dt; 
       collisionProbability = ran2(randomSeed);
@@ -129,7 +153,6 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
       if (collisionProbability < collisionsindt)
 	{
 	  /*ionAr.collision(v, v_);*/
-	  float v__ = 0.0;
 	  ionAr.collision(v, v_, v__);
 	}
       else
@@ -175,4 +198,13 @@ void rfea::energyScan(void)
 	  integrateIonTrajectory(false, long(i+1+j));
 	}
     }
+}
+
+
+
+
+void rfea::executeSimulation(void)
+{
+	if (scan) energyScan();
+	if (trajectory) integrateIonTrajectory(true, long( random01()*1000 ) );
 }

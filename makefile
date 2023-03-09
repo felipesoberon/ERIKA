@@ -17,4 +17,4 @@ clean:
 	-rm -f $(EXE) *~ .*
 	@echo "\nCleaning the output directory..."
 	cd output
-	-rm -f .*	
+	-rm -f .RData .Rhistory	

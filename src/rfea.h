@@ -19,6 +19,8 @@ private:
   ion ionAr;        
   commandline commandLine;  
 
+  bool  trajectory = false;
+  bool  scan = true;
   
   float sheathSize; 
   float G0G1d, G1G2d, G2G3d, G3Cd;  
@@ -41,8 +43,12 @@ public:
   void setElectricField(void);
   void setG2(float g2);
   
+  void setIon(void);
+  
   void integrateIonTrajectory(bool saveTrajectory, long randomSeed);
   void energyScan(void);
+  
+  void executeSimulation(void);
   
 };
 

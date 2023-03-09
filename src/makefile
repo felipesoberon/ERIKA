@@ -1,7 +1,7 @@
 CC      = g++
 CFLAGS  = -O3 -std=c++11
 EXE     = rfea
-OBJECTS = electricField.o rfea.o ion.o random.o commandline.o functions.o
+OBJECTS = electricField.o rfea.o ion.o random.o commandline.o functions.o XSection.o
 INSTDIR = /usr/bin
 
 
@@ -25,6 +25,9 @@ random.o:	random.h random.cpp
 
 functions.o:	functions.h functions.cpp
 		$(CC) $(CFLAGS) -c functions.cpp
+
+XSection.o:     XSection.h XSection.cpp
+		$(CC) $(CFLAGS) -c XSection.cpp
 
 clean:
 		rm *~ $(EXE) $(OBJECTS)
