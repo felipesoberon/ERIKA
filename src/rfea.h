@@ -18,15 +18,18 @@ private:
   electricField Ez; 
   ion ionAr;        
   commandline commandLine;  
-
+  
   bool  trajectory = false;
   bool  scan = true;
   
   float sheathSize; 
-  float G0G1d, G1G2d, G2G3d, G3Cd;  
+  float G0G1d, G1G2d, G2G3d, G3Cd;
+  const float spacerThickness = 100.0E-6;
+  int spacerStack = 1221;
+  
   float plasmaPotential;
-  float G0, G1, G2, G3, C;
-
+  float G0, G1, G2 =0.0, G3, C;
+  
   int maxEnergy = 1500;
   int stepEnergy = 10;
   int ionsPerEnergy = 100;
@@ -37,7 +40,9 @@ private:
 public:
   
   void setParametersFromCommandLineInput(int numberOfArguments, char* valueOfArgument[]);
-  
+
+  void setPlasmaSheathSize(float dS);
+  void setSpacerStack(void);
   void setDistanceSheathG0123C(float dS, float d01, float d12, float d23, float d3C);
   void setVoltagePlasma0123C(float pp, float g0, float g1, float g2, float g3, float c);
   void setElectricField(void);

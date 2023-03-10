@@ -16,7 +16,8 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   commandLine.setFlagName("-ion_traj", "simulate and save an ion trajectory (0/1)");
   commandLine.setFlagName("-RFEA_scan", "simulate an RFEA scan (0/1)");
   commandLine.setFlagName("-G2", "Grid 2 voltage");
-
+  commandLine.setFlagName("-spacerStack", "No. of 100um spacers between grids (e.g. 2332)");
+  
   commandLine.printFlagNameList();
   
   commandLine.setFlagValues();
@@ -45,10 +46,25 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
 
   if (commandLine.flagValueIsNumber(7))
     G2 =  commandLine.returnFloatFlagValue(7);
-
+  
+  if (commandLine.flagValueIsNumber(8))
+    spacerStack =  int( commandLine.returnFloatFlagValue(8) );
+  
   cout << endl;
 }
 
+
+
+void rfea::setPlasmaSheathSize(float dS) { sheathSize = dS; }
+
+
+void rfea::setSpacerStack(void)
+{
+  G0G1d = spacerThickness * float( int(spacerStack/1000) ); 
+  G1G2d = spacerThickness * float( int(spacerStack/100)%10 ); 
+  G2G3d = spacerThickness * float( int(spacerStack/10)%10 );
+  G3Cd  = spacerThickness * float( spacerStack%10); 
+}
 
 
 void rfea::setDistanceSheathG0123C(float dS, float d01, float d12, float d23, float d3C)
@@ -67,7 +83,6 @@ void rfea::setVoltagePlasma0123C(float pp, float g0, float g1, float g2, float g
   plasmaPotential = pp;
   G0 = g0;
   G1 = g1;
-  G2 = g2; 
   G3 = g3;
   C  = c;
 }
@@ -108,9 +123,9 @@ void rfea::setG2(float g2)
 
 void rfea::setIon(void)
 {
-	ionAr.setCrossSection(2, 1.e-20);
-    ionAr.setCrossSection(1,(char *)"Xsections/Ar++Ar.elastic.txt");
-    ionAr.setCrossSection(2,(char *)"Xsections/Ar++Ar.charge.exchange.txt");
+  ionAr.setCrossSection(2, 1.e-20);
+  ionAr.setCrossSection(1,(char *)"Xsections/Ar++Ar.elastic.txt");
+  ionAr.setCrossSection(2,(char *)"Xsections/Ar++Ar.charge.exchange.txt");
 }
 
 
