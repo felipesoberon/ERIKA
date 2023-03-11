@@ -130,13 +130,39 @@ void rfea::setIon(void)
 
 
 
+float rfea::collisionCrossSection(float energy)
+{
+  sigma1 = ionAr.sigma(1, energy);
+  sigma2 = ionAr.sigma(2, energy);
+
+  if (sigma1 >= sigma2) return sigma1;
+  else return sigma2;
+}
+
+
+
+
+int rfea::collisionType(void)
+{
+  float fraction = sigma1/(sigma1+sigma2);
+  float random = random01();
+  int   type;
+  
+  if (random < fraction) type = 1;
+  else                   type = 2; 
+  
+  return type; 
+}
+
+
+
 
 void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
 {
-  float dt = ionAr.returndt();
+  float dt =  ionAr.returndt();
   float zG0 = Ez.returnzG0();
-  float zC = Ez.returnzC();
-  float zP = Ez.returnzP();
+  float zC =  Ez.returnzC();
+  float zP =  Ez.returnzP();
   
   float z = zP;           // Initial position of the particle in m
   float v = 0.0;          // Vz of the particle in m/s
@@ -146,28 +172,32 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   
   float Efz = 0.0;
   
+  float k = 1.3806503E-23;       //m2 kg s-1 K-1
+  float T = 300;                 //Kelvin
+  float nGas = pressurePa/(k*T); //m-3
+  
   float collisionProbability;
-  float crossSection = 40E-20; //m2
-  float k = 1.3806503E-23; //m2 kg s-1 K-1
-  float T = 300; //Kelvin
-  float nGas = pressurePa / (k * T); //m-3
+  float crossSection;
   float collisionRate;
   float collisionsindt;
   bool  crossedzG0 = false;
   
-  collisionRate = nGas * crossSection; // x abs(v)
-  
   ofstream file("output/trajectory.csv");
-  if(saveTrajectory) file << "Time(s), z(m), vz(m/s)" << endl;
+  if(saveTrajectory) file << "Time(s), z(m), vz(m/s), vp(m/s)" << endl;
   
   while ( zP >= z && z >= zC && t < simulationTime )
-    {
-      collisionsindt = collisionRate * ionAr.magnitude(v, v_, 0.0) * dt; 
+    {      
+      /* 
+	 The formula for the collision rate is 
+	 collisionRate = nGas * cross section(E) * magnitude(v) 
+      */
+      crossSection = collisionCrossSection( ionAr.kineticEnergyeV(v,v_,v__) );
+      collisionRate = nGas * crossSection * ionAr.magnitude(v,v_,v__);
+      collisionsindt = collisionRate * dt; 
       collisionProbability = ran2(randomSeed);
       
       if (collisionProbability < collisionsindt)
 	{
-	  /*ionAr.collision(v, v_);*/
 	  ionAr.collision(v, v_, v__);
 	}
       else
@@ -176,14 +206,14 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
 	  ionAr.rungeKutta4th(z, v, t, Efz);
 	}
       
-      if(saveTrajectory) file  << t << ","<< z << ","<< v << endl;
+      if(saveTrajectory) file  << t <<","<< z <<","<< v <<","<< v_ << endl;
       
       if( z < zG0 && !crossedzG0 )
 	{
 	  crossedzG0 = true;
 	  ofstream file3("output/ionEnergy.csv", ios::app);
-	  file3 << 0.5 * ionAr.returnMass() * v*v / ionAr.returnCharge() << ",";
-	  file3 << 0.5 * ionAr.returnMass() * ionAr.magnitudeSquare(v, v_, 0.0) / ionAr.returnCharge();
+	  file3 << ionAr.kineticEnergyeV(v,0,0) << ","; /*energy due to vz only*/
+	  file3 << ionAr.kineticEnergyeV(v,v_,v__);     /*total kinetic energy*/
 	  file3 << endl;
 	  file3.close();
 	} 
@@ -193,7 +223,7 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   file.close();
   
   ofstream file2("output/ionCount.csv", ios::app);
-  float energy = 0.5 * ionAr.returnMass() * ionAr.magnitudeSquare(v, v_, 0.0) / ionAr.returnCharge();
+  float energy = ionAr.kineticEnergyeV(v,v_,v__);
   if ( z <= zC ) file2 << G2 << "  ,  " << 1 << "  ,  " << energy << endl;
   else           file2 << G2 << "  ,  " << 0 << "  ,  " << energy << endl;
   file2.close();

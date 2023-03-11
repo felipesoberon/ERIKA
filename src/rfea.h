@@ -35,7 +35,8 @@ private:
   int ionsPerEnergy = 100;
   float pressurePa = 0.5;
   float simulationTime = 1.0E-6; 
-  
+
+  float sigma1=1, sigma2=1; 
   
 public:
   
@@ -48,7 +49,9 @@ public:
   void setElectricField(void);
   void setG2(float g2);
   
-  void setIon(void);
+  void  setIon(void);
+  float collisionCrossSection(float energy);
+  int   collisionType(void);
   
   void integrateIonTrajectory(bool saveTrajectory, long randomSeed);
   void energyScan(void);

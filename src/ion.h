@@ -35,13 +35,12 @@ public:
   
   float magnitude(float x, float y, float z);
   float magnitudeSquare(float x, float y, float z);
-  void normalize(float& x, float& y, float& z);
+  void  normalize(float& x, float& y, float& z);
   float totalKineticEnergy(float v1x, float v1y, float v1z, float v2x, float v2y, float v2z);
-  void randomAverageVelocityVector(float& vx, float& vy, float& vz);
+  void  randomAverageVelocityVector(float& vx, float& vy, float& vz);
+  float kineticEnergyeV(float vx, float vy, float vz);
 
   void collision(float& v1z, float& v1y, float& v1x);
-  
-  void collision(float& v, float& v_);
   
   void  setCrossSection(int n, float factor);
   void  setCrossSection(int i, char * name);

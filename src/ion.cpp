@@ -44,9 +44,8 @@ void ion::normalize(float& x, float& y, float& z)
 
 float ion::totalKineticEnergy(float v1x, float v1y, float v1z, float v2x, float v2y, float v2z)
 {
-  float m = 39.948; // mass of argon atom in atomic mass units (AMU)
-  float ke1 = 0.5*m*magnitudeSquare(v1x, v1y, v1z);
-  float ke2 = 0.5*m*magnitudeSquare(v2x, v2y, v2z);
+  float ke1 = 0.5 * mass * magnitudeSquare(v1x, v1y, v1z);
+  float ke2 = 0.5 * mass * magnitudeSquare(v2x, v2y, v2z);
   float totalKE = ke1 + ke2;
   return totalKE;
 }
@@ -63,6 +62,13 @@ void ion::randomAverageVelocityVector(float& vx, float& vy, float& vz)
   vy = meanV * sin(psi) * cos(theta);
   vz = meanV * sin(psi) * sin(theta); 
 }
+
+
+
+
+float ion::kineticEnergyeV(float vx, float vy, float vz)
+{ return 0.5 * mass * magnitudeSquare(vx, vy, vz) / charge; }
+
 
 
 
@@ -88,57 +94,6 @@ void ion::collision(float& v1z, float& v1y, float& v1x)
 	     v2x, v2y, v2z);
 }
 
-
-
-
-void ion::collision(float& v, float& v_)
-{
-  // Define the initial velocities of the particles
-  float v1x = - magnitude(v, v_, 0.0);
-  float v1y = 0.0;
-  float v1z = 0.0;
-  
-  float v2x = 0.0;
-  float v2y = 0.0;
-  float v2z = 0.0;
-  
-  // Calculate the center of mass velocity
-  float vcmx = (v1x + v2x)/2.0;
-  float vcmy = (v1y + v2y)/2.0;
-  float vcmz = (v1z + v2z)/2.0;
-  
-  // Transform to the center of mass frame
-  v1x = v1x - vcmx;
-  v1y = v1y - vcmy;
-  v1z = v1z - vcmz;
-
-  v2x = v2x - vcmx;
-  v2y = v2y - vcmy;
-  v2z = v2z - vcmz;
-  
-  // Calculate the relative velocity
-  float vr1x = v1x - v2x;
-  float vr1y = v1y - v2y;
-  float vr1z = v1z - v2z;
-  
-  // Calculate the scattering angle using a random number generator
-  float theta = acos(2*random01() - 1); // Random angle between 0 and pi
-  
-  // Calculate the new velocities in the center of mass frame
-  float vr2x =  vr1x*cos(theta) + vr1y*sin(theta);
-  float vr2y = -vr1x*sin(theta) + vr1y*cos(theta);
-  
-  // Transform back to the lab frame
-  v1x = vcmx + 0.5*vr2x;
-  v1y = vcmy + 0.5*vr2y;
-  
-  float meanV = averageVelocity();
-  float psi = M_PI * random01();
-  theta  = 2 * M_PI * random01();
- 
-  v  = v1x + meanV * cos(psi);
-  v_ = v1y + meanV * sin(psi) * cos(theta); 
-}
 
 
 

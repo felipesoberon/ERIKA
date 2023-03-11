@@ -1,6 +1,10 @@
 # Simulation of Ar+ Ions Transported Across a Plasma Sheath and Through a Retarding Field Energy Analyzer
 
-This software is a computer simulation that models the transport of Ar+ ions across a plasma sheath and into a retarding field energy analyzer. The motion of the ions is tracked, and collisions with the background gas (neutral argon) are allowed based on the input pressure.
+This software is a computer simulation that models the transport of Ar+ ions across a plasma sheath and into a retarding field energy analyzer (RFEA). The motion of the ions is integrated in the Z-axis, from the edge of the plasma sheath. The model includes Monte-Carlo ion collisions with the background gas (neutral argon). The collision frequency is determined by the background neutral gas concentration (determined by the pressure and temperature of gas), and collision cross sections for elastic collisions and charge exchange collisions.
+
+The model can be used to simulate individual trajectories or the aggregate of multiple trajectories to produce an RFEA current, which can be used to produce an ion energy distribution function (IEDF) by taking the first derivative of the current. The model also keeps a record of the energy of ions crossing the first grid of the RFEA, G0, which can be used to determine the IEDF prior to ions entering the RFEA. 
+
+These two distributions can be compared to determine potential effects due to the RFEA design. For example, effects due to background gas pressure which may distort the IEDF due to collisions within the RFEA. The model allows for trying different distances for the grids in the RFEA by using a standard thickness spacer of 100 um and a stack input. For example, 2332, meaning 2 spacers between G0 and G1, etc. 
 
 ## Table of Contents
 

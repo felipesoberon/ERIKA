@@ -5,8 +5,8 @@ stepEnergy=50
 numberIons=5000
 pressurePa=1.0
 simulationTime=1E-6
-ionTrajectory=1
-RFEAscan=0
+ionTrajectory=0
+RFEAscan=1
 G2=100
 spacerStack=2332
 
