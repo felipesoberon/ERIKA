@@ -40,8 +40,9 @@ public:
   void  randomAverageVelocityVector(float& vx, float& vy, float& vz);
   float kineticEnergyeV(float vx, float vy, float vz);
 
-  void collision(float& v1z, float& v1y, float& v1x);
-  
+  void elasticCollision(float& v1z, float& v1y, float& v1x);
+  void cxCollision(float& v1z, float& v1y, float& v1x);
+   
   void  setCrossSection(int n, float factor);
   void  setCrossSection(int i, char * name);
   float crossSectionThreshold(int i);

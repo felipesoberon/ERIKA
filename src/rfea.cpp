@@ -198,7 +198,9 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
       
       if (collisionProbability < collisionsindt)
 	{
-	  ionAr.collision(v, v_, v__);
+	  int type = collisionType();
+	  if (type == 1) ionAr.elasticCollision(v, v_, v__);
+	  else /*2*/ ionAr.cxCollision(v, v_, v__);
 	}
       else
 	{

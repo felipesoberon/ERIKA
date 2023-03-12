@@ -72,7 +72,7 @@ float ion::kineticEnergyeV(float vx, float vy, float vz)
 
 
 
-void ion::collision(float& v1z, float& v1y, float& v1x)
+void ion::elasticCollision(float& v1z, float& v1y, float& v1x)
 {
   float vx,  vy,  vz;
   float v2x, v2y, v2z;
@@ -94,6 +94,12 @@ void ion::collision(float& v1z, float& v1y, float& v1x)
 	     v2x, v2y, v2z);
 }
 
+
+
+void ion::cxCollision(float& v1z, float& v1y, float& v1x)
+{
+  randomAverageVelocityVector(v1z, v1y, v1x);
+}
 
 
 
