@@ -50,3 +50,4 @@ plot(derivative ~ energy, type="l",
      main = "Blue: C  /  Red: G0",
      xlim = c(0,1500))
 lines(IEDFcounts ~ energyBins, type="l", col="red"); grid()
+

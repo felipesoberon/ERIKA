@@ -18,9 +18,14 @@ float electricField::interpolate(point p1, point p2, float x)
 }
 
 
-
-
-void  electricField::setSheathSize(float inputSheathSize){ sheathSize = inputSheathSize; }
+void  electricField::setSheathSize(void)
+{
+  Plasma.inputPlasmaParameters(-1, -1, plasmaPotential);
+  Plasma.calculateMatrixSheathSize();
+  sheathSize = Plasma.returnMatrixSheathSize();
+  cout << "Sheath voltage (V)      = " << plasmaPotential  << endl;
+  cout << "Matrix sheath size (cm) = " << sheathSize *100. << endl;
+}
 
 void  electricField::setG0G1d(float inputDistance){ G0G1d = inputDistance; }
 void  electricField::setG1G2d(float inputDistance){ G1G2d = inputDistance; }
@@ -53,14 +58,14 @@ float electricField::returnzG0(void){ return z0;}
 float electricField::returnzG1(void){ return z1;}
 float electricField::returnzG2(void){ return z2;}
 float electricField::returnzG3(void){ return z3;}
-float electricField::returnzC(void){ return zC;}
+float electricField::returnzC(void) { return zC;}
 
 
 
 
 float electricField::returnElectricField(float z) 
 {  
-  if      ( zP >= z && z >= z0)  E_z = -(plasmaPotential-G0)/sheathSize ; //The Sheath DC voltage
+  if      ( zP >= z && z >= z0)  E_z = -Plasma.returnMatrixSheathElectricField(sheathSize-z);
   else if ( z0 > z  && z >= z1 ) E_z = -(G0-G1)/G0G1d;   //Electron repulsion region G0-G1
   else if ( z1 > z  && z >= z2 ) E_z = -(G1-G2)/G1G2d;  //Retarding field G1-G2
   else if ( z2 > z  && z >= z3 ) E_z = -(G2-G3)/G2G3d;  //Sec. e from collector repulsion G2-G3
@@ -74,7 +79,7 @@ float electricField::returnElectricField(float z)
 
 float electricField::returnVoltage(float z)
 {
-  if      ( zP >= z && z >= z0)  V_z = interpolate({zP,plasmaPotential},{z0,G0},z);
+  if      ( zP >= z && z >= z0)  V_z = Plasma.returnMatrixSheathPotential(sheathSize-z)+plasmaPotential;
   else if ( z0 > z  && z >= z1 ) V_z = interpolate({z0,G0},{z1,G1},z);
   else if ( z1 > z  && z >= z2 ) V_z = interpolate({z1,G1},{z2,G2},z);
   else if ( z2 > z  && z >= z3 ) V_z = interpolate({z2,G2},{z3,G3},z);

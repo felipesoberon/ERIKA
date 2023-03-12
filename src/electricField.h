@@ -6,12 +6,16 @@
 #include <string>
 #include <cmath>
 
+#include "plasma.h"
+
 using namespace std;
 
 class electricField
 {
   
 private:
+
+  plasma Plasma;
   
   float sheathSize; 
   float G0G1d, G1G2d, G2G3d, G3Cd;  
@@ -26,7 +30,7 @@ private:
   
 public:
   
-  void  setSheathSize(float inputSheathSize);
+  void  setSheathSize(void);
   
   void  setG0G1d(float inputDistance);
   void  setG1G2d(float inputDistance);

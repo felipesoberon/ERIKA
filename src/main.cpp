@@ -10,7 +10,6 @@ int main (int argc, char* argv[])
   
   model.setParametersFromCommandLineInput(argc, argv);
 
-  model.setPlasmaSheathSize(2E-2);
   model.setSpacerStack();
   model.setVoltagePlasma0123C(1000, 0, -20, 0.0, -20, -10);
   model.setElectricField();
