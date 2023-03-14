@@ -138,3 +138,15 @@ void XSection::printProcessName(void) { cout <<  process; }
 char * XSection::process__(void) { return process; }
 
 float XSection::threshold_(void) { return threshold; }
+
+
+/* From LXCat, Phelps data on isotropic collision cross section Ar+ + Ar */
+float XSection::sigmaArElasticPhelps(float energy)
+{ return 2e-19/sqrt(2.*energy)/(1.+2.*energy) + 3e-19 *2.*energy/pow(1.+2.*energy/3.,2.3); }
+
+
+/* From LXCat, Phelps data on bacscattering collision cross section Ar+ + Ar */
+float XSection::sigmaArCXPhelps(float energy)
+{ return 0.5 * ( 1.15e-18 * pow(1.+0.015/2./energy,0.6)/pow(2.*energy,0.1) - 2e-19/sqrt(2.*energy)/(1.+2.*energy)
+	      -3E-19*2.*energy/pow(1.+2.*energy/3.,2.3)
+		 ); }

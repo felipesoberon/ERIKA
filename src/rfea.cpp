@@ -120,12 +120,18 @@ float rfea::collisionCrossSection(float energy)
 {
   sigma1 = ionAr.sigma(1, energy);
   sigma2 = ionAr.sigma(2, energy);
-
-  if (sigma1 >= sigma2) return sigma1;
-  else return sigma2;
+  return sigma1 + sigma2;
 }
 
 
+
+float rfea::collisionCrossSectionArPhelps(float energy)
+{
+  XSection argonXSection;
+  sigma1 = argonXSection.sigmaArElasticPhelps(energy);
+  sigma2 = argonXSection.sigmaArCXPhelps(energy);
+  return sigma1 + sigma2;  
+}
 
 
 int rfea::collisionType(void)
@@ -180,7 +186,7 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
 	 The formula for the collision rate is 
 	 collisionRate = nGas * cross section(E) * magnitude(v) 
       */
-      crossSection = collisionCrossSection( ionAr.kineticEnergyeV(v,v_,v__) );
+      crossSection = collisionCrossSectionArPhelps( ionAr.kineticEnergyeV(v,v_,v__) );
       collisionRate = nGas * crossSection * ionAr.magnitude(v,v_,v__);
       collisionsindt = collisionRate * dt; 
       collisionProbability = ran2(randomSeed);

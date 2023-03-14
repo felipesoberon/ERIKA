@@ -1,6 +1,7 @@
 #ifndef XSECTION_H
 #define XSECTION_H
 
+#include <cmath>
 #include <iostream>
 #include <fstream>
 
@@ -22,6 +23,10 @@ class XSection
   void printProcessName(void);
   char * process__(void);
   float threshold_(void);
+  
+  float sigmaArElasticPhelps(float energy);
+  float sigmaArCXPhelps(float energy);
+  
 };
 
 #endif /*XSECTION_H*/

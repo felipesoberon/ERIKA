@@ -49,5 +49,6 @@ plot(derivative ~ energy, type="l",
      xlab="Energy (eV)", ylab="IEDF", col="blue",
      main = "Blue: C  /  Red: G0",
      xlim = c(0,1500))
-lines(IEDFcounts ~ energyBins, type="l", col="red"); grid()
-
+lines(IEDFcounts ~ energyBins, type="l", col="red")
+legend("topleft", legend = c("Collector","G0"), col=c("blue","red"), lty=1)
+grid()

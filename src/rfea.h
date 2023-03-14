@@ -6,6 +6,7 @@
 #include "ion.h"
 #include "random.h"
 #include "plasma.h"
+#include "XSection.h"
 
 #include <fstream>
 #include <string>
@@ -51,6 +52,7 @@ public:
   
   void  setIon(void);
   float collisionCrossSection(float energy);
+  float collisionCrossSectionArPhelps(float energy);
   int   collisionType(void);
   
   void integrateIonTrajectory(bool saveTrajectory, long randomSeed);

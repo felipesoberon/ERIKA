@@ -1,4 +1,10 @@
-# Simulation of Ar+ Ions Transported Across a Plasma Sheath and Through a Retarding Field Energy Analyzer
+# ERIKA: Simulation of Ar+ Ions Transported Across a Plasma Sheath and Through a Retarding Field Energy Analyzer
+
+**E**mulating
+**R**etarding-Field-Energy-Analyzer
+**I**on
+**K**inetic-transport-in
+**A**rgon-gas
 
 This software is a computer simulation that models the transport of Ar+ ions across a plasma sheath and into a retarding field energy analyzer (RFEA). The motion of the ions is integrated in the Z-axis, from the edge of the plasma sheath. The model includes Monte-Carlo ion collisions with the background gas (neutral argon). The collision frequency is determined by the background neutral gas concentration (determined by the pressure and temperature of gas), and collision cross sections for elastic collisions and charge exchange collisions.
 
@@ -36,5 +42,5 @@ This will compile the source code and generate an executable file called `rfea`.
 
 ## Usage
 
-To use the simulation, use the shell script file `run.sh` provided in the root directory. that specifies the input parameters for the plasma and the analyzer. This will run the simulation using the parameters specified in the shell file. The output will be written to folder `output`. The folder contains an R script that can be used to plot the data. 
+To use the simulation, use the shell script file `run.sh` (or similarly named) provided in the root directory. that specifies the input parameters for the plasma and the analyzer. This will run the simulation using the parameters specified in the shell file. The output will be written to folder `output`. The folder contains R scripts that can be used to plot the data. The R scripts were run in a Windows 10 computer with R 4.2.1 from RStudio. 
 
