@@ -1,8 +1,6 @@
 #include "electricField.h"
 
 
-
-
 float electricField::interpolate(point p1, point p2, float x)
 {
   float y, slope, y_intercept;
@@ -21,16 +19,25 @@ float electricField::interpolate(point p1, point p2, float x)
 void  electricField::setSheathSize(void)
 {
   Plasma.inputPlasmaParameters(-1, -1, plasmaPotential);
+  cout << "        Sheath voltage (V) = " << plasmaPotential  << endl;
+ 
   Plasma.calculateMatrixSheathSize();
   sheathSize = Plasma.returnMatrixSheathSize();
-  cout << "Sheath voltage (V)      = " << plasmaPotential  << endl;
-  cout << "Matrix sheath size (cm) = " << sheathSize *100. << endl;
+  cout << "   Matrix sheath size (cm) = " << sheathSize *100. << endl;
+  
+  Plasma.calculateChildLawSheathSize();
+  sheathSize = Plasma.returnChildLawSheathSize();
+  cout << "Child Law sheath size (cm) = " << sheathSize *100. << endl;
+
+  cout << "Ion current density (A/m2) = " << Plasma.returnJ0() << endl;
+  
 }
+
 
 void  electricField::setG0G1d(float inputDistance){ G0G1d = inputDistance; }
 void  electricField::setG1G2d(float inputDistance){ G1G2d = inputDistance; }
 void  electricField::setG2G3d(float inputDistance){ G2G3d = inputDistance; }
-void  electricField::setG3Cd(float inputDistance){  G3Cd  = inputDistance; }
+void  electricField::setG3Cd(float inputDistance) { G3Cd  = inputDistance; }
 
 
 void  electricField::setCoordinate(void)
@@ -44,13 +51,18 @@ void  electricField::setCoordinate(void)
 }
 
 
-void  electricField::setPlasmaPotential(float inputPlasmaPotential){ plasmaPotential = inputPlasmaPotential; }
+void  electricField::setPlasmaPotential(float inputPlasmaPotential, float inputPlasmaDensity)
+{
+  plasmaPotential = inputPlasmaPotential;
+  plasmaDensity = inputPlasmaDensity;
+  Plasma.inputPlasmaParameters(-1, plasmaDensity, plasmaPotential);
+}
 
 void  electricField::setG0(float inputG0){ G0 = inputG0; }
 void  electricField::setG1(float inputG1){ G1 = inputG1; }
 void  electricField::setG2(float inputG2){ G2 = inputG2; }
 void  electricField::setG3(float inputG3){ G3 = inputG3; }
-void  electricField::setC(float inputC){ C = inputC; }
+void  electricField::setC(float inputC)  { C  = inputC;  }
 
 
 float electricField::returnzP(void) { return zP;}
@@ -65,7 +77,7 @@ float electricField::returnzC(void) { return zC;}
 
 float electricField::returnElectricField(float z) 
 {  
-  if      ( zP >= z && z >= z0)  E_z = -Plasma.returnMatrixSheathElectricField(sheathSize-z);
+  if      ( zP >= z && z >= z0)  E_z = -Plasma.returnChildLawSheathElectricField(sheathSize-z);
   else if ( z0 > z  && z >= z1 ) E_z = -(G0-G1)/G0G1d;   //Electron repulsion region G0-G1
   else if ( z1 > z  && z >= z2 ) E_z = -(G1-G2)/G1G2d;  //Retarding field G1-G2
   else if ( z2 > z  && z >= z3 ) E_z = -(G2-G3)/G2G3d;  //Sec. e from collector repulsion G2-G3
@@ -79,7 +91,7 @@ float electricField::returnElectricField(float z)
 
 float electricField::returnVoltage(float z)
 {
-  if      ( zP >= z && z >= z0)  V_z = Plasma.returnMatrixSheathPotential(sheathSize-z)+plasmaPotential;
+  if      ( zP >= z && z >= z0)  V_z = Plasma.returnChildLawSheathPotential(sheathSize-z)+plasmaPotential;
   else if ( z0 > z  && z >= z1 ) V_z = interpolate({z0,G0},{z1,G1},z);
   else if ( z1 > z  && z >= z2 ) V_z = interpolate({z1,G1},{z2,G2},z);
   else if ( z2 > z  && z >= z3 ) V_z = interpolate({z2,G2},{z3,G3},z);

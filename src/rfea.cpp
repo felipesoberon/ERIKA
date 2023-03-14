@@ -17,7 +17,8 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   commandLine.setFlagName("-RFEA_scan", "simulate an RFEA scan (0/1)");
   commandLine.setFlagName("-G2", "Grid 2 voltage");
   commandLine.setFlagName("-spacerStack", "No. of 100um spacers between grids (e.g. 2332)");
-  
+  commandLine.setFlagName("-plasmaDensity", "Density of plasma at edge of sheath (m-3)");
+    
   commandLine.printFlagNameList();
   
   commandLine.setFlagValues();
@@ -49,7 +50,10 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   
   if (commandLine.flagValueIsNumber(8))
     spacerStack =  int( commandLine.returnFloatFlagValue(8) );
-  
+
+  if (commandLine.flagValueIsNumber(9))
+    plasmaDensity = commandLine.returnFloatFlagValue(9);
+
   cout << endl;
 }
 
@@ -77,7 +81,7 @@ void rfea::setVoltagePlasma0123C(float pp, float g0, float g1, float g2, float g
 
 void rfea::setElectricField(void)
 {
-  Ez.setPlasmaPotential(plasmaPotential);
+  Ez.setPlasmaPotential(plasmaPotential, plasmaDensity);
   Ez.setG0(G0);
   Ez.setG1(G1);
   Ez.setG2(G2);

@@ -17,8 +17,10 @@ class plasma
   
   float DebyeLength;
   float BohmVelocity;
+  float J0;
+  
   float matrixSheathSize;
-
+  float ChildLawSheathSize;
 
  public:
 
@@ -34,6 +36,14 @@ class plasma
   float returnMatrixSheathSize(void);
   float returnMatrixSheathPotential(float x);
   float returnMatrixSheathElectricField(float x);
+
+  void calculateChildLawSheathSize(void);
+  float returnChildLawSheathSize(void);
+  float returnChildLawSheathPotential(float x);
+  float returnChildLawSheathElectricField(float x);
+
+  void calculateJ0(void);
+  float returnJ0(void);
   
 };
 

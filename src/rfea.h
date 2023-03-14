@@ -30,6 +30,7 @@ private:
   int spacerStack = 1221;
   
   float plasmaPotential;
+  float plasmaDensity;
   float G0, G1, G2 =0.0, G3, C;
   
   int maxEnergy = 1500;

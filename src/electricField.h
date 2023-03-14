@@ -21,6 +21,7 @@ private:
   float G0G1d, G1G2d, G2G3d, G3Cd;  
   float zP, z0, z1, z2, z3, zC;
   float plasmaPotential;
+  float plasmaDensity;
   float G0, G1, G2, G3, C;
   float E_z, V_z;
   
@@ -39,7 +40,7 @@ public:
   
   void  setCoordinate(void);
   
-  void  setPlasmaPotential(float inputPlasmaPotential);
+  void  setPlasmaPotential(float inputPlasmaPotential, float inputPlasmaDensity);
   
   void  setG0(float inputG0);
   void  setG1(float inputG1);

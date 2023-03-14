@@ -12,13 +12,15 @@ void plasma::inputPlasmaParameters(float inTe, float inns, float inV0)
 void plasma::calculateDebyeLength(void)
 { DebyeLength = sqrt( epsilon_0*Te/(e*ns) ); }
 float plasma::returnDebyeLength(void)
-{ return DebyeLength; }
+{ calculateDebyeLength();
+  return DebyeLength; }
 
 
 void plasma::calculateBohmVelocity(void)
 { BohmVelocity = sqrt( e * Te / M ); }
 float plasma::returnBohmVelocity(void)
-{ return BohmVelocity; }
+{ calculateBohmVelocity();
+  return BohmVelocity; }
 
 
 void plasma::calculateMatrixSheathSize(void)
@@ -29,3 +31,27 @@ float plasma::returnMatrixSheathPotential(float x)
 { return -0.5*e*ns*x*x/epsilon_0; }
 float plasma::returnMatrixSheathElectricField(float x)
 { return e*ns*x/epsilon_0; }
+
+
+
+void plasma::calculateChildLawSheathSize(void)
+{ calculateDebyeLength();
+  ChildLawSheathSize = (sqrt(2)/3.) * DebyeLength * pow(2.*V0/Te, 3./4.); }
+float plasma::returnChildLawSheathSize(void)
+{ return ChildLawSheathSize; }
+float plasma::returnChildLawSheathPotential(float x)
+{ float s = ChildLawSheathSize;
+  return -V0*pow(x/s, 4./3.); }
+float plasma::returnChildLawSheathElectricField(float x)
+{ float s = ChildLawSheathSize;
+  return (4./3.)*(V0/s)*pow(x/s, 1./3.); }
+
+
+
+
+void plasma::calculateJ0(void)
+{ J0 = e * ns * BohmVelocity; }
+float plasma::returnJ0(void)
+{ calculateBohmVelocity();
+  calculateJ0();
+  return J0; }

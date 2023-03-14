@@ -11,7 +11,7 @@ int main (int argc, char* argv[])
   model.setParametersFromCommandLineInput(argc, argv);
 
   model.setSpacerStack();
-  model.setVoltagePlasma0123C(1000, 0, -20, 0.0, -20, -10);
+  model.setVoltagePlasma0123C(1000, 0, -60, 0.0, -70, -60);
   model.setElectricField();
   model.setIon();
 
