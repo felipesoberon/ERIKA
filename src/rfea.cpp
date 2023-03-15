@@ -8,16 +8,16 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   commandLine.setArgumentList(numberOfArguments, valueOfArgument);
   commandLine.printArgumentList();
   
-  commandLine.setFlagName("-max_eV", "Scan's maximum energy in eV.");
-  commandLine.setFlagName("-step_eV", "Scan's energy step in eV.");
-  commandLine.setFlagName("-no._ion", "Scan's number of ions per step.");
-  commandLine.setFlagName("-pressure_Pa", "Argon gas pressure in Pa.");
-  commandLine.setFlagName("-sim_time", "Maximum simulation time per ion (s).");
-  commandLine.setFlagName("-ion_traj", "simulate and save an ion trajectory (0/1)");
-  commandLine.setFlagName("-RFEA_scan", "simulate an RFEA scan (0/1)");
-  commandLine.setFlagName("-G2", "Grid 2 voltage");
-  commandLine.setFlagName("-spacerStack", "No. of 100um spacers between grids (e.g. 2332)");
-  commandLine.setFlagName("-plasmaDensity", "Density of plasma at edge of sheath (m-3)");
+  commandLine.setFlagName("-max_eV", "Scan's maximum energy in eV.");                     //0
+  commandLine.setFlagName("-step_eV", "Scan's energy step in eV.");                       //1
+  commandLine.setFlagName("-no._ion", "Scan's number of ions per step.");                 //2
+  commandLine.setFlagName("-pressure_Pa", "Argon gas pressure in Pa.");                   //3
+  commandLine.setFlagName("-sim_time", "Maximum simulation time per ion (s).");           //4
+  commandLine.setFlagName("-sim_type", "Trajectory (0), Scan (1), or Space Charge (2) "); //5
+  commandLine.setFlagName("-G2", "Grid 2 voltage");                                       //6
+  commandLine.setFlagName("-spacerStack", "No. of 100um spacers between grids (e.g. 2332)"); //7
+  commandLine.setFlagName("-plasmaDensity", "Density of plasma at edge of sheath (m-3)");    //8
+  commandLine.setFlagName("-plasmaPotential", "Plasma sheath voltage");                      //9
     
   commandLine.printFlagNameList();
   
@@ -38,22 +38,22 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   
   if (commandLine.flagValueIsNumber(4))
     simulationTime =  commandLine.returnFloatFlagValue(4);
-
-  if (commandLine.flagValueIsNumber(5))
-    trajectory =  bool( commandLine.returnFloatFlagValue(5) );
-
-  if (commandLine.flagValueIsNumber(6))
-    scan =  bool( commandLine.returnFloatFlagValue(6) );
-
-  if (commandLine.flagValueIsNumber(7))
-    G2 =  commandLine.returnFloatFlagValue(7);
   
+  if (commandLine.flagValueIsNumber(5))
+    simulationType =  int( commandLine.returnFloatFlagValue(5) );
+  
+  if (commandLine.flagValueIsNumber(6))
+    G2 =  commandLine.returnFloatFlagValue(6);
+  
+  if (commandLine.flagValueIsNumber(7))
+    spacerStack =  int( commandLine.returnFloatFlagValue(7) );
+
   if (commandLine.flagValueIsNumber(8))
-    spacerStack =  int( commandLine.returnFloatFlagValue(8) );
-
+    plasmaDensity = commandLine.returnFloatFlagValue(8);
+  
   if (commandLine.flagValueIsNumber(9))
-    plasmaDensity = commandLine.returnFloatFlagValue(9);
-
+    plasmaPotential = commandLine.returnFloatFlagValue(9);
+  
   cout << endl;
 }
 
@@ -68,14 +68,8 @@ void rfea::setSpacerStack(void)
 }
 
 
-void rfea::setVoltagePlasma0123C(float pp, float g0, float g1, float g2, float g3, float c)
-{
-  plasmaPotential = pp;
-  G0 = g0;
-  G1 = g1;
-  G3 = g3;
-  C  = c;
-}
+void rfea::setVoltageGrids013C(float g0, float g1, float g3, float c)
+{ G0 = g0;  G1 = g1;  G3 = g3;  C  = c; }
 
 
 
@@ -153,7 +147,7 @@ int rfea::collisionType(void)
 
 
 
-void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
+void rfea::integrateIonTrajectory(long randomSeed)
 {
   float dt =  ionAr.returndt();
   float zG0 = Ez.returnzG0();
@@ -228,6 +222,13 @@ void rfea::integrateIonTrajectory(bool saveTrajectory, long randomSeed)
   if ( z <= zC ) file2 << G2 << "  ,  " << 1 << "  ,  " << energy << endl;
   else           file2 << G2 << "  ,  " << 0 << "  ,  " << energy << endl;
   file2.close();
+
+  if (saveLastPosition == true)
+    {
+      ofstream file3("output/spaceCharge.csv", ios::app);
+      file3 << z << "," << v << "," << v_ << endl;
+      file3.close();
+    }
 }
 
 
@@ -241,7 +242,7 @@ void rfea::energyScan(void)
       for(int j=1; j<=ionsPerEnergy; j++)
 	{
 	  setG2( float(i) );
-	  integrateIonTrajectory(false, long(i+1+j));
+	  integrateIonTrajectory(long(i+1+j));
 	}
     }
 }
@@ -249,8 +250,48 @@ void rfea::energyScan(void)
 
 
 
+void rfea::spaceCharge(void)
+{
+  float simTime = simulationTime;
+  for(int j=1; j<=ionsPerEnergy; j++)
+    {
+      simulationTime = simTime*random01();
+      integrateIonTrajectory(long(1+j));
+    }
+}
+
+
+
+
+
 void rfea::executeSimulation(void)
 {
-	if (scan) energyScan();
-	if (trajectory) integrateIonTrajectory(true, long( random01()*1000 ) );
+  switch (simulationType)
+    {
+    case 0:
+      {
+	cout << "\nComputing single trajectory" << endl;
+	saveTrajectory = true;
+	integrateIonTrajectory(long( random01()*1000 ) );
+	break;
+      }
+    case 1:
+      {
+	cout << "\nRFEA scan" << endl;
+	energyScan();
+	break;
+      }
+    case 2:
+      {
+	cout << "\nComputing multiple trajectories for space charge" << endl;
+	saveLastPosition = true;
+	spaceCharge();
+	break;
+      }
+    default:
+      {
+	cout << "\nERROR: simulation type option, " << simulationType << ", invalid." << endl;
+	cout << "Program termination(!)" << endl;
+      }
+    }
 }

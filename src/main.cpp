@@ -11,7 +11,7 @@ int main (int argc, char* argv[])
   model.setParametersFromCommandLineInput(argc, argv);
 
   model.setSpacerStack();
-  model.setVoltagePlasma0123C(1000, 0, -60, 0.0, -70, -60);
+  model.setVoltageGrids013C(/*G0=*/0, /*G1=*/-60, /*G3=*/-70, /*C=*/-60);
   model.setElectricField();
   model.setIon();
 
@@ -31,7 +31,11 @@ void printProgramDescription(void)
   cout << "* Felipe Soberon (felipe.soberon@gmail.com)  *" << endl;
   cout << "* 2023                                       *" << endl;
   cout << "*                                            *" << endl;
-  cout << "* Ion energy transport and RFEA model.       *" << endl;
+  cout << "* E_mulating                                 *" << endl;
+  cout << "* R_etarding-field-energy-analyzer           *" << endl;
+  cout << "* I_on                                       *" << endl;
+  cout << "* K_inetic-transport in                      *" << endl;
+  cout << "* A_rgon gas                                 *" << endl;
   cout << "*                                            *" << endl;
   cout << "**********************************************" << endl;
   
