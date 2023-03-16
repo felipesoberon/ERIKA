@@ -3,7 +3,6 @@ library(dplyr)
 list <- c("out0.5", "out1.0", "out2.5", "out5.0", "out7.5", "out10.0")
 
 
-
 iCdata <- c( )
 
 for (i in 1:length(list)) 

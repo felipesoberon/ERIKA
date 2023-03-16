@@ -27,9 +27,10 @@ private:
   float G0G1d, G1G2d, G2G3d, G3Cd;
   const float spacerThickness = 100.0E-6;
   int spacerStack = 1221;
+  int gridTransparency = 100; 
   
   float plasmaPotential = 1000.;
-  float plasmaDensity;
+  float plasmaDensity = 1e16;
   float G0, G1, G2 =0.0, G3, C;
   
   int maxEnergy = 1500;
@@ -63,7 +64,9 @@ public:
   void spaceCharge(void);
   
   void executeSimulation(void);
-  
+
+  bool isAtGrid(float zi, float zii);
+
 };
 
 #endif // RFEA

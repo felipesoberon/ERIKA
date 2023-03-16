@@ -18,6 +18,7 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   commandLine.setFlagName("-spacerStack", "No. of 100um spacers between grids (e.g. 2332)"); //7
   commandLine.setFlagName("-plasmaDensity", "Density of plasma at edge of sheath (m-3)");    //8
   commandLine.setFlagName("-plasmaPotential", "Plasma sheath voltage");                      //9
+  commandLine.setFlagName("-gridTransparency", "Transparency of the grids in percentage");   //10
     
   commandLine.printFlagNameList();
   
@@ -53,6 +54,9 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   
   if (commandLine.flagValueIsNumber(9))
     plasmaPotential = commandLine.returnFloatFlagValue(9);
+
+  if (commandLine.flagValueIsNumber(10))
+    gridTransparency = int( commandLine.returnFloatFlagValue(10) );
   
   cout << endl;
 }
@@ -158,6 +162,7 @@ void rfea::integrateIonTrajectory(long randomSeed)
   vBohm.calculateBohmVelocity();
   
   float z = zP;           // Initial position of the particle in m
+  float z_= z;            // previous position
   float v = -vBohm.returnBohmVelocity(); // Vz of the particle in m/s
   float v_= 0.0;          // Vperpendicular 
   float v__ = 0.0;        // Third velocity component (ignored)
@@ -213,7 +218,10 @@ void rfea::integrateIonTrajectory(long randomSeed)
 	  file3.close();
 	} 
       
+      if ( isAtGrid(z,z_) && random01()*100 > gridTransparency ) break;
+      
       t = t + dt;
+      z_= z;
     }
   file.close();
   
@@ -294,4 +302,35 @@ void rfea::executeSimulation(void)
 	cout << "Program termination(!)" << endl;
       }
     }
+}
+
+
+
+
+bool rfea::isAtGrid(float zi, float zii)
+{
+  bool atGrid = false;
+  
+  if ( gridTransparency <100 )
+    {
+      float zG0 = Ez.returnzG0();
+      float zG1 = Ez.returnzG1();
+      float zG2 = Ez.returnzG2();
+      float zG3 = Ez.returnzG3();
+      
+      float zz = zi;
+      
+      if (zi < zii)
+	{
+	  zi  = zii;
+	  zii = zz;
+	}
+      
+      if      (zi > zG0 && zG0 > zii) atGrid = true;
+      else if (zi > zG1 && zG1 > zii) atGrid = true;
+      else if (zi > zG2 && zG2 > zii) atGrid = true;
+      else if (zi > zG3 && zG3 > zii) atGrid = true;
+      else atGrid = false; 
+    }
+  return atGrid;
 }
