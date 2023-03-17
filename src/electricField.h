@@ -22,6 +22,8 @@ private:
   float zP, z0, z1, z2, z3, zC;
   float plasmaPotential;
   float plasmaDensity;
+  float plasmaCurrent;
+  float frequency; 
   float G0, G1, G2, G3, C;
   float E_z, V_z;
   
@@ -30,6 +32,8 @@ private:
   
   
 public:
+
+  void  setPlasma(float inputPlasmaPotential, float inputPlasmaDensity, float inputFrequency);
   
   void  setSheathSize(void);
   
@@ -39,8 +43,6 @@ public:
   void  setG3Cd(float inputDistance);
   
   void  setCoordinate(void);
-  
-  void  setPlasmaPotential(float inputPlasmaPotential, float inputPlasmaDensity);
   
   void  setG0(float inputG0);
   void  setG1(float inputG1);
@@ -55,8 +57,8 @@ public:
   float returnzG3(void);
   float returnzC(void);
   
-  float returnElectricField(float z);
-  float returnVoltage(float z);
+  float returnElectricField(float z, float t);
+  float returnVoltage(float z, float t);
   
   void  saveVoltageAndElectricField(const string& fileName);
   

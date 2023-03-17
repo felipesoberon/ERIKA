@@ -31,6 +31,7 @@ private:
   
   float plasmaPotential = 1000.;
   float plasmaDensity = 1e16;
+  float radioFrequency = 0.;
   float G0, G1, G2 =0.0, G3, C;
   
   int maxEnergy = 1500;

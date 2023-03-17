@@ -19,6 +19,8 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   commandLine.setFlagName("-plasmaDensity", "Density of plasma at edge of sheath (m-3)");    //8
   commandLine.setFlagName("-plasmaPotential", "Plasma sheath voltage");                      //9
   commandLine.setFlagName("-gridTransparency", "Transparency of the grids in percentage");   //10
+  commandLine.setFlagName("-RF", "Frequency (Hz) (input 0 for DC)");                         //11
+  
     
   commandLine.printFlagNameList();
   
@@ -58,6 +60,9 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   if (commandLine.flagValueIsNumber(10))
     gridTransparency = int( commandLine.returnFloatFlagValue(10) );
   
+  if (commandLine.flagValueIsNumber(11))
+    radioFrequency = commandLine.returnFloatFlagValue(11);
+  
   cout << endl;
 }
 
@@ -79,7 +84,8 @@ void rfea::setVoltageGrids013C(float g0, float g1, float g3, float c)
 
 void rfea::setElectricField(void)
 {
-  Ez.setPlasmaPotential(plasmaPotential, plasmaDensity);
+  Ez.setPlasma(plasmaPotential, plasmaDensity, radioFrequency);
+  
   Ez.setG0(G0);
   Ez.setG1(G1);
   Ez.setG2(G2);
@@ -179,6 +185,12 @@ void rfea::integrateIonTrajectory(long randomSeed)
   float collisionRate;
   float collisionsindt;
   bool  crossedzG0 = false;
+
+  float period = 0;
+  float phase = 0;
+  if (radioFrequency>0)
+    { period = 1/radioFrequency;
+      phase = random01()*period; }
   
   ofstream file("output/trajectory.csv");
   if(saveTrajectory) file << "Time(s), z(m), vz(m/s), vp(m/s)" << endl;
@@ -202,7 +214,7 @@ void rfea::integrateIonTrajectory(long randomSeed)
 	}
       else
 	{
-	  Efz = Ez.returnElectricField(z);
+	  Efz = Ez.returnElectricField(z, t+phase);
 	  ionAr.rungeKutta4th(z, v, t, Efz);
 	}
       

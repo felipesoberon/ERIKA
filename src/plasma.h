@@ -2,6 +2,9 @@
 #define PLASMA_H
 
 #include <cmath>
+#include <iostream>
+
+using namespace std;
 
 class plasma
 {
@@ -14,17 +17,20 @@ class plasma
   float ns = 1.e15; //plasma density at edge of sheath (m^-3)
   float M = 6.6335209e-26; //ion mass (kg)
   float V0 = 1000.; //potential across sheath
+  float freq = 0.;  //Hz, for RF driven discharges / 0 for DC
   
   float DebyeLength;
   float BohmVelocity;
-  float J0;
+  float J0; //Ion current (A/m2)
+  float J; //The discharge current (A/m2)
   
   float matrixSheathSize;
   float ChildLawSheathSize;
+  float homCapSheathSize;
 
  public:
 
-  void inputPlasmaParameters(float inTe, float inns, float inV0);
+  void inputPlasmaParameters(float inTe, float inns, float inV0, float inFreq);
 
   void calculateDebyeLength(void);
   float returnDebyeLength(void);
@@ -44,6 +50,12 @@ class plasma
 
   void calculateJ0(void);
   float returnJ0(void);
+
+  void calculateHomDischargeParameters(void);
+  float returnHomDischargeSheathSize(void);
+  float returnHomDischargeSheathPotential(float x, float t);
+  float returnHomDischargeSheathElectricField(float x, float t);
+
   
 };
 

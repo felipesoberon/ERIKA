@@ -1,6 +1,7 @@
 library(dplyr)
+library(signal) # Savitzky-Golay
 
-list <- c("out2")
+list <- c("out1.9")
 
 iCdata <- c( )
 
@@ -14,9 +15,13 @@ for (i in 1:length(list))
    iCdata <- cbind(iCdata, iC$counts)
   }
 
+iCfilt <- sgolayfilt(iCdata[,1], p=1, n=3)
 
-plot( iCdata[,1] ~ iC$G2, type = "l", xlab="Energy (eV)", ylab="Ion counts")
+plot( iCfilt ~ iC$G2, type = "l", xlab="Energy (eV)", ylab="Ion counts")
+lines( iCdata[,1] ~ iC$G2)
 grid()
+
+
 
 
 
@@ -36,7 +41,9 @@ for (i in 1:length(list))
   colnames(ionCount) <- c("G2","Count","Energy(ev)")
   ionCount <- ionCount %>% group_by(G2) %>% summarise(counts = sum(Count))
   
+  ionCount$counts <- sgolayfilt( ionCount$counts, p=1, n=3)
   derivative <- c()
+  
   n <- dim(ionCount)[1]-1  
   for (i in 2:n)
     {
@@ -86,6 +93,6 @@ for (i in 1:length(list))
 }
 
 
-plot( g0iedf[,1] ~ energyBins, type="l")
+plot( g0iedf[,1] ~ energyBins, type="l", xlab="Energy (eV)", ylab="IEDF @ G0")
 grid()
 
