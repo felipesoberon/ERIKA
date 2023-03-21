@@ -33,9 +33,9 @@ void  electricField::setSheathSize(void)
   if (frequency>0)
     {
       cout << " *** AC SHEATH *** " << endl;
-      Plasma.calculateHomDischargeParameters();
-      sheathSize = Plasma.returnHomDischargeSheathSize();
-      cout << "  Hom. AC sheath size (cm) = " << sheathSize *100. << endl;
+      Plasma.calculateInhomDischargeParameters();
+      sheathSize = Plasma.returnInhomDischargeSheathSize();
+      cout << "  Inhom. AC sheath size (cm) = " << sheathSize *100. << endl;
     }
   else
     {
@@ -89,7 +89,7 @@ float electricField::returnElectricField(float z, float t)
 {  
   if      ( zP >= z && z >= z0)
     {
-      if (frequency>0) E_z =  Plasma.returnHomDischargeSheathElectricField(z,t); 
+      if (frequency>0) E_z =  Plasma.returnInhomDischargeSheathElectricField(z,t); 
       else             E_z = -Plasma.returnChildLawSheathElectricField(sheathSize-z);
     }
   else if ( z0 > z  && z >= z1 ) E_z = -(G0-G1)/G0G1d;   //Electron repulsion region G0-G1
@@ -107,7 +107,7 @@ float electricField::returnVoltage(float z, float t)
 {
   if      ( zP >= z && z >= z0)
     {
-      if (frequency>0) V_z = Plasma.returnHomDischargeSheathPotential(z,t);
+      if (frequency>0) V_z = Plasma.returnInhomDischargeSheathPotential(z,t);
       else             V_z = Plasma.returnChildLawSheathPotential(sheathSize-z)+plasmaPotential;
     }
   else if ( z0 > z  && z >= z1 ) V_z = interpolate({z0,G0},{z1,G1},z);
@@ -139,8 +139,8 @@ void electricField::saveVoltageAndElectricField(const string& fileName)
     {
       z = zhigh - float(i)*dz;
       file << z;
-      file << " , " << returnVoltage(z, 3/(4*frequency));
-      file << " , " << returnElectricField(z, 3/(4*frequency));
+      file << " , " << returnVoltage(z, 0);
+      file << " , " << returnElectricField(z, 0.);
       file << endl;
     }
   file.close();

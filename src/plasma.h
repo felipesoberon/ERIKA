@@ -65,7 +65,7 @@ public:
   float returnInhomDischargeSheathSize(void);
   void setPairsXPHI(void);
   float returnPhi(float xinput);
-  float returnInhomDischargeSheathPotential(float x, float t);
+  float returnInhomDischargeSheathPotential(float z, float t);
   float returnInhomDischargeSheathElectricField(float z, float t);
   
 };

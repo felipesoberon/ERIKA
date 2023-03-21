@@ -106,37 +106,38 @@ float plasma::returnHomDischargeSheathElectricField(float x, float t)
 
 void plasma::calculateInhomDischargeParameters(void)
 {
-  float w = 2*M_PI*freq;
+  float w = 2.*M_PI*freq;
   if (freq > 0) 
     {
-      J = w*(2/5)*sqrt(6/5)*sqrt(e*ns*epsilon_0*(sqrt(576+125*V0)-24));
+      J = w*(2./5.)*sqrt(6./5.)*sqrt(e*ns*epsilon_0*(sqrt(576.+125.*V0)-24.));
       float T = 1/freq;
-      inHomCapSheathSize = returnInhomDischargeSheathPosition(T/2);
+      inHomCapSheathSize = returnInhomDischargeSheathPosition(T/2.);
+      setPairsXPHI();
     }
   else cout << "ERROR: frequency, " << freq << ", is not >0" << endl;
 }
 
 float plasma::x(float phi) /* 0 to pi */
 {
-  float w  = 2*M_PI*freq;
+  float w  = 2.*M_PI*freq;
   float s0 = J /(e*ns*w);
   float DL = returnDebyeLength();
-  float H  = (1/M_PI)*(s0*s0/(DL*DL));
+  float H  = (1./M_PI)*(s0*s0/(DL*DL));
   
   return s0*( 
-	     1-cos(phi) 
+	     1.-cos(phi) 
 	     +
-	     (H/8)*( (3/2)*sin(phi) +(11/18)*sin(3*phi) -3*phi*cos(phi)  -(1/3)*phi*cos(3*phi) ) 
+	     (H/8.)*( (3./2.)*sin(phi) +(11./18.)*sin(3.*phi) -3.*phi*cos(phi)  -(1./3.)*phi*cos(3.*phi) ) 
 	      );	
 }
 
 float plasma::returnInhomDischargeSheathPosition(float t)
 {
-  float w  = 2*M_PI*freq;
-  float T  = 1/freq;
-  float tau = fmod(t+T/2, T) -T/2;;
+  float w  = 2.*M_PI*freq;
+  float T  = 1./freq;
+  float tau = fmod(t+T/2., T) -T/2.;
   float phi = abs( w*tau );
-  
+
   return x(phi);	
 }
 
@@ -148,7 +149,7 @@ void plasma::setPairsXPHI(void)
   float phi;
   for (int i =0; i<=64; i++)
     {
-      phi    = i*M_PI/64;
+      phi    = float( i*M_PI/64.);
       PHI[i] = phi;
       X[i]   = x(phi);
     }
@@ -156,9 +157,9 @@ void plasma::setPairsXPHI(void)
 
 float plasma::returnPhi(float xinput)
 {	
-  float phiout = -1;
+  float phiout = -1.;
   int i, i1, i2, i3;
-  int M = 64; //M-1 = 2^n 
+  int M = 65; //M-1 = 2^n 
   i1 = 0;
   i2 = (M-1)/2;  
   i3 = (M-1);
@@ -193,24 +194,32 @@ float plasma::returnPhi(float xinput)
 }
 
 
-float plasma::returnInhomDischargeSheathPotential(float x, float t)
+float plasma::returnInhomDischargeSheathPotential(float z, float t)
 {
-  /*TODO  ....*/
-  return 0;
+  int   Nz = 100;
+  float dz = z/Nz;
+  float sum = 0.;
+  
+  for (int i=0; i<=Nz; i++) sum = sum-returnInhomDischargeSheathElectricField(i*dz,t);
+  sum = sum * dz;    
+  return sum;
 }
 
 
 float plasma::returnInhomDischargeSheathElectricField(float z, float t)
 {
-  float w    = 2*M_PI*freq;
+  float w    = 2.*M_PI*freq;
   float wt   = w*t;
   float sm   = inHomCapSheathSize;
   float fac  = J/(epsilon_0*w);
   float st   = returnInhomDischargeSheathPosition(t);
-  float phix = returnPhi(sm-z);
   float Ef  = 0;
   
-  if ( st<sm-z ) Ef = -fac*(cos(wt)-cos(phix));
+  if ( st<sm-z )
+    {
+      float phix = returnPhi(sm-z);
+      Ef = -fac*(cos(wt)-cos(phix));
+    }
   
   return Ef;
 }
