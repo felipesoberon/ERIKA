@@ -24,6 +24,8 @@ float plasma::returnBohmVelocity(void)
   return BohmVelocity; }
 
 
+/* MATRIX DC Sheath */
+
 void plasma::calculateMatrixSheathSize(void)
 { matrixSheathSize = sqrt( 2.0*epsilon_0*V0/(e*ns) ); }
 float plasma::returnMatrixSheathSize(void)
@@ -34,6 +36,8 @@ float plasma::returnMatrixSheathElectricField(float x)
 { return e*ns*x/epsilon_0; }
 
 
+
+/* CHILD LAW DC Sheath */
 
 void plasma::calculateChildLawSheathSize(void)
 { calculateDebyeLength();
@@ -48,8 +52,6 @@ float plasma::returnChildLawSheathElectricField(float x)
   return (4./3.)*(V0/s)*pow(x/s, 1./3.); }
 
 
-
-
 void plasma::calculateJ0(void)
 { J0 = e * ns * BohmVelocity; }
 float plasma::returnJ0(void)
@@ -59,8 +61,7 @@ float plasma::returnJ0(void)
 
 
 
-
-
+/* HOMOGENEOUS RF MODEL, Lieberman book, Capacitive RF Sheath */
 
 void plasma::calculateHomDischargeParameters(void)
 {
@@ -71,8 +72,10 @@ void plasma::calculateHomDischargeParameters(void)
     }
   else cout << "ERROR: frequency, " << freq << ", is not >0" << endl;
 }
+
 float plasma::returnHomDischargeSheathSize(void)
 { return homCapSheathSize; }
+
 float plasma::returnHomDischargeSheathPotential(float x, float t)
 {
   float wt  = 2*M_PI*freq*t;
@@ -84,6 +87,7 @@ float plasma::returnHomDischargeSheathPotential(float x, float t)
   if (x<=sa) Vpp = -fac*pow(-s0+x+s0*sin(wt),2);
   return Vpp-Vpa;
 }
+
 float plasma::returnHomDischargeSheathElectricField(float x, float t)
 {
   float wt  = 2*M_PI*freq*t;
@@ -92,5 +96,121 @@ float plasma::returnHomDischargeSheathElectricField(float x, float t)
   float fac = e*ns/epsilon_0;
   float Ef  = 0;
   if (x<=sa) Ef = fac*(x-sa);   
+  return Ef;
+}
+
+
+
+
+/* INHOMOGENEOUS RF DISCHARGE MODEL, Lieberman 1988 */
+
+void plasma::calculateInhomDischargeParameters(void)
+{
+  float w = 2*M_PI*freq;
+  if (freq > 0) 
+    {
+      J = w*(2/5)*sqrt(6/5)*sqrt(e*ns*epsilon_0*(sqrt(576+125*V0)-24));
+      float T = 1/freq;
+      inHomCapSheathSize = returnInhomDischargeSheathPosition(T/2);
+    }
+  else cout << "ERROR: frequency, " << freq << ", is not >0" << endl;
+}
+
+float plasma::x(float phi) /* 0 to pi */
+{
+  float w  = 2*M_PI*freq;
+  float s0 = J /(e*ns*w);
+  float DL = returnDebyeLength();
+  float H  = (1/M_PI)*(s0*s0/(DL*DL));
+  
+  return s0*( 
+	     1-cos(phi) 
+	     +
+	     (H/8)*( (3/2)*sin(phi) +(11/18)*sin(3*phi) -3*phi*cos(phi)  -(1/3)*phi*cos(3*phi) ) 
+	      );	
+}
+
+float plasma::returnInhomDischargeSheathPosition(float t)
+{
+  float w  = 2*M_PI*freq;
+  float T  = 1/freq;
+  float tau = fmod(t+T/2, T) -T/2;;
+  float phi = abs( w*tau );
+  
+  return x(phi);	
+}
+
+float plasma::returnInhomDischargeSheathSize(void)
+{ return inHomCapSheathSize; }
+
+void plasma::setPairsXPHI(void)
+{
+  float phi;
+  for (int i =0; i<=64; i++)
+    {
+      phi    = i*M_PI/64;
+      PHI[i] = phi;
+      X[i]   = x(phi);
+    }
+}
+
+float plasma::returnPhi(float xinput)
+{	
+  float phiout = -1;
+  int i, i1, i2, i3;
+  int M = 64; //M-1 = 2^n 
+  i1 = 0;
+  i2 = (M-1)/2;  
+  i3 = (M-1);
+  
+  //The search algorithm
+  for (i=0; i<=M-1; i++)
+    {
+      if ( X[i1] <= xinput && xinput < X[i2] )
+	{
+	  if (i1+1 == i2) 
+	    {
+	      phiout = (PHI[i2] - PHI[i1])/(X[i2]-X[i1])*(xinput - X[i1]) + PHI[i1];
+	      break;
+	    }
+	  i3 = i2;
+	  i2 = (i3+i1)/2;
+	}//if
+      else if ( X[i2] <= xinput && xinput <= X[i3] )
+	{
+	  if (i2+1 == i3) 
+	    {
+	      phiout = (PHI[i3] - PHI[i2])/(X[i3]-X[i2])*(xinput - X[i2]) + PHI[i2];
+	      break;
+	    }
+	  i1 = i2;
+	  i2 = (i3+i1)/2;
+	}//else
+    }//for
+  
+  if (phiout == -1.0) cout << "ERROR, " << xinput << ", is out of function range" << endl;
+  return phiout;
+}
+
+
+float plasma::returnInhomDischargeSheathPotential(float x, float t)
+{
+  /*TODO  ....*/
+  return 0;
+}
+
+
+float plasma::returnInhomDischargeSheathElectricField(float z, float t)
+{
+  float w    = 2*M_PI*freq;
+  float wt   = w*t;
+  float sm   = inHomCapSheathSize;
+  float fac  = J/(epsilon_0*w);
+  float st   = returnInhomDischargeSheathPosition(t);
+  float phix = returnPhi(sm-z);
+  float Ef  = 0;
+  
+  if ( st<sm-z ) Ef = -fac*(cos(wt)-cos(phix));
+  
   return Ef;
 }
