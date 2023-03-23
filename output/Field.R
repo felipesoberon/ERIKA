@@ -1,5 +1,52 @@
-data <- read.csv("VEz.csv", header=TRUE, colClasses = c("numeric","numeric","numeric"))
+data <- read.csv("VEz.csv", header=TRUE)
 colnames(data) <- c("z","V","E")
 
 plot(with(data, V ~ z), type = "l"); grid()
 plot(with(data, E ~ z), type = "l"); grid()
+
+############################
+
+# Load necessary libraries
+library(ggplot2)
+library(grid)
+library(gridExtra)
+
+# Set the aspect ratio
+aspect_ratio <- 1.25
+
+# Read the data from the file
+data <- read.csv('VEz.csv')
+colnames(data) <- c('z', 'V', 'E')
+
+# Create the first plot: V as a function of z
+plot1 <- ggplot(data, aes(x = z*1e2, y = V)) +
+  geom_line() +
+  geom_vline(aes(xintercept = 0), linetype = "dashed", color = "grey") +
+  geom_vline(aes(xintercept = -0.02), linetype = "dashed", color = "grey") +
+  geom_vline(aes(xintercept = -0.05), linetype = "dashed", color = "grey") +
+  geom_vline(aes(xintercept = -0.08), linetype = "dashed", color = "grey") +
+  geom_vline(aes(xintercept = -0.1), linetype = "dashed", color = "grey")+
+  labs(x = "z (cm)", y = "V") +
+  theme_minimal() +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.background = element_rect(fill = "white"))
+
+# Create the second plot: E as a function of z
+plot2 <- ggplot(data, aes(x = z*1e2, y = E/1e6)) +
+  geom_line() +
+  geom_vline(aes(xintercept = 0), linetype = "dashed", color = "grey") +
+  geom_vline(aes(xintercept = -0.02), linetype = "dashed", color = "grey") +
+  geom_vline(aes(xintercept = -0.05), linetype = "dashed", color = "grey") +
+  geom_vline(aes(xintercept = -0.08), linetype = "dashed", color = "grey") +
+  geom_vline(aes(xintercept = -0.1), linetype = "dashed", color = "grey")+
+  labs(x = "z (cm)", y = "E (MV/m)") +
+  theme_minimal() +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.background = element_rect(fill = "white"))
+
+# Combine the two plots vertically in the same frame
+combined_plot <- grid.arrange(plot1, plot2, ncol = 1)
+
+# Save the combined plot as a JPEG file
+ggsave("VEz2Pa13.56MHz2kVStack2332.jpeg", combined_plot, width=5, height =5*aspect_ratio, dpi = 300)
+
