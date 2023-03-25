@@ -15,9 +15,9 @@ The space potential between grids is calculated by linear interpolation. Similar
 
 
 \subsubsection{\label{SheathModel}Sheath Model}
-The space potential and electric field in the sheath region of the plasma is determined from the Child Law sheath model for direct-current sheath~\cite{Lieberman2005}, and from the analytical solution of capacitive radio-frequency sheath for alternate-current sheath~\cite{Lieberman1988}. 
+The space potential and electric field in the sheath region of the plasma is determined from the Child Law sheath model for direct-current sheath~\cite{Lieberman2005}, and from the analytical solution of capacitive radio-frequency sheath for alternate-current sheath~\cite{Lieberman1988}. These two solutions are collisionless and therefore not valid when the background pressure of neutral argon is high. Therefore this limits the model simulating pressure parameter. Nonetheless, RFEAs are most useful in low pressure plasmas where the ion energy gain is not impeded by frequent collisions and we shall limit simulations to a maximum pressure of 10~Pa (75~mTorr, 100~$\mu$bar).  
 
-The Child Law sheath size is calculated 
+For the DC case, the Child Law sheath size is calculated 
 \begin{equation}
 s_\text{Child Law} = \frac{\sqrt{2}}{3} \lambda_D \left( \frac{2 V_0}{T_e} \right)^{3/4}
 \end{equation}
@@ -50,7 +50,7 @@ Figure~\ref{fig:DCpotentialField} shows the space potential and electric field f
 
 
 
-The space potential and electric field for the AC sheath are calculated using the capacitive sheath solution of reference~\cite{Lieberman1988}. The sheath edge of the capacitive radio-frequency discharge changes through the cycle, from collapsing when the voltage across the sheath drops to its minimum to full expansion when the voltage is maximum. The size of the sheath is given by, 
+The space potential and electric field for the AC sheath are calculated using the capacitive sheath solution of Lieberman~\cite{Lieberman1988}. The sheath edge of the capacitive radio-frequency discharge changes through the cycle, from collapsing when the voltage across the sheath drops to its minimum to full expansion when the voltage is maximum. The size of the sheath is given by, 
 \begin{eqnarray}
 s(\phi) &=& s_0 ( 1 - \cos(\phi) + \frac{H}{8} \{ \frac32 \sin(\phi)  + \frac{11}{18} \sin(3 \phi) \nonumber \\ 
         & & - 3 \phi \cos(\phi)  - \frac13 \phi \cos(3 \phi)  \} )
@@ -77,18 +77,83 @@ The electric field in the z-direction is given by
 \begin{equation}
 E_{AC}(z,t) = \frac{J}{\epsilon_0 \omega} \left \{ \cos(\omega t) - \cos(\phi(s_m - z)) \right \} 
 \end{equation}
-If $s(t)<s_m-z$, otherwise the electric field is zero. Note that the function $\phi(s)$ is the inverse of the sheath size $s(\phi)$, that it does not have an analytical solution, and that it is numerically solved in the computer code. 
+If $s(t)<s_m-z$, otherwise the electric field is zero. Note that the function $\phi(s)$ is the inverse of the sheath size $s(\phi)$, that it does not have an analytical solution, and that it is numerically solved in the computer code. 64 pairs $(s(\phi), \phi)$ for $\phi$ from 0 to $\pi$ in steps of $\pi/64$ are generated. The value of $\phi$ for a given $s$ is detemined by linear interpolation of the two nearest pairs.   
 
 Finally, the space potential for the capacitive radio-frequency sheath is given by the integral
 \begin{equation}
-V_{AC}(z,t) = \int_{0}^{z} E_{AC}(z\prime, t) dz\prime
+V_{AC}(z,t) = \int_{0}^{z} E_{AC}(\xi, t) d\xi
 \end{equation}
 With $z$ in the range from $z=0$ to $z=s_m$. The field is numerically integrated.  
 
+The space potential and electric field for the AC sheath solution are shown in Fig.~\ref{fig:ACpotentialField}. The curves plotted show both results at times 0, T/4 and T/2. Note that at T/2 the voltage across the sheath is null and there is no electric field acting on the ions. This modulation affects the ion motion; this is illustrated in the next subsection. 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/VEz2Pa13.56MHz2kVStack2332.jpeg}
+\caption{Space potential across a plasma sheath and RFEA grid stack (top) and corresponding electric field (bottom) for AC sheath solution with maximum voltage across the sheath of $2000$~V. Potential and field curves are shown for time $t=0$, $T/4$, and $T/2$. The sheath if fully expanded at $t=0$, at $z>1$~cm.}
+\label{fig:ACpotentialField}
+\end{figure}
 
 
 
 \subsection{\label{IonTrajectory}Ion trajectory integration}
+The ion trajectories under the force of the electric field in the sheath region and the RFEA region is integrated with a Runge-Kutta algorithm of fourth order. The integration time step is set to $dt=100$~ps. This time step is sufficiently small, i.e. an ion will have to reach a velocity of 1000~km/s to travel 100~$\mu$m (the thickness of an RFEA stack spacer) in time $dt$. The starting position for every ion is the sheath edge, $z=s_\text{Child Law}$ for the DC case, and the position of the fully expanded sheath in the AC case ($z=s_m$). All ions start with velocity equal to the Bohm velocity in the direction of the bounding electrode.
+\begin{equation}
+v_z = - v_\text{Bohm} = -\sqrt{\frac{e T_e}{M_\text{Ar}}}
+\end{equation}
+Where $M_\text{Ar}$ is the mass of the argon atom/ion. 
+
+The ion flux is therefore, 
+\begin{equation}
+\Gamma_0 = e n_s v_\text{Bohm} 
+\end{equation}
+
+Fig.~\ref{fig:CollisionlessACtrajectory} shows a sample collisionless ion trajectory under the effect of the AC field of Fig.~\ref{fig:ACpotentialField}. Note the step increments in velocity corresponding to the modulation of the electric field in the sheath. Once in the RFEA region, the ion accelerates and decelerates according to the grid potentials. The ion in this case have enough energy to make it to the collector. 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/ionTrajectory2Pa13.56MHz2kVStack2332_Collisionless.jpeg}
+\caption{Collisionless sample trajectory of an argon ion from the plasma edge, through the plasma sheath and the RFEA for the AC sheath case of Fig.~\ref{fig:ACpotentialField}. The top plot shows the position of the ion in the z axis in time and the bottom plot shows the velocity of the ion in the z direction as a function of is position in z. }
+\label{fig:CollisionlessACtrajectory}
+\end{figure}
+
+
 
 \subsection{\label{IonCollision}Collisions of ions with background gas}
+Ion collisions are modelled using cross sections for two types of collisions
+\begin{eqnarray}
+\text{Ar}^+ + \text{Ar} &\rightarrow& \text{Ar}^+ + \text{Ar} \quad \text{(elastic)} \\
+\text{Ar}^+ + \text{Ar} &\rightarrow& \text{Ar} + \text{Ar}^+ \quad \text{(charge exchange)} 
+\end{eqnarray}
+The cross sections for these two processes can be found in the LXCat database~\cite{LXCat}. The set for Ar ions was reported by Phelps~\cite{Phelps1994}. The isotropic collision cross section data set is used to model elastic collisions, and the backscattering collision cross section data is used to model charge exchange collisions. Except at very low energies, the charge exchange collision cross section is larger than the elastic collision cross section and therefore is the predominant collision process between argon ions and background argon gas (Fig.~\ref{fig:CrossSectionsArgon}). 
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/CrossSections.jpg}
+\caption{Cross sections for elastic (gray curve) and charge exchage collisions (dashed curve) for argon ion collisions with background argon gas~\cite{Phelps1994,LXCat}.}
+\label{fig:CrossSectionsArgon}
+\end{figure}
+
+The probability of a collision at every time step is appoximated by
+\begin{eqnarray}
+P_{\text{col}} &=& \nu(\varepsilon) dt  \\
+\nu(\varepsilon) &=& n_{\text{gas}} \sigma(\varepsilon) v_{\text{Ar}^+}
+\end{eqnarray}
+Where $\nu(\varepsilon)$ is the collision rate (s$^{-1}$), $n_{\text{gas}}$ is the density of neutral argon gas, $\sigma(\varepsilon) = \sigma_{\text{el}}(\varepsilon) + \sigma_{\text{cx}}(\varepsilon)$ is the total cross section (function of the ion energy), and $v_{\text{Ar}^+}$ is the velocity magnitude of the argon ion. A radom number is generated in the code every time step and if it is smaller than the probability of a collision then the ion velocity is modified according to one of the two processes. To determine which process to apply a second random number is generated and compared to 
+\begin{equation}
+P_{\text{el}} = \frac{\sigma_{\text{el}}(\varepsilon)}{\sigma_{\text{el}}(\varepsilon) + \sigma_{\text{cx}}(\varepsilon)}
+\end{equation}
+If the random number is smaller than $P_{\text{el}}$ then the collision is taken as elastic, otherwise it is charge exchange type. 
+
+The elastic collision is processed as follows. First, a neutral argon atom is give a velocity vector in three-dimensional space  with magnitude equal to the mean average velocity (at 300~K) pointing in a random direction using random numbers to generate azimuth and polar angles. Second, the reference frame is changed from the laboratory refrence frame to the neutral argon atom reference frame. Third, the reference frame is rotated in the z-x plane to point in the direction that makes the argon ion parallel to the rotated z-axis. Fourth, a random number is used to generate a random scattering angle (between 0 and $\pi/2$) and to update the ion velocity vector. Fifth, the ion the reference frame is rotated back. Sixth, the reference frame is changed back to the laboratory refrence frame.
+
+The charge exchange collision is processed as follows. First, a neutral argon atom is give a velocity vector in three-dimensional space  with magnitude equal to the mean average velocity (at 300~K) pointing in a random direction using random numbers to generate azimuth and polar angles. Second, this velocity is assigned to the argon ion.    
+
+Fig.~\ref{fig:CollisionACtrajectory} shows the trajectory of an ion in an AC field (Fig.~\ref{fig:ACpotentialField}) with a collision event (charge exchange). The effect of the collision is the loss of the energy gained by the ion from the egde of the plasma up to the z position of the collision event. This type of collisions combined with the AC modulation of the sheath lead to complex ion energy distribution with multiple-peak structure~\cite{Wild1991}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/ionTrajectory2Pa13.56MHz2kVStack2332.jpeg}
+\caption{Sample trajectory of an argon ion including a collision event. The sheath is AC driven and the potential and field are those shown in Fig.~\ref{fig:ACpotentialField} }
+\label{fig:CollisionACtrajectory}
+\end{figure}
