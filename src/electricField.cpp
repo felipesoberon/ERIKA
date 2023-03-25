@@ -126,6 +126,7 @@ float electricField::returnVoltage(float z, float t)
 void electricField::saveVoltageAndElectricField(const string& fileName)
 {
   float z, zhigh, zlow, dz;
+  float T = 1/frequency;
   int n;
   ofstream file(fileName);
   
@@ -134,13 +135,17 @@ void electricField::saveVoltageAndElectricField(const string& fileName)
   dz    = 5E-6;
   n     = int( floor( (zhigh - zlow)/dz ) ) + 1;
   
-  file << "z, Voltage (V), Electric Field (Newton/Coulomb)" << endl;
+  file << "z, V0, VT4, VT2, ET0, ET4, ET2" << endl;
   for (int i=0; i<n; i++)
     {
       z = zhigh - float(i)*dz;
-      file << z;
-      file << " , " << returnVoltage(z, 0);
-      file << " , " << returnElectricField(z, 0.);
+      file << z <<",";
+      file << returnVoltage(z, 0)    <<",";
+      file << returnVoltage(z, T/4.) <<",";
+      file << returnVoltage(z, T/2.) <<",";
+      file << returnElectricField(z, 0.)   <<",";
+      file << returnElectricField(z, T/4.) <<",";
+      file << returnElectricField(z, T/2.);
       file << endl;
     }
   file.close();

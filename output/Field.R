@@ -1,8 +1,14 @@
 data <- read.csv("VEz.csv", header=TRUE)
-colnames(data) <- c("z","V","E")
+colnames(data) <- c("z","V0","V4","V2","E0","E4","E2")
 
-plot(with(data, V ~ z), type = "l"); grid()
-plot(with(data, E ~ z), type = "l"); grid()
+plot(with(data, V0 ~ z), type = "l") 
+lines(with(data, V4 ~ z))
+lines(with(data, V2 ~ z))
+grid()
+plot(with(data, E0 ~ z), type = "l") 
+lines(with(data, E4 ~ z))
+lines(with(data, E2 ~ z))
+grid()
 
 ############################
 
@@ -16,11 +22,13 @@ aspect_ratio <- 1.25
 
 # Read the data from the file
 data <- read.csv('VEz.csv')
-colnames(data) <- c('z', 'V', 'E')
+colnames(data) <- c("z","V0","V4","V2","E0","E4","E2")
 
 # Create the first plot: V as a function of z
-plot1 <- ggplot(data, aes(x = z*1e2, y = V)) +
-  geom_line() +
+plot1 <- ggplot(data) +
+  geom_line(aes(x = z * 1e2, y = V0)) +
+  geom_line(aes(x = z * 1e2, y = V2)) +
+  geom_line(aes(x = z * 1e2, y = V4)) +
   geom_vline(aes(xintercept = 0), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = -0.02), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = -0.05), linetype = "dashed", color = "grey") +
@@ -31,9 +39,13 @@ plot1 <- ggplot(data, aes(x = z*1e2, y = V)) +
   theme(plot.background = element_rect(fill = "white"),
         panel.background = element_rect(fill = "white"))
 
+
+
 # Create the second plot: E as a function of z
-plot2 <- ggplot(data, aes(x = z*1e2, y = E/1e6)) +
-  geom_line() +
+plot2 <- ggplot(data) +
+  geom_line(aes(x = z * 1e2, y = E0/1e6)) +
+  geom_line(aes(x = z * 1e2, y = E2/1e6)) +
+  geom_line(aes(x = z * 1e2, y = E4/1e6)) +
   geom_vline(aes(xintercept = 0), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = -0.02), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = -0.05), linetype = "dashed", color = "grey") +

@@ -9,9 +9,9 @@ simType=0
 G2=250
 spacerStack=2332
 plasmaDensity=1e16
-plasmaPotential=2000
+plasmaPotential=1000
 gridTransparency=100
-radioFrequency=13.56e6
+radioFrequency=0 #13.56e6
 
 rm output/*.csv
 
