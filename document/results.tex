@@ -1,0 +1,41 @@
+\section{Results}
+In this section we present results of runing the simulation described in the previous section. The subsections below focus on the following research questions, 
+
+\begin{itemize}
+  \item How well does the RFEA derived ion energy distribution function represents the actual energy distribution function of ions at the bounding electrode (i.e., at G$_0$)? 
+  \item What is the effect of ion space charge inside the RFEA on the space potential and electric field?  
+  \item What is the effect of different spacings between grids on the RFEA derived ion energy distribution function when compared to the actual one at the bounding electrode?
+\end{itemize}
+
+
+\subsection{Ion energy distribution profile}
+Fisrt, we run the simulation at various pressures and compared the derived ion energy disribution function with the actual energy distribution as recorded in the model at G$_0$. The RFEA configuration is as follows: 2332 stack, G$_1$=C=-60~V, G$_3$=-70~V, grid transparency 100~\%. The plasma sheath potential used is AC with maximum voltage difference across the sheath of 2000~V (i.e., V$_\text{pk-pk}$), the radio-frequency 13.56~MHz, and the plasma density $10^{16}$~m$^{-3}$. The pressure settings are 0.5, 1.0, 2.0, 5.0, 7.5 and 10.0~Pa. The model is run sweeping grid G$_2$ voltage setting from 0 to 1500~V in steps of 25~V. The number of ions whose trajectory is simulated per G$_2$ voltage step is 25000. The starting time for each ion is randomized uniformly across the radio-frequency period to represent that ions may enter the sheath at any point during the RF cycle. Each ion trajectory is followed for a total time of 1~$\mu$s. 
+
+Figure~\ref{fig:IVcurve} shows the characteristic current-voltage curve for each model RFEA scan. The vertical axis is the ion count at the collector position. The ion count drops as the pressure is increased. 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/IVcurve.jpeg}
+\caption{Current-voltage characteristic curves where the current is represented by the ion count collected at the collector position. The curves from highest ion count value to lowest correspond to pressure settings from 0.5 to 10.0~Pa.}
+\label{fig:IVcurve}
+\end{figure}
+
+The first derivative of the ion current is proportional to the ion energy distribution function~\cite{Hutchinson1987}. Figure~\ref{fig:1stDerivative} shows the first derivative of the curves in Figure~\ref{fig:IVcurve}. The derivatives are normalized and plotted with an offset in the vertical axis from lowest pressure setting at the top to highest pressure setting at the bottom.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/1stDerivative.jpeg}
+\caption{First derivative of the current-voltage characteristic curves of Figure~\ref{fig:IVcurve}. The derivatives are normalized. The curves from top to bottom correspond to pressure settings from 0.5 to 10.0~Pa.}
+\label{fig:1stDerivative}
+\end{figure}
+
+The ion energy distributions derived from the ion counts at the collector in the simulated RFEA for the various pressure settings can be contrasted with the actual ion energy distributions recorded at G$_0$, before the ions transport through the RFEA. This IEDFs are shown in Figure~\ref{fig:IEDFatG0}. 
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/IEDFatG0.jpeg}
+\caption{Plot of the ion energy distribution (normalized) as recorded in the simulation at G$_0$, before ion transport through the RFEA. The curves from top to bottom correspond to pressure settings from 0.5 to 10.0~Pa.}
+\label{fig:IEDFatG0}
+\end{figure}
+ 

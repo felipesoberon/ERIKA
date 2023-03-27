@@ -2,8 +2,8 @@
 
 maximumEnergy=1500
 stepEnergy=25
-numberIons=10000
-pressurePa=(0.5 1.0 2.0 2.5 5.0 7.5 10.0)
+numberIons=25000
+pressurePa=(0.5 1.0 2.0 5.0 7.5 10.0)
 simulationTime=1e-6
 simType=1
 G2=100
