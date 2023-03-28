@@ -20,22 +20,15 @@ Figure~\ref{fig:IVcurve} shows the characteristic current-voltage curve for each
 \label{fig:IVcurve}
 \end{figure}
 
-The first derivative of the ion current is proportional to the ion energy distribution function~\cite{Hutchinson1987}. Figure~\ref{fig:1stDerivative} shows the first derivative of the curves in Figure~\ref{fig:IVcurve}. The derivatives are normalized and plotted with an offset in the vertical axis from lowest pressure setting at the top to highest pressure setting at the bottom.
+The first derivative of the ion current is proportional to the ion energy distribution function~\cite{Hutchinson1987}. The set of curves on the left of Figure~\ref{fig:PressureScan} shows the first derivative of the curves in Figure~\ref{fig:IVcurve}. The derivatives are normalized and plotted with an offset in the vertical axis from lowest pressure setting at the top to highest pressure setting at the bottom. The ion energy distributions derived from the ion counts at the collector in the simulated RFEA for the various pressure settings can be contrasted with the actual ion energy distributions recorded at G$_0$, before the ions transport through the RFEA. These IEDFs are shown on the right of Figure~\ref{fig:PressureScan}. These scan were repeated with using a smaller integration time step, $dt=10$~ps, to assess any potential artifact introduced in the simulation by the trajectory integration method. No substantial qualitative difference on the energy distribution functions was observed (not shown). The derived IEDF at the collector exhibits more noise than the IEDF at G$_0$ due to the nature of the numerical derivative of the collector ion count; i.e., numerical derivatives of any parameter always ampiflies the parameter's noise. Here, a centered finite difference method was used to differentiate the Collector ion counts. All curves are shown without any smoothing.    
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.45\textwidth]{Figures/1stDerivative.jpeg}
-\caption{First derivative of the current-voltage characteristic curves of Figure~\ref{fig:IVcurve}. The derivatives are normalized. The curves from top to bottom correspond to pressure settings from 0.5 to 10.0~Pa.}
-\label{fig:1stDerivative}
+\includegraphics[width=0.45\textwidth]{Figures/PressureScan.jpeg}
+\caption{Ion energy distribution functions. Left: First derivative of the current-voltage characteristic curves of Figure~\ref{fig:IVcurve}. Right: Plot of the ion energy distribution as recorded in the simulation at G$_0$, before ion transport through the RFEA. Both set of curves are normalized. The curves from top to bottom correspond to pressure settings from 0.5 to 10.0~Pa.}
+\label{fig:PressureScan}
 \end{figure}
 
-The ion energy distributions derived from the ion counts at the collector in the simulated RFEA for the various pressure settings can be contrasted with the actual ion energy distributions recorded at G$_0$, before the ions transport through the RFEA. This IEDFs are shown in Figure~\ref{fig:IEDFatG0}. 
+The ion energy distributions of Figure~\ref{fig:PressureScan} exhibit a series of peaks which are the result of the oscillating plasma sheath and ion collisions with the background gas. More specifically, the sheath modulation, i.e., the time varying sheath edge and sheath electric field, can shape specific features of the IEDFs~\cite{Wild1989,Wild1991}. 
 
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.45\textwidth]{Figures/IEDFatG0.jpeg}
-\caption{Plot of the ion energy distribution (normalized) as recorded in the simulation at G$_0$, before ion transport through the RFEA. The curves from top to bottom correspond to pressure settings from 0.5 to 10.0~Pa.}
-\label{fig:IEDFatG0}
-\end{figure}
  

@@ -95,6 +95,13 @@ The space potential and electric field for the AC sheath solution are shown in F
 \end{figure}
 
 
+Other sheath models can be found in the literature. Davis and Vanderslice reported a DC sheath model with a linearly varying electric field and compared with ion energy measurements~\cite{Davis1963}. Wild and Koidl reported an AC sheath model and simulated ion energy distributions and experimental IEDF results in a reverse asymmetric capacitive plasma discharge driven at 13.56~MHz with excellent agreement between model and experimental results~\cite{Wild1991}. Robiche et al. reported a capacitive radio frequency sheath solution for two a plasma driven at two frequencies~\cite{Robiche2003}, i.e., a dual-frequency solution counterpart to the single frequency solution of Lieberman~\cite{Lieberman1988}.   
+
+
+
+
+
+
 
 \subsection{\label{IonTrajectory}Ion trajectory integration}
 The ion trajectories under the force of the electric field in the sheath region and the RFEA region is integrated with a Runge-Kutta algorithm of fourth order. The integration time step is set to $dt=100$~ps. This time step is sufficiently small, i.e. an ion will have to reach a velocity of 1000~km/s to travel 100~$\mu$m (the thickness of an RFEA stack spacer) in time $dt$. The starting position for every ion is the sheath edge, $z=s_\text{Child Law}$ for the DC case, and the position of the fully expanded sheath in the AC case ($z=s_m$). All ions start with velocity equal to the Bohm velocity in the direction of the bounding electrode.
