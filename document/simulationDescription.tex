@@ -15,7 +15,7 @@ The space potential between grids is calculated by linear interpolation. Similar
 
 
 \subsubsection{\label{SheathModel}Sheath Model}
-The space potential and electric field in the sheath region of the plasma is determined from the Child Law sheath model for direct-current sheath~\cite{Lieberman2005}, and from the analytical solution of capacitive radio-frequency sheath for alternate-current sheath~\cite{Lieberman1988}. These two solutions are collisionless and therefore not valid when the background pressure of neutral argon is high. Therefore this limits the model simulating pressure parameter. Nonetheless, RFEAs are most useful in low pressure plasmas where the ion energy gain is not impeded by frequent collisions and we shall limit simulations to a maximum pressure of 10~Pa (75~mTorr, 100~$\mu$bar).  
+The space potential and electric field in the sheath region of the plasma is determined from the Child Law sheath model for direct-current sheath~\cite{Lieberman2005}, and from the analytical solution of capacitive radio-frequency sheath for alternate-current sheath~\cite{Lieberman1988,Lieberman1989}. These Child Law solutions is collisionless and therefore not valid when the background pressure of neutral argon is high. Therefore this limits the model simulating pressure parameter. Nonetheless, RFEAs are most useful in low pressure plasmas where the ion energy gain is not impeded by frequent collisions and we shall limit simulations to a maximum pressure of 10~Pa (75~mTorr, 100~$\mu$bar). The capacitive radio-frequency solution has been reported for a collisionless regime~\cite{Lieberman1988} and a collisional regime~\cite{Lieberman1989} and, hence, the later is used in the model as it accounts for pressure parameter. The formulae for both regimes are summarized here as they only differ by a couple of scaling parameters. 
 
 For the DC case, the Child Law sheath size is calculated 
 \begin{equation}
@@ -50,7 +50,7 @@ Figure~\ref{fig:DCpotentialField} shows the space potential and electric field f
 
 
 
-The space potential and electric field for the AC sheath are calculated using the capacitive sheath solution of Lieberman~\cite{Lieberman1988}. The sheath edge of the capacitive radio-frequency discharge changes through the cycle, from collapsing when the voltage across the sheath drops to its minimum to full expansion when the voltage is maximum. The size of the sheath is given by, 
+The space potential and electric field for the AC sheath are calculated using the capacitive sheath solution of Lieberman~\cite{Lieberman1988,Lieberman1989}. The sheath edge of the capacitive radio-frequency discharge changes through the cycle, from collapsing when the voltage across the sheath drops to its minimum to full expansion when the voltage is maximum. The size of the sheath is given by, 
 \begin{eqnarray}
 s(\phi) &=& s_0 ( 1 - \cos(\phi) + \frac{H}{8} \{ \frac32 \sin(\phi)  + \frac{11}{18} \sin(3 \phi) \nonumber \\ 
         & & - 3 \phi \cos(\phi)  - \frac13 \phi \cos(3 \phi)  \} )
@@ -58,20 +58,35 @@ s(\phi) &=& s_0 ( 1 - \cos(\phi) + \frac{H}{8} \{ \frac32 \sin(\phi)  + \frac{11
 With $\phi = \omega t$ ($\omega = 2 \pi f$) and $f$ the radio-frequency. The value of $s(t)$ is limited to $\phi$ in the range from 0 ($t=0$) to $\pi$ ($t=T/2$; where $T=1/f$ is the radio-frequency cycle period). The size of the sheath at $t=0$ is zero and its maximum size at $s(t=T/2) = s_m$. The $s(t)$ function can be evaluated at any time value via the following 
 \begin{eqnarray}
 s(t)    &=& \text{abs}(s(\omega \tau(t))) \\
-\tau(t) &=& \text{remainder}\left(\frac{t}{T}+\frac12\right) - \frac{T}{2} 
+\tau(t) &=& \text{remainder}\left(t+\frac{T}{2},T\right) - \frac{T}{2} 
 \end{eqnarray}
 The parameter $s_0$ is given by 
 \begin{equation}
 s_0 = \frac{J}{e n_s \omega}
 \end{equation}
-$J$ is the total current through the plasma discharge (mainly displacement current in the sheaths and conduction current in the plasma bulk). The current can be calculated from the plasma density at the sheath edge ($n_s$) and the maximum voltage across the sheath ($V_0$)
+$J$ is the total current through the plasma discharge (mainly displacement current in the sheaths and conduction current in the plasma bulk). The current can be calculated from the plasma density at the sheath edge ($n_s$) and the maximum voltage across the sheath ($V_0$) in the collisionless regime solution~\cite{Lieberman1988}
 \begin{equation}
 J = \frac25 \omega \sqrt{\frac65} \sqrt{e n_s \epsilon_0 (\sqrt{576+125 V_0}-24)}
 \end{equation}
-The $H$ parameter is given by
+And in the collisional regime solution~\cite{Lieberman1989}
+\begin{equation}
+J = \frac{ 1.1882346 (e n_s V_0)^{2/5} \epsilon_0^{3/5} \omega }{ \lambda_i^{1/5} }
+\end{equation}
+The $H$ parameter for the collisionless regime is given by~\cite{Lieberman1988}
 \begin{equation}
 H = \frac1{\pi} \frac{s_0^2}{\lambda_D^2}
 \end{equation}
+And in the collisional regime is given by~\cite{Lieberman1989}
+\begin{equation}
+H = \sqrt{  \frac{2 \lambda_i s_0}{\pi^2 \lambda_D^2}  }
+\end{equation}
+Where $\lambda_i$ is the ion mean free path (in m). This parameter is estimated for argon gas by~\cite{Lieberman1989}
+\begin{equation}
+\lambda_i = (30 p /0.13332237)^{-1}
+\end{equation}
+With $p$ the neutral argon gas pressure in Pascal. The ion mean free path is assumed to be constant, i.e., independent of the ion energy, for the purpose of the sheath solution. For similar discharge current and radio-frequency voltage, the effect of ion collisions in the sheath is to reduce the size of the plasma sheath~\cite{Lieberman1989}.
+
+From here on, the sheath size, the electric field and the space potential across the sheath described below shall differ between the two regimes by the scaling parameters $H$ and $s_0$.
 
 The electric field in the z-direction is given by 
 \begin{equation}
@@ -85,11 +100,11 @@ V_{AC}(z,t) = \int_{0}^{z} E_{AC}(\xi, t) d\xi
 \end{equation}
 With $z$ in the range from $z=0$ to $z=s_m$. The field is numerically integrated.  
 
-The space potential and electric field for the AC sheath solution are shown in Fig.~\ref{fig:ACpotentialField}. The curves plotted show both results at times 0, T/4 and T/2. Note that at T/2 the voltage across the sheath is null and there is no electric field acting on the ions. This modulation affects the ion motion; this is illustrated in the next subsection. 
+The space potential and electric field for the AC sheath solution, with set pressure 0.5~Pa, are shown in Fig.~\ref{fig:ACpotentialField}. The curves plotted show both results at times 0, T/4 and T/2. Note that at T/2 the voltage across the sheath is null and there is no electric field acting on the ions. This modulation affects the ion motion; this is illustrated in the next subsection. 
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.45\textwidth]{Figures/VEz2Pa13.56MHz2kVStack2332.jpeg}
+\includegraphics[width=0.45\textwidth]{Figures/VEz0.5Pa13.56MHz2kVStack2332.jpeg}
 \caption{Space potential across a plasma sheath and RFEA grid stack (top) and corresponding electric field (bottom) for AC sheath solution with maximum voltage across the sheath of $2000$~V. Potential and field curves are shown for time $t=0$, $T/4$, and $T/2$. The sheath if fully expanded at $t=0$, at $z>1$~cm.}
 \label{fig:ACpotentialField}
 \end{figure}
@@ -119,7 +134,7 @@ Fig.~\ref{fig:CollisionlessACtrajectory} shows a sample collisionless ion trajec
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.45\textwidth]{Figures/ionTrajectory2Pa13.56MHz2kVStack2332_Collisionless.jpeg}
+\includegraphics[width=0.45\textwidth]{Figures/ionTrajectory0.5Pa13.56MHz2kVStack2332_Collisionless.jpeg}
 \caption{Collisionless sample trajectory of an argon ion from the plasma edge, through the plasma sheath and the RFEA for the AC sheath case of Fig.~\ref{fig:ACpotentialField}. The top plot shows the position of the ion in the z axis in time and the bottom plot shows the velocity of the ion in the z direction as a function of is position in z. }
 \label{fig:CollisionlessACtrajectory}
 \end{figure}
@@ -160,7 +175,7 @@ Fig.~\ref{fig:CollisionACtrajectory} shows the trajectory of an ion in an AC fie
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.45\textwidth]{Figures/ionTrajectory2Pa13.56MHz2kVStack2332.jpeg}
+\includegraphics[width=0.45\textwidth]{Figures/ionTrajectory0.5Pa13.56MHz2kVStack2332.jpeg}
 \caption{Sample trajectory of an argon ion including a collision event. The sheath is AC driven and the potential and field are those shown in Fig.~\ref{fig:ACpotentialField} }
 \label{fig:CollisionACtrajectory}
 \end{figure}

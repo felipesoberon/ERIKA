@@ -60,5 +60,5 @@ plot2 <- ggplot(data) +
 combined_plot <- grid.arrange(plot1, plot2, ncol = 1)
 
 # Save the combined plot as a JPEG file
-ggsave("VEz2Pa13.56MHz2kVStack2332.jpeg", combined_plot, width=5, height =5*aspect_ratio, dpi = 300)
+ggsave("VEz0.5Pa13.56MHz2kVStack2332.jpeg", combined_plot, width=5, height =5*aspect_ratio, dpi = 300)
 

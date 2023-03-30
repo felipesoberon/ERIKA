@@ -18,9 +18,11 @@ private:
   float M = 6.6335209e-26; //ion mass (kg)
   float V0 = 1000.; //potential across sheath
   float freq = 0.;  //Hz, for RF driven discharges / 0 for DC
+  float pressurePa = 0.0;
   
   float DebyeLength;
   float BohmVelocity;
+  float Lambdai; 
   float J0; //Ion current (A/m2)
   float J; //The discharge current (A/m2)
   
@@ -33,13 +35,18 @@ private:
   
 public:
   
-  void inputPlasmaParameters(float inTe, float inns, float inV0, float inFreq);
+  void inputPlasmaParameters(float inTe, float inns, float inV0, float inFreq, float inPressurePa);
   
   void calculateDebyeLength(void);
   float returnDebyeLength(void);
   
   void calculateBohmVelocity(void);
   float returnBohmVelocity(void);
+
+  void calculateLambdai(void);
+  float returnLambdai(void);
+
+  float returnDischargeCurrent(void);
   
   void calculateMatrixSheathSize(void);
   float returnMatrixSheathSize(void);

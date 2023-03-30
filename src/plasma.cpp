@@ -1,12 +1,13 @@
 #include "plasma.h"
 
 
-void plasma::inputPlasmaParameters(float inTe, float inns, float inV0, float inFreq)
+void plasma::inputPlasmaParameters(float inTe, float inns, float inV0, float inFreq, float inPressurePa)
 {
   if (inTe>0)     Te = inTe;
   if (inns>0)     ns = inns;
   if (inV0>0)     V0 = inV0;
   if (inFreq>0) freq = inFreq;
+  if (inPressurePa>0) pressurePa = inPressurePa;
 }
 
 
@@ -22,6 +23,18 @@ void plasma::calculateBohmVelocity(void)
 float plasma::returnBohmVelocity(void)
 { calculateBohmVelocity();
   return BohmVelocity; }
+
+
+void plasma::calculateLambdai(void)
+{ float pressuremTorr = pressurePa/0.13332237;
+  Lambdai = 1.0/(30.*pressuremTorr); }
+float plasma::returnLambdai(void)
+{ calculateLambdai();
+  return Lambdai; }
+
+
+float plasma::returnDischargeCurrent(void)
+{ return J; }
 
 
 /* MATRIX DC Sheath */
@@ -67,7 +80,11 @@ void plasma::calculateHomDischargeParameters(void)
 {
   if (freq > 0)
     {
-      J = 2*M_PI*freq*sqrt(e*ns*epsilon_0*V0/2);
+      calculateLambdai();
+      calculateDebyeLength();
+      calculateBohmVelocity();
+      
+      J = 2*M_PI*freq*sqrt(e*ns*epsilon_0*V0/2); 
       homCapSheathSize = 2* J/(e*ns*2*M_PI*freq); //the fully expanded sheath size
     }
   else cout << "ERROR: frequency, " << freq << ", is not >0" << endl;
@@ -109,7 +126,13 @@ void plasma::calculateInhomDischargeParameters(void)
   float w = 2.*M_PI*freq;
   if (freq > 0) 
     {
-      J = w*(2./5.)*sqrt(6./5.)*sqrt(e*ns*epsilon_0*(sqrt(576.+125.*V0)-24.));
+      calculateLambdai();
+      calculateDebyeLength();
+      calculateBohmVelocity();
+      
+      J = w*(2./5.)*sqrt(6./5.)*sqrt(e*ns*epsilon_0*(sqrt(576.+125.*V0)-24.)); //collisionless
+      J = 1.1882346*pow(e*ns*V0,2./5.)*pow(epsilon_0,3./5.)*w/(pow(Lambdai,1./5.)); //collisional
+
       float T = 1/freq;
       inHomCapSheathSize = returnInhomDischargeSheathPosition(T/2.);
       setPairsXPHI();
@@ -122,7 +145,10 @@ float plasma::x(float phi) /* 0 to pi */
   float w  = 2.*M_PI*freq;
   float s0 = J /(e*ns*w);
   float DL = returnDebyeLength();
-  float H  = (1./M_PI)*(s0*s0/(DL*DL));
+  float H;
+  
+  H = (1./M_PI)*(s0*s0/(DL*DL)); //collisionless
+  H = sqrt(2.*Lambdai*s0/(M_PI*M_PI*DL*DL)); //collisional  
   
   return s0*( 
 	     1.-cos(phi) 

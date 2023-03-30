@@ -18,12 +18,12 @@ float electricField::interpolate(point p1, point p2, float x)
 
 
 
-void  electricField::setPlasma(float inputPlasmaPotential, float inputPlasmaDensity, float inputFrequency)
+void  electricField::setPlasma(float inputPlasmaPotential, float inputPlasmaDensity, float inputFrequency, float inputPressurePa)
 {
   plasmaPotential = inputPlasmaPotential;
   plasmaDensity   = inputPlasmaDensity;
   frequency       = inputFrequency;
-  Plasma.inputPlasmaParameters(-1, plasmaDensity, plasmaPotential, inputFrequency);
+  Plasma.inputPlasmaParameters(-1, plasmaDensity, plasmaPotential, inputFrequency, inputPressurePa);
 }
 
 
@@ -36,6 +36,7 @@ void  electricField::setSheathSize(void)
       Plasma.calculateInhomDischargeParameters();
       sheathSize = Plasma.returnInhomDischargeSheathSize();
       cout << "  Inhom. AC sheath size (cm) = " << sheathSize *100. << endl;
+      cout << "    Discharge current (A/m2) = " << Plasma.returnDischargeCurrent() << endl; 
     }
   else
     {
@@ -44,8 +45,11 @@ void  electricField::setSheathSize(void)
       sheathSize = Plasma.returnChildLawSheathSize();
       cout << "Child Law sheath size (cm) = " << sheathSize *100. << endl;
     }
-  cout << "        Sheath voltage (V) = " << plasmaPotential  << endl;
-  cout << "Ion current density (A/m2) = " << Plasma.returnJ0() << endl;
+  cout << "        Sheath voltage (V) = " << plasmaPotential            << endl;
+  cout << "Ion current density (A/m2) = " << Plasma.returnJ0()          << endl;
+  cout << "   Ion mean free path (cm) = " << Plasma.returnLambdai()*100 << endl;
+  cout << "         Debye length (cm) = " << Plasma.returnDebyeLength()*100 << endl;
+  cout << "       Bohm velocity (m/s) = " << Plasma.returnBohmVelocity() << endl;
 }
 
 

@@ -23,7 +23,8 @@ private:
   float plasmaPotential;
   float plasmaDensity;
   float plasmaCurrent;
-  float frequency; 
+  float frequency;
+  float pressurePa;
   float G0, G1, G2, G3, C;
   float E_z, V_z;
   
@@ -33,7 +34,7 @@ private:
   
 public:
 
-  void  setPlasma(float inputPlasmaPotential, float inputPlasmaDensity, float inputFrequency);
+  void  setPlasma(float inputPlasmaPotential, float inputPlasmaDensity, float inputFrequency, float inputPressurePa);
   
   void  setSheathSize(void);
   

@@ -84,7 +84,7 @@ void rfea::setVoltageGrids013C(float g0, float g1, float g3, float c)
 
 void rfea::setElectricField(void)
 {
-  Ez.setPlasma(plasmaPotential, plasmaDensity, radioFrequency);
+  Ez.setPlasma(plasmaPotential, plasmaDensity, radioFrequency, pressurePa);
   
   Ez.setG0(G0);
   Ez.setG1(G1);
