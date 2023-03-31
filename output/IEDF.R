@@ -2,7 +2,7 @@
 library(dplyr)
 
 #List of folders with data from various parameter conditions
-list <- c("out0.5", "out1.0", "out2.0", "out5.0", "out7.5")#, "out10.0")
+list <- c("out0.5", "out1.0", "out2.0", "out5.0")#, "out7.5", "out10.0")
 
 
 #RFEA CURRENT AND 1ST DERIVATIVE ###################################

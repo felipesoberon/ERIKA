@@ -131,7 +131,9 @@ void plasma::calculateInhomDischargeParameters(void)
       calculateBohmVelocity();
       
       J = w*(2./5.)*sqrt(6./5.)*sqrt(e*ns*epsilon_0*(sqrt(576.+125.*V0)-24.)); //collisionless
-      J = 1.1882346*pow(e*ns*V0,2./5.)*pow(epsilon_0,3./5.)*w/(pow(Lambdai,1./5.)); //collisional
+
+      setPairsVVJJ();  //set pairs of V and J to interpolate
+      J = returnJ(V0); //collisional
 
       float T = 1/freq;
       inHomCapSheathSize = returnInhomDischargeSheathPosition(T/2.);
@@ -248,4 +250,72 @@ float plasma::returnInhomDischargeSheathElectricField(float z, float t)
     }
   
   return Ef;
+}
+
+
+
+
+/*Functions to help find J for a given V0 in the collisional
+  AC sheath*/
+
+float plasma::SS0(float J)
+{ float w  = 2.*M_PI*freq;  
+  return J /(e*ns*w); }
+float plasma::HH(float J)
+{ return sqrt(2.*Lambdai*SS0(J)) / (M_PI * DebyeLength); }
+float plasma::VV(float J)
+{  float w  = 2.*M_PI*freq;  
+  return J*SS0(J)*(2.+125.*M_PI*HH(J)/192.)/(epsilon_0*w); }
+
+void plasma::setPairsVVJJ(void)
+{
+  float jj;           /*the current*/
+  float jjmax = 500.; /*max current A/m2*/
+  for (int i =0; i<=64; i++)
+    {
+      jj      = float( i*jjmax/64.);
+      yJ[i]   = jj;
+      xV[i]   = VV(jj);
+    }
+}
+
+
+/* Interporlate and return the current J of the plasma discharge
+   for a given Voltage, using the pairs (V,J). */
+float plasma::returnJ(float Vinput)
+{	
+  float Jout = -1.;
+  int i, i1, i2, i3;
+  int M = 65; //M-1 = 2^n 
+  i1 = 0;
+  i2 = (M-1)/2;  
+  i3 = (M-1);
+  
+  //The search algorithm
+  for (i=0; i<=M-1; i++)
+    {
+      if ( xV[i1] <= Vinput && Vinput < xV[i2] )
+	{
+	  if (i1+1 == i2) 
+	    {
+	      Jout = (yJ[i2] - yJ[i1])/(xV[i2]-xV[i1])*(Vinput - xV[i1]) + yJ[i1];
+	      break;
+	    }
+	  i3 = i2;
+	  i2 = (i3+i1)/2;
+	}//if
+      else if ( xV[i2] <= Vinput && Vinput <= xV[i3] )
+	{
+	  if (i2+1 == i3) 
+	    {
+	      Jout = (yJ[i3] - yJ[i2])/(xV[i3]-xV[i2])*(Vinput - xV[i2]) + yJ[i2];
+	      break;
+	    }
+	  i1 = i2;
+	  i2 = (i3+i1)/2;
+	}//else
+    }//for
+  
+  if (Jout == -1.0) cout << "ERROR, " << Vinput << ", is out of function range" << endl;
+  return Jout;
 }

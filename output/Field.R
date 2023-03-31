@@ -5,6 +5,7 @@ plot(with(data, V0 ~ z), type = "l")
 lines(with(data, V4 ~ z))
 lines(with(data, V2 ~ z))
 grid()
+
 plot(with(data, E0 ~ z), type = "l") 
 lines(with(data, E4 ~ z))
 lines(with(data, E2 ~ z))

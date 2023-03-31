@@ -32,6 +32,7 @@ private:
   float inHomCapSheathSize;
   
   float X[64+1], PHI[64+1]; //for RF inhomogenous solution
+  float xV[64+1], yJ[64+1]; //for RF inhomogenous sol, to find J from Vmax across sheath
   
 public:
   
@@ -74,7 +75,16 @@ public:
   float returnPhi(float xinput);
   float returnInhomDischargeSheathPotential(float z, float t);
   float returnInhomDischargeSheathElectricField(float z, float t);
-  
+
+  /*Functions to help find J for a given V0 in the collisional
+    AC sheath*/
+  float SS0(float J);
+  float HH(float J);
+  float VV(float J);
+  void setPairsVVJJ(void);
+  float returnJ(float Vinput);
+
+
 };
 
 #endif //PLASMA
