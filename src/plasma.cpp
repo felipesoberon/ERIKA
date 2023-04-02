@@ -131,8 +131,6 @@ void plasma::calculateInhomDischargeParameters(void)
       calculateBohmVelocity();
       
       J = w*(2./5.)*sqrt(6./5.)*sqrt(e*ns*epsilon_0*(sqrt(576.+125.*V0)-24.)); //collisionless
-
-      setPairsVVJJ();  //set pairs of V and J to interpolate
       J = returnJ(V0); //collisional
 
       float T = 1/freq;
@@ -267,55 +265,21 @@ float plasma::VV(float J)
 {  float w  = 2.*M_PI*freq;  
   return J*SS0(J)*(2.+125.*M_PI*HH(J)/192.)/(epsilon_0*w); }
 
-void plasma::setPairsVVJJ(void)
-{
-  float jj;           /*the current*/
-  float jjmax = 500.; /*max current A/m2*/
-  for (int i =0; i<=NVJ; i++)
-    {
-      jj      = float( i*jjmax/NVJ );
-      yJ[i]   = jj;
-      xV[i]   = VV(jj);
-    }
-}
 
-
-/* Interporlate and return the current J of the plasma discharge
-   for a given Voltage, using the pairs (V,J). */
 float plasma::returnJ(float Vinput)
-{	
-  float Jout = -1.;
-  int i, i1, i2, i3;
-  int M = NVJ+1; /* M = 2^n +1 */ 
-  i1 = 0;
-  i2 = (M-1)/2;  
-  i3 = (M-1);
-  
-  //The search algorithm
-  for (i=0; i<=M-1; i++)
+{
+  float j = 0;
+  float dj = 1;
+  while ( abs( VV(j)-Vinput) > 0.01 )
     {
-      if ( xV[i1] <= Vinput && Vinput < xV[i2] )
+      j = j + dj;
+      if ( VV(j)>Vinput )
 	{
-	  if (i1+1 == i2) 
-	    {
-	      Jout = (yJ[i2] - yJ[i1])/(xV[i2]-xV[i1])*(Vinput - xV[i1]) + yJ[i1];
-	      break;
-	    }
-	  i3 = i2;
-	  i2 = (i3+i1)/2;
-	}//if
-      else if ( xV[i2] <= Vinput && Vinput <= xV[i3] )
-	{
-	  if (i2+1 == i3) 
-	    {
-	      Jout = (yJ[i3] - yJ[i2])/(xV[i3]-xV[i2])*(Vinput - xV[i2]) + yJ[i2];
-	      break;
-	    }
-	  i1 = i2;
-	  i2 = (i3+i1)/2;
-	}//else
-    }//for
-  
-  if (Jout == -1.0) cout << "ERROR, " << Vinput << ", is out of function range" << endl;
-  return Jout;
+	  j = j - dj;
+	  dj = dj/2.;
+	}
+    }
+  return j;
 }
+
+

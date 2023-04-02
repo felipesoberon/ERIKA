@@ -1,0 +1,637 @@
+**********************************************
+*                                            *
+* Felipe Soberon (felipe.soberon@gmail.com)  *
+* 2023                                       *
+*                                            *
+* E_mulating                                 *
+* R_etarding-field-energy-analyzer           *
+* I_on                                       *
+* K_inetic-transport in                      *
+* A_rgon gas                                 *
+*                                            *
+**********************************************
+Usage:
+$ ./rfea <-flag> <flag value>
+
+COMMAND_LINE_INPUT_PARAMETERS
+
+
+ECHO COMMAND: ./rfea -max_eV 1500 -step_eV 25 -no._ion 25000 -pressure_Pa 0.5 -sim_time 1e-6 -sim_type 1 -G2 100 -spacerStack 2332 -plasmaDensity 1e16 -plasmaPotential 2000 -gridTransparency 100 -RF 13.56e6 
+
+0        -max_eV	Scan's maximum energy in eV.
+1       -step_eV	Scan's energy step in eV.
+2       -no._ion	Scan's number of ions per step.
+3   -pressure_Pa	Argon gas pressure in Pa.
+4      -sim_time	Maximum simulation time per ion (s).
+5      -sim_type	Trajectory (0), Scan (1), or Space Charge (2) 
+6            -G2	Grid 2 voltage
+7   -spacerStack	No. of 100um spacers between grids (e.g. 2332)
+8   -plasmaDensity	Density of plasma at edge of sheath (m-3)
+9   -plasmaPotential	Plasma sheath voltage
+10   -gridTransparency	Transparency of the grids in percentage
+11            -RF	Frequency (Hz) (input 0 for DC)
+
+0        -max_eV	1500
+1       -step_eV	25
+2       -no._ion	25000
+3   -pressure_Pa	0.5
+4      -sim_time	1e-6
+5      -sim_type	1
+6            -G2	100
+7   -spacerStack	2332
+8   -plasmaDensity	1e16
+9   -plasmaPotential	2000
+10   -gridTransparency	100
+11            -RF	13.56e6
+
+ *** AC SHEATH *** 
+  Inhom. AC sheath size (cm) = 1.012
+    Discharge current (A/m2) = 100.7
+        Sheath voltage (V) = 2000
+Ion current density (A/m2) = 4.31275
+   Ion mean free path (cm) = 0.888816
+         Debye length (cm) = 0.012876
+       Bohm velocity (m/s) = 2691.81
+
+RFEA scan
+Energy (eV) = 0
+Energy (eV) = 25
+Energy (eV) = 50
+Energy (eV) = 75
+Energy (eV) = 100
+Energy (eV) = 125
+Energy (eV) = 150
+Energy (eV) = 175
+Energy (eV) = 200
+Energy (eV) = 225
+Energy (eV) = 250
+Energy (eV) = 275
+Energy (eV) = 300
+Energy (eV) = 325
+Energy (eV) = 350
+Energy (eV) = 375
+Energy (eV) = 400
+Energy (eV) = 425
+Energy (eV) = 450
+Energy (eV) = 475
+Energy (eV) = 500
+Energy (eV) = 525
+Energy (eV) = 550
+Energy (eV) = 575
+Energy (eV) = 600
+Energy (eV) = 625
+Energy (eV) = 650
+Energy (eV) = 675
+Energy (eV) = 700
+Energy (eV) = 725
+Energy (eV) = 750
+Energy (eV) = 775
+Energy (eV) = 800
+Energy (eV) = 825
+Energy (eV) = 850
+Energy (eV) = 875
+Energy (eV) = 900
+Energy (eV) = 925
+Energy (eV) = 950
+Energy (eV) = 975
+Energy (eV) = 1000
+Energy (eV) = 1025
+Energy (eV) = 1050
+Energy (eV) = 1075
+Energy (eV) = 1100
+Energy (eV) = 1125
+Energy (eV) = 1150
+Energy (eV) = 1175
+Energy (eV) = 1200
+Energy (eV) = 1225
+Energy (eV) = 1250
+Energy (eV) = 1275
+Energy (eV) = 1300
+Energy (eV) = 1325
+Energy (eV) = 1350
+Energy (eV) = 1375
+Energy (eV) = 1400
+Energy (eV) = 1425
+Energy (eV) = 1450
+Energy (eV) = 1475
+**********************************************
+*                                            *
+* Felipe Soberon (felipe.soberon@gmail.com)  *
+* 2023                                       *
+*                                            *
+* E_mulating                                 *
+* R_etarding-field-energy-analyzer           *
+* I_on                                       *
+* K_inetic-transport in                      *
+* A_rgon gas                                 *
+*                                            *
+**********************************************
+Usage:
+$ ./rfea <-flag> <flag value>
+
+COMMAND_LINE_INPUT_PARAMETERS
+
+
+ECHO COMMAND: ./rfea -max_eV 1500 -step_eV 25 -no._ion 25000 -pressure_Pa 1.0 -sim_time 1e-6 -sim_type 1 -G2 100 -spacerStack 2332 -plasmaDensity 1e16 -plasmaPotential 2000 -gridTransparency 100 -RF 13.56e6 
+
+0        -max_eV	Scan's maximum energy in eV.
+1       -step_eV	Scan's energy step in eV.
+2       -no._ion	Scan's number of ions per step.
+3   -pressure_Pa	Argon gas pressure in Pa.
+4      -sim_time	Maximum simulation time per ion (s).
+5      -sim_type	Trajectory (0), Scan (1), or Space Charge (2) 
+6            -G2	Grid 2 voltage
+7   -spacerStack	No. of 100um spacers between grids (e.g. 2332)
+8   -plasmaDensity	Density of plasma at edge of sheath (m-3)
+9   -plasmaPotential	Plasma sheath voltage
+10   -gridTransparency	Transparency of the grids in percentage
+11            -RF	Frequency (Hz) (input 0 for DC)
+
+0        -max_eV	1500
+1       -step_eV	25
+2       -no._ion	25000
+3   -pressure_Pa	1.0
+4      -sim_time	1e-6
+5      -sim_type	1
+6            -G2	100
+7   -spacerStack	2332
+8   -plasmaDensity	1e16
+9   -plasmaPotential	2000
+10   -gridTransparency	100
+11            -RF	13.56e6
+
+ *** AC SHEATH *** 
+  Inhom. AC sheath size (cm) = 0.905683
+    Discharge current (A/m2) = 114.212
+        Sheath voltage (V) = 2000
+Ion current density (A/m2) = 4.31275
+   Ion mean free path (cm) = 0.444408
+         Debye length (cm) = 0.012876
+       Bohm velocity (m/s) = 2691.81
+
+RFEA scan
+Energy (eV) = 0
+Energy (eV) = 25
+Energy (eV) = 50
+Energy (eV) = 75
+Energy (eV) = 100
+Energy (eV) = 125
+Energy (eV) = 150
+Energy (eV) = 175
+Energy (eV) = 200
+Energy (eV) = 225
+Energy (eV) = 250
+Energy (eV) = 275
+Energy (eV) = 300
+Energy (eV) = 325
+Energy (eV) = 350
+Energy (eV) = 375
+Energy (eV) = 400
+Energy (eV) = 425
+Energy (eV) = 450
+Energy (eV) = 475
+Energy (eV) = 500
+Energy (eV) = 525
+Energy (eV) = 550
+Energy (eV) = 575
+Energy (eV) = 600
+Energy (eV) = 625
+Energy (eV) = 650
+Energy (eV) = 675
+Energy (eV) = 700
+Energy (eV) = 725
+Energy (eV) = 750
+Energy (eV) = 775
+Energy (eV) = 800
+Energy (eV) = 825
+Energy (eV) = 850
+Energy (eV) = 875
+Energy (eV) = 900
+Energy (eV) = 925
+Energy (eV) = 950
+Energy (eV) = 975
+Energy (eV) = 1000
+Energy (eV) = 1025
+Energy (eV) = 1050
+Energy (eV) = 1075
+Energy (eV) = 1100
+Energy (eV) = 1125
+Energy (eV) = 1150
+Energy (eV) = 1175
+Energy (eV) = 1200
+Energy (eV) = 1225
+Energy (eV) = 1250
+Energy (eV) = 1275
+Energy (eV) = 1300
+Energy (eV) = 1325
+Energy (eV) = 1350
+Energy (eV) = 1375
+Energy (eV) = 1400
+Energy (eV) = 1425
+Energy (eV) = 1450
+Energy (eV) = 1475
+**********************************************
+*                                            *
+* Felipe Soberon (felipe.soberon@gmail.com)  *
+* 2023                                       *
+*                                            *
+* E_mulating                                 *
+* R_etarding-field-energy-analyzer           *
+* I_on                                       *
+* K_inetic-transport in                      *
+* A_rgon gas                                 *
+*                                            *
+**********************************************
+Usage:
+$ ./rfea <-flag> <flag value>
+
+COMMAND_LINE_INPUT_PARAMETERS
+
+
+ECHO COMMAND: ./rfea -max_eV 1500 -step_eV 25 -no._ion 25000 -pressure_Pa 2.0 -sim_time 1e-6 -sim_type 1 -G2 100 -spacerStack 2332 -plasmaDensity 1e16 -plasmaPotential 2000 -gridTransparency 100 -RF 13.56e6 
+
+0        -max_eV	Scan's maximum energy in eV.
+1       -step_eV	Scan's energy step in eV.
+2       -no._ion	Scan's number of ions per step.
+3   -pressure_Pa	Argon gas pressure in Pa.
+4      -sim_time	Maximum simulation time per ion (s).
+5      -sim_type	Trajectory (0), Scan (1), or Space Charge (2) 
+6            -G2	Grid 2 voltage
+7   -spacerStack	No. of 100um spacers between grids (e.g. 2332)
+8   -plasmaDensity	Density of plasma at edge of sheath (m-3)
+9   -plasmaPotential	Plasma sheath voltage
+10   -gridTransparency	Transparency of the grids in percentage
+11            -RF	Frequency (Hz) (input 0 for DC)
+
+0        -max_eV	1500
+1       -step_eV	25
+2       -no._ion	25000
+3   -pressure_Pa	2.0
+4      -sim_time	1e-6
+5      -sim_type	1
+6            -G2	100
+7   -spacerStack	2332
+8   -plasmaDensity	1e16
+9   -plasmaPotential	2000
+10   -gridTransparency	100
+11            -RF	13.56e6
+
+ *** AC SHEATH *** 
+  Inhom. AC sheath size (cm) = 0.816242
+    Discharge current (A/m2) = 129.062
+        Sheath voltage (V) = 2000
+Ion current density (A/m2) = 4.31275
+   Ion mean free path (cm) = 0.222204
+         Debye length (cm) = 0.012876
+       Bohm velocity (m/s) = 2691.81
+
+RFEA scan
+Energy (eV) = 0
+Energy (eV) = 25
+Energy (eV) = 50
+Energy (eV) = 75
+Energy (eV) = 100
+Energy (eV) = 125
+Energy (eV) = 150
+Energy (eV) = 175
+Energy (eV) = 200
+Energy (eV) = 225
+Energy (eV) = 250
+Energy (eV) = 275
+Energy (eV) = 300
+Energy (eV) = 325
+Energy (eV) = 350
+Energy (eV) = 375
+Energy (eV) = 400
+Energy (eV) = 425
+Energy (eV) = 450
+Energy (eV) = 475
+Energy (eV) = 500
+Energy (eV) = 525
+Energy (eV) = 550
+Energy (eV) = 575
+Energy (eV) = 600
+Energy (eV) = 625
+Energy (eV) = 650
+Energy (eV) = 675
+Energy (eV) = 700
+Energy (eV) = 725
+Energy (eV) = 750
+Energy (eV) = 775
+Energy (eV) = 800
+Energy (eV) = 825
+Energy (eV) = 850
+Energy (eV) = 875
+Energy (eV) = 900
+Energy (eV) = 925
+Energy (eV) = 950
+Energy (eV) = 975
+Energy (eV) = 1000
+Energy (eV) = 1025
+Energy (eV) = 1050
+Energy (eV) = 1075
+Energy (eV) = 1100
+Energy (eV) = 1125
+Energy (eV) = 1150
+Energy (eV) = 1175
+Energy (eV) = 1200
+Energy (eV) = 1225
+Energy (eV) = 1250
+Energy (eV) = 1275
+Energy (eV) = 1300
+Energy (eV) = 1325
+Energy (eV) = 1350
+Energy (eV) = 1375
+Energy (eV) = 1400
+Energy (eV) = 1425
+Energy (eV) = 1450
+Energy (eV) = 1475
+**********************************************
+*                                            *
+* Felipe Soberon (felipe.soberon@gmail.com)  *
+* 2023                                       *
+*                                            *
+* E_mulating                                 *
+* R_etarding-field-energy-analyzer           *
+* I_on                                       *
+* K_inetic-transport in                      *
+* A_rgon gas                                 *
+*                                            *
+**********************************************
+Usage:
+$ ./rfea <-flag> <flag value>
+
+COMMAND_LINE_INPUT_PARAMETERS
+
+
+ECHO COMMAND: ./rfea -max_eV 1500 -step_eV 25 -no._ion 25000 -pressure_Pa 5.0 -sim_time 1e-6 -sim_type 1 -G2 100 -spacerStack 2332 -plasmaDensity 1e16 -plasmaPotential 2000 -gridTransparency 100 -RF 13.56e6 
+
+0        -max_eV	Scan's maximum energy in eV.
+1       -step_eV	Scan's energy step in eV.
+2       -no._ion	Scan's number of ions per step.
+3   -pressure_Pa	Argon gas pressure in Pa.
+4      -sim_time	Maximum simulation time per ion (s).
+5      -sim_type	Trajectory (0), Scan (1), or Space Charge (2) 
+6            -G2	Grid 2 voltage
+7   -spacerStack	No. of 100um spacers between grids (e.g. 2332)
+8   -plasmaDensity	Density of plasma at edge of sheath (m-3)
+9   -plasmaPotential	Plasma sheath voltage
+10   -gridTransparency	Transparency of the grids in percentage
+11            -RF	Frequency (Hz) (input 0 for DC)
+
+0        -max_eV	1500
+1       -step_eV	25
+2       -no._ion	25000
+3   -pressure_Pa	5.0
+4      -sim_time	1e-6
+5      -sim_type	1
+6            -G2	100
+7   -spacerStack	2332
+8   -plasmaDensity	1e16
+9   -plasmaPotential	2000
+10   -gridTransparency	100
+11            -RF	13.56e6
+
+ *** AC SHEATH *** 
+  Inhom. AC sheath size (cm) = 0.720608
+    Discharge current (A/m2) = 150.598
+        Sheath voltage (V) = 2000
+Ion current density (A/m2) = 4.31275
+   Ion mean free path (cm) = 0.0888816
+         Debye length (cm) = 0.012876
+       Bohm velocity (m/s) = 2691.81
+
+RFEA scan
+Energy (eV) = 0
+Energy (eV) = 25
+Energy (eV) = 50
+Energy (eV) = 75
+Energy (eV) = 100
+Energy (eV) = 125
+Energy (eV) = 150
+Energy (eV) = 175
+Energy (eV) = 200
+Energy (eV) = 225
+Energy (eV) = 250
+Energy (eV) = 275
+Energy (eV) = 300
+Energy (eV) = 325
+Energy (eV) = 350
+Energy (eV) = 375
+Energy (eV) = 400
+Energy (eV) = 425
+Energy (eV) = 450
+Energy (eV) = 475
+Energy (eV) = 500
+Energy (eV) = 525
+Energy (eV) = 550
+Energy (eV) = 575
+Energy (eV) = 600
+Energy (eV) = 625
+Energy (eV) = 650
+Energy (eV) = 675
+Energy (eV) = 700
+Energy (eV) = 725
+Energy (eV) = 750
+Energy (eV) = 775
+Energy (eV) = 800
+Energy (eV) = 825
+Energy (eV) = 850
+Energy (eV) = 875
+Energy (eV) = 900
+Energy (eV) = 925
+Energy (eV) = 950
+Energy (eV) = 975
+Energy (eV) = 1000
+Energy (eV) = 1025
+Energy (eV) = 1050
+Energy (eV) = 1075
+Energy (eV) = 1100
+Energy (eV) = 1125
+Energy (eV) = 1150
+Energy (eV) = 1175
+Energy (eV) = 1200
+Energy (eV) = 1225
+Energy (eV) = 1250
+Energy (eV) = 1275
+Energy (eV) = 1300
+Energy (eV) = 1325
+Energy (eV) = 1350
+Energy (eV) = 1375
+Energy (eV) = 1400
+Energy (eV) = 1425
+Energy (eV) = 1450
+Energy (eV) = 1475
+**********************************************
+*                                            *
+* Felipe Soberon (felipe.soberon@gmail.com)  *
+* 2023                                       *
+*                                            *
+* E_mulating                                 *
+* R_etarding-field-energy-analyzer           *
+* I_on                                       *
+* K_inetic-transport in                      *
+* A_rgon gas                                 *
+*                                            *
+**********************************************
+Usage:
+$ ./rfea <-flag> <flag value>
+
+COMMAND_LINE_INPUT_PARAMETERS
+
+
+ECHO COMMAND: ./rfea -max_eV 1500 -step_eV 25 -no._ion 25000 -pressure_Pa 7.5 -sim_time 1e-6 -sim_type 1 -G2 100 -spacerStack 2332 -plasmaDensity 1e16 -plasmaPotential 2000 -gridTransparency 100 -RF 13.56e6 
+
+0        -max_eV	Scan's maximum energy in eV.
+1       -step_eV	Scan's energy step in eV.
+2       -no._ion	Scan's number of ions per step.
+3   -pressure_Pa	Argon gas pressure in Pa.
+4      -sim_time	Maximum simulation time per ion (s).
+5      -sim_type	Trajectory (0), Scan (1), or Space Charge (2) 
+6            -G2	Grid 2 voltage
+7   -spacerStack	No. of 100um spacers between grids (e.g. 2332)
+8   -plasmaDensity	Density of plasma at edge of sheath (m-3)
+9   -plasmaPotential	Plasma sheath voltage
+10   -gridTransparency	Transparency of the grids in percentage
+11            -RF	Frequency (Hz) (input 0 for DC)
+
+0        -max_eV	1500
+1       -step_eV	25
+2       -no._ion	25000
+3   -pressure_Pa	7.5
+4      -sim_time	1e-6
+5      -sim_type	1
+6            -G2	100
+7   -spacerStack	2332
+8   -plasmaDensity	1e16
+9   -plasmaPotential	2000
+10   -gridTransparency	100
+11            -RF	13.56e6
+
+ *** AC SHEATH *** 
+  Inhom. AC sheath size (cm) = 0.685555
+    Discharge current (A/m2) = 160.724
+        Sheath voltage (V) = 2000
+Ion current density (A/m2) = 4.31275
+   Ion mean free path (cm) = 0.0592544
+         Debye length (cm) = 0.012876
+       Bohm velocity (m/s) = 2691.81
+
+RFEA scan
+Energy (eV) = 0
+Energy (eV) = 25
+Energy (eV) = 50
+Energy (eV) = 75
+Energy (eV) = 100
+Energy (eV) = 125
+Energy (eV) = 150
+Energy (eV) = 175
+Energy (eV) = 200
+Energy (eV) = 225
+Energy (eV) = 250
+Energy (eV) = 275
+Energy (eV) = 300
+Energy (eV) = 325
+Energy (eV) = 350
+Energy (eV) = 375
+Energy (eV) = 400
+Energy (eV) = 425
+Energy (eV) = 450
+Energy (eV) = 475
+Energy (eV) = 500
+Energy (eV) = 525
+Energy (eV) = 550
+Energy (eV) = 575
+Energy (eV) = 600
+Energy (eV) = 625
+Energy (eV) = 650
+Energy (eV) = 675
+Energy (eV) = 700
+Energy (eV) = 725
+Energy (eV) = 750
+Energy (eV) = 775
+Energy (eV) = 800
+Energy (eV) = 825
+Energy (eV) = 850
+Energy (eV) = 875
+Energy (eV) = 900
+Energy (eV) = 925
+Energy (eV) = 950
+Energy (eV) = 975
+Energy (eV) = 1000
+Energy (eV) = 1025
+Energy (eV) = 1050
+Energy (eV) = 1075
+Energy (eV) = 1100
+Energy (eV) = 1125
+Energy (eV) = 1150
+Energy (eV) = 1175
+Energy (eV) = 1200
+Energy (eV) = 1225
+Energy (eV) = 1250
+Energy (eV) = 1275
+Energy (eV) = 1300
+Energy (eV) = 1325
+Energy (eV) = 1350
+Energy (eV) = 1375
+Energy (eV) = 1400
+Energy (eV) = 1425
+Energy (eV) = 1450
+Energy (eV) = 1475
+**********************************************
+*                                            *
+* Felipe Soberon (felipe.soberon@gmail.com)  *
+* 2023                                       *
+*                                            *
+* E_mulating                                 *
+* R_etarding-field-energy-analyzer           *
+* I_on                                       *
+* K_inetic-transport in                      *
+* A_rgon gas                                 *
+*                                            *
+**********************************************
+Usage:
+$ ./rfea <-flag> <flag value>
+
+COMMAND_LINE_INPUT_PARAMETERS
+
+
+ECHO COMMAND: ./rfea -max_eV 1500 -step_eV 25 -no._ion 25000 -pressure_Pa 10.0 -sim_time 1e-6 -sim_type 1 -G2 100 -spacerStack 2332 -plasmaDensity 1e16 -plasmaPotential 2000 -gridTransparency 100 -RF 13.56e6 
+
+0        -max_eV	Scan's maximum energy in eV.
+1       -step_eV	Scan's energy step in eV.
+2       -no._ion	Scan's number of ions per step.
+3   -pressure_Pa	Argon gas pressure in Pa.
+4      -sim_time	Maximum simulation time per ion (s).
+5      -sim_type	Trajectory (0), Scan (1), or Space Charge (2) 
+6            -G2	Grid 2 voltage
+7   -spacerStack	No. of 100um spacers between grids (e.g. 2332)
+8   -plasmaDensity	Density of plasma at edge of sheath (m-3)
+9   -plasmaPotential	Plasma sheath voltage
+10   -gridTransparency	Transparency of the grids in percentage
+11            -RF	Frequency (Hz) (input 0 for DC)
+
+0        -max_eV	1500
+1       -step_eV	25
+2       -no._ion	25000
+3   -pressure_Pa	10.0
+4      -sim_time	1e-6
+5      -sim_type	1
+6            -G2	100
+7   -spacerStack	2332
+8   -plasmaDensity	1e16
+9   -plasmaPotential	2000
+10   -gridTransparency	100
+11            -RF	13.56e6
+
+ *** AC SHEATH *** 
+  Inhom. AC sheath size (cm) = 0.663126
+    Discharge current (A/m2) = 168.086
+        Sheath voltage (V) = 2000
+Ion current density (A/m2) = 4.31275
+   Ion mean free path (cm) = 0.0444408
+         Debye length (cm) = 0.012876
+       Bohm velocity (m/s) = 2691.81
+
+RFEA scan
+Energy (eV) = 0

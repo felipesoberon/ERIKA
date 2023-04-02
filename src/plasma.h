@@ -83,9 +83,7 @@ public:
   float SS0(float J);
   float HH(float J);
   float VV(float J);
-  void setPairsVVJJ(void);
   float returnJ(float Vinput);
-
 
 };
 
