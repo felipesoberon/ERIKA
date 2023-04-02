@@ -224,7 +224,7 @@ float plasma::returnPhi(float xinput)
 
 float plasma::returnInhomDischargeSheathPotential(float z, float t)
 {
-  int   Nz = 100;
+  int   Nz = 1000;
   float dz = z/Nz;
   float sum = 0.;
   
@@ -271,9 +271,9 @@ void plasma::setPairsVVJJ(void)
 {
   float jj;           /*the current*/
   float jjmax = 500.; /*max current A/m2*/
-  for (int i =0; i<=64; i++)
+  for (int i =0; i<=NVJ; i++)
     {
-      jj      = float( i*jjmax/64.);
+      jj      = float( i*jjmax/NVJ );
       yJ[i]   = jj;
       xV[i]   = VV(jj);
     }
@@ -286,7 +286,7 @@ float plasma::returnJ(float Vinput)
 {	
   float Jout = -1.;
   int i, i1, i2, i3;
-  int M = 65; //M-1 = 2^n 
+  int M = NVJ+1; /* M = 2^n +1 */ 
   i1 = 0;
   i2 = (M-1)/2;  
   i3 = (M-1);

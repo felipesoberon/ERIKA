@@ -2,7 +2,7 @@
 library(dplyr)
 
 #List of folders with data from various parameter conditions
-list <- c("out0.5", "out1.0", "out2.0", "out5.0")#, "out7.5", "out10.0")
+list <- c("out0.5", "out1.0", "out2.0", "out5.0", "out7.5", "out10.0")
 
 
 #RFEA CURRENT AND 1ST DERIVATIVE ###################################
@@ -157,7 +157,7 @@ library(dplyr)
 
 #turn the data matrix into a data frame
 g0iedf <- as.data.frame(g0iedf)
-colnames(g0iedf) <- c("V1","V2","V3","V4","V5")#,"V6")
+colnames(g0iedf) <- c("V1","V2","V3","V4","V5","V6")
 
 # Assuming iedf is a matrix and energy is a vector
 # Convert the matrix to a data frame and add index column

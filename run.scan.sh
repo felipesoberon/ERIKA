@@ -11,7 +11,7 @@ spacerStack=2332
 plasmaDensity=1e16
 plasmaPotential=2000
 gridTransparency=100
-radioFrequency=13.56e6
+radioFrequency=4e6
 
 for pressure in ${pressurePa[@]}
 do
@@ -24,7 +24,4 @@ do
 	mv *.csv out$pressure
 	cd .. 
 done
-
-
-
 

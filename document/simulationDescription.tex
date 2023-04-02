@@ -15,7 +15,7 @@ The space potential between grids is calculated by linear interpolation. Similar
 
 
 \subsubsection{\label{SheathModel}Sheath Model}
-The space potential and electric field in the sheath region of the plasma is determined from the Child Law sheath model for direct-current sheath~\cite{Lieberman2005}, and from the analytical solution of capacitive radio-frequency sheath for alternate-current sheath~\cite{Lieberman1988,Lieberman1989}. These Child Law solutions is collisionless and therefore not valid when the background pressure of neutral argon is high. Therefore this limits the model simulating pressure parameter. Nonetheless, RFEAs are most useful in low pressure plasmas where the ion energy gain is not impeded by frequent collisions and we shall limit simulations to a maximum pressure of 10~Pa (75~mTorr, 100~$\mu$bar). The capacitive radio-frequency solution has been reported for a collisionless regime~\cite{Lieberman1988} and a collisional regime~\cite{Lieberman1989} and, hence, the later is used in the model as it accounts for pressure parameter. The formulae for both regimes are summarized here as they only differ by a couple of scaling parameters. 
+The space potential and electric field in the sheath region of the plasma is determined from the Child Law sheath model for direct-current sheath~\cite{Lieberman2005}, and from the analytical solution of capacitive radio-frequency sheath for alternate-current sheath~\cite{Lieberman1988,Lieberman1989}. These Child Law solutions is collisionless and therefore not valid when the background pressure of neutral argon is high. Therefore this limits the model simulating pressure parameter. Nonetheless, RFEAs are most useful in low pressure plasmas where the ion energy gain is not impeded by frequent collisions and we shall limit simulations to a maximum pressure of 10~Pa (75~mTorr, 100~$\mu$bar). The capacitive radio-frequency solution has been reported for a collisionless regime~\cite{Lieberman1988} and a collisional regime~\cite{Lieberman1989} and, hence, the latter is used in the model as it accounts for pressure parameter. The formulae for both regimes are summarized here as they only differ by a couple of scaling parameters. 
 
 For the DC case, the Child Law sheath size is calculated 
 \begin{equation}
@@ -64,14 +64,16 @@ The parameter $s_0$ is given by
 \begin{equation}
 s_0 = \frac{J}{e n_s \omega}
 \end{equation}
-$J$ is the total current through the plasma discharge (mainly displacement current in the sheaths and conduction current in the plasma bulk). The current can be calculated from the plasma density at the sheath edge ($n_s$) and the maximum voltage across the sheath ($V_0$) in the collisionless regime solution~\cite{Lieberman1988}
+$J$ is the total current through the plasma discharge (mainly displacement current in the sheaths and conduction current in the plasma bulk). The current can be calculated from the plasma density at the sheath edge ($n_s$), the maximum voltage across the sheath ($V_0$), the radio-frequency and the electron temperature in the collisionless regime solution~\cite{Lieberman1988}
 \begin{equation}
 J = \frac{2 \omega}{5} \sqrt{\frac25} \sqrt{e n_s \epsilon_0} \sqrt{ \sqrt{3 T_e} \sqrt{192 T_e + 125 V_0} -24 T_e    }
 \end{equation}
-And in the collisional regime solution~\cite{Lieberman1989}
+In the case of the collisional regime solution it is not possible to solve analytically the plasma discharge current. Instead, the maximum voltage across the sheath can be expressed in terms of the current and other plasma parameters ~\cite{Lieberman1989}
 \begin{equation}
-J = \frac{ 0.603418 (\pi e n_s V_0)^{2/5} \epsilon_0^{3/5} \omega T_e^{1/5} }{ \lambda_i^{1/5} }
+V_0 = \frac{J s_0}{\epsilon_0 \omega} \left(  2 + \frac{125}{192} H \pi \right)
 \end{equation}
+Where the expression for $H$ is given later in this section. The inverse expression, $J(V_0)$, can be solved numerically. In the simulation program, 64 pairs $(V_0(J),J)$ for $J$ from 0 to 500~A/m$^2$ are generated. The value of $J$ is determined by linear interpolation of the two nearest pairs.
+ 
 The $H$ parameter for the collisionless regime is given by~\cite{Lieberman1988}
 \begin{equation}
 H = \frac1{\pi} \frac{s_0^2}{\lambda_D^2}
@@ -84,9 +86,9 @@ Where $\lambda_i$ is the ion mean free path (in m). This parameter is estimated 
 \begin{equation}
 \lambda_i = (30 p /0.13332237)^{-1}
 \end{equation}
-With $p$ the neutral argon gas pressure in Pascal. The ion mean free path is assumed to be constant, i.e., independent of the ion energy, for the purpose of the sheath solution. For similar discharge current and radio-frequency voltage, the effect of ion collisions in the sheath is to reduce the size of the plasma sheath~\cite{Lieberman1989}.
+With $p$ the neutral argon gas pressure in Pascal. The ion mean free path is assumed to be constant, i.e., independent of the ion energy, for the purpose of the sheath solution~\cite{Lieberman1989}. For similar discharge current and radio-frequency voltage, the effect of ion collisions in the sheath is to reduce the size of the plasma sheath~\cite{Lieberman1989}.
 
-From here on, the sheath size, the electric field and the space potential across the sheath described below shall differ between the two regimes by the scaling parameters $H$ and $s_0$.
+From here on, the sheath size, the electric field and the space potential across the sheath described below differ between the two regimes only by the scaling parameters $H$ and $s_0$ and the discharge current $J$.
 
 The electric field in the z-direction is given by 
 \begin{equation}
@@ -147,8 +149,10 @@ Ion collisions are modelled using cross sections for two types of collisions
 \text{Ar}^+ + \text{Ar} &\rightarrow& \text{Ar}^+ + \text{Ar} \quad \text{(elastic)} \\
 \text{Ar}^+ + \text{Ar} &\rightarrow& \text{Ar} + \text{Ar}^+ \quad \text{(charge exchange)} 
 \end{eqnarray}
-The cross sections for these two processes can be found in the LXCat database~\cite{LXCat}. The set for Ar ions was reported by Phelps~\cite{Phelps1994}. The isotropic collision cross section data set is used to model elastic collisions, and the backscattering collision cross section data is used to model charge exchange collisions. Except at very low energies, the charge exchange collision cross section is larger than the elastic collision cross section and therefore is the predominant collision process between argon ions and background argon gas (Fig.~\ref{fig:CrossSectionsArgon}). 
+The cross sections for these two processes can be found in the LXCat database~\cite{LXCat}. The set for Ar ions was reported by Phelps~\cite{Phelps1994}. The isotropic collision cross section data set is used to model elastic collisions, and the backscattering collision cross section data is used to model charge exchange collisions. Except at very low energies, the charge exchange collision cross section is larger than the elastic collision cross section and therefore is the predominant collision process between argon ions and background argon gas (Fig.~\ref{fig:CrossSectionsArgon}). Furthermore, charge exchange collision can change the forward velocity of the ion whereas elastic collisions are predominantly small-angle scattering~\cite{Davis1963}.
 
+The model assumes that the predominant ion species in the plasma dischare is Ar$^+$. It has been reported that double charge ions, i.e., Ar$^{++}$, have a smaller cross section than the single charge ions and therefore have an average energy closer to the maximum potential energy across the sheath~\cite{Davis1963}. Hence, the ion energy distribution in a highly ionized plasma would differ from those distributions reported here.     
+	
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.45\textwidth]{Figures/CrossSections.jpg}

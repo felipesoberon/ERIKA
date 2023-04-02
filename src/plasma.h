@@ -32,7 +32,9 @@ private:
   float inHomCapSheathSize;
   
   float X[64+1], PHI[64+1]; //for RF inhomogenous solution
-  float xV[64+1], yJ[64+1]; //for RF inhomogenous sol, to find J from Vmax across sheath
+  
+  int const static NVJ = 1024;
+  float xV[NVJ+1], yJ[NVJ+1]; //for RF inhomogenous sol, to find J from Vmax across sheath
   
 public:
   
