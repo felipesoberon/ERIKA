@@ -67,13 +67,12 @@ The total ion current attenuation is the product of the two transparency factors
 P_{\text{total}} = P_\text{g} + P_\text{c}
 \end{equation}
 
-The pressure scan results can be used to estimate the collisional transparency. Using a similar procedure as that done experimentally, we can compare the number of ions reaching C with those passing through G$_0$ with no ion discrimination, i.e., G$_2 =0$. In the simulation, for each G$_2$ voltage setting 25000 ion trajectories were simulated. Therefore, the number of ions reaching the collector when G$_2$ is set to null divided by the 25000 is the collisional transparency. Figure~\ref{fig:CollisionalTransparency} shows the estimated collisional transparency from the pressure scan data. The relationship seems to be linear. We need to verify that the ion transit time is much shorter than the models 1~$\mu$s. 
+The pressure scan results can be used to estimate the collisional transparency. Using a similar procedure as that done experimentally, we can compare the number of ions reaching C with those passing through G$_0$ with no ion discrimination, i.e., G$_2 =0$. In the simulation, for each G$_2$ voltage setting 25000 ion trajectories were simulated. Therefore, the number of ions reaching the collector when G$_2$ is set to null divided by the 25000 is the collisional transparency. Figure~\ref{fig:CollisionalTransparency} shows the estimated collisional transparency from the pressure scan data between 0.5 and 10~Pa. The graph shows data from scans with a 2332 and 2772 button stack. 
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.45\textwidth]{Figures/CollisionalTransparency.jpeg}
-\caption{Estimated collisional transparency (P$_g$) as a function of argon neutral gas pressure.}
+\caption{Estimated collisional transparency (P$_g$) as a function of argon neutral gas pressure. The RFEA button stack configurations are: 2332 circles, and 2772 triangles.}
 \label{fig:CollisionalTransparency}
 \end{figure}
 
-We can udpate this graph by doing a collisional transparency scan (i.e., set a scan with only one value of G2 =0 at different pressures, 13.56 MHz) and using a different button stack (for example 2772).
