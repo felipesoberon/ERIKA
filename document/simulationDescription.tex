@@ -1,5 +1,5 @@
 \section{\label{Simulation}Simulation Description}
-In this section we provide details of the model. Subsection \ref{SpacePotentialAndField} describe how the space potential and electric field are calculated including the plasma sheath and in the RFEA region. Subsection \ref{IonTrajectory} describe the method to integrate the ion trajectories under the effect of the fields decribed in subsection \ref{SpacePotentialAndField}. Subsection \ref{IonCollision} describes the method to simulate ion collisions with the background gas. 
+In this section we provide details of the model. Subsection \ref{SpacePotentialAndField} describe how the space potential and electric field are calculated including the plasma sheath and in the RFEA region. Subsection \ref{IonTrajectory} describe the method to integrate the ion trajectories under the effect of the fields decribed in subsection \ref{SpacePotentialAndField}. Subsection \ref{IonCollision} describes the method to simulate ion collisions with the background gas. Note that in the model, the electron temperature is kept constant with value $T_e=3$~eV.
 
 \subsection{\label{SpacePotentialAndField}Space Potential and Electric Field}
 The space potential and electric field are calculated in two regions: the RFEA region, and the plasma sheath. The model is one-dimensional, therefore only space potential and electric field in the z-axis is calculated in these regions. In this geometry, the RFEA is located at $z \leq 0$ and its extension in the negative direction of the z-axis depends on the spaces between the grids and the collector; subsection \ref{RFEA}. The plasma sheath starts at $z=0$ and extends to the plasma, which is located at some $z_\text{plasma} > 0$. The location of the plasma sheath boundary edge depends on the plasma sheath model and is further described in subsection \ref{SheathModel}.   
@@ -83,7 +83,7 @@ And in the collisional regime is given by~\cite{Lieberman1989}
 H = \sqrt{  \frac{2 \lambda_i s_0}{\pi^2 \lambda_D^2}  }
 \end{equation}
 Where $\lambda_i$ is the ion mean free path (in m). This parameter is estimated for argon gas by~\cite{Lieberman1989}
-\begin{equation}
+\begin{equation}\label{eq:lambda_i}
 \lambda_i = (30 p /0.13332237)^{-1}
 \end{equation}
 With $p$ the neutral argon gas pressure in Pascal. The ion mean free path is assumed to be constant, i.e., independent of the ion energy, for the purpose of the sheath solution~\cite{Lieberman1989}. For similar discharge current and radio-frequency voltage, the effect of ion collisions in the sheath is to reduce the size of the plasma sheath~\cite{Lieberman1989}.
