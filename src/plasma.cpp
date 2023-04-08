@@ -26,8 +26,12 @@ float plasma::returnBohmVelocity(void)
 
 
 void plasma::calculateLambdai(void)
-{ float pressuremTorr = pressurePa/0.13332237;
-  Lambdai = 1.0/(30.*pressuremTorr); }
+{
+  if (pressurePa > 0.0) {
+    float pressuremTorr = pressurePa/0.13332237;
+    Lambdai = 1.0/(30.*pressuremTorr); }
+  else Lambdai = -1.0;
+}
 float plasma::returnLambdai(void)
 { calculateLambdai();
   return Lambdai; }
@@ -72,10 +76,11 @@ void plasma::calculateInhomDischargeParameters(void)
       calculateLambdai();
       calculateDebyeLength();
       calculateBohmVelocity();
-      
-      J = w*(2./5.)*sqrt(6./5.)*sqrt(e*ns*epsilon_0*(sqrt(576.+125.*V0)-24.)); //collisionless
-      J = returnJ(V0); //collisional
 
+      if (pressurePa > 0.0) J = returnJ(V0); //collisional
+      else                  J = w*(2./5.)*sqrt(2./5.)*sqrt(e*ns*epsilon_0)*
+			      sqrt(sqrt(3.*Te)*sqrt(192.*Te+125.*V0)-24.*Te); //collisionless
+      
       float T = 1/freq;
       inhomCapSheathSize = returnInhomDischargeSheathPosition(T/2.);
       setPairsXPHI();
@@ -90,8 +95,8 @@ float plasma::x(float phi) /* 0 to pi */
   float DL = returnDebyeLength();
   float H;
   
-  H = (1./M_PI)*(s0*s0/(DL*DL)); //collisionless
-  H = sqrt(2.*Lambdai*s0/(M_PI*M_PI*DL*DL)); //collisional  
+  if (pressurePa > 0.0) H = sqrt(2.*Lambdai*s0/(M_PI*M_PI*DL*DL)); //collisional  
+  else                  H = (1./M_PI)*(s0*s0/(DL*DL)); //collisionless
   
   return s0*( 
 	     1.-cos(phi) 
@@ -224,5 +229,3 @@ float plasma::returnJ(float Vinput)
     }
   return j;
 }
-
-
