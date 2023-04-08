@@ -7,7 +7,7 @@ void plasma::inputPlasmaParameters(float inTe, float inns, float inV0, float inF
   if (inns>0)     ns = inns;
   if (inV0>0)     V0 = inV0;
   if (inFreq>0) freq = inFreq;
-  if (inPressurePa>0) pressurePa = inPressurePa;
+  if (inPressurePa>0) pressurePa = inPressurePa; 
 }
 
 

@@ -18,12 +18,13 @@ float electricField::interpolate(point p1, point p2, float x)
 
 
 
-void  electricField::setPlasma(float inputPlasmaPotential, float inputPlasmaDensity, float inputFrequency, float inputPressurePa)
+void  electricField::setPlasma(float inputPlasmaPotential, float inputPlasmaDensity, float inputFrequency,
+			       float inputPressurePa, float inputTe)
 {
   plasmaPotential = inputPlasmaPotential;
   plasmaDensity   = inputPlasmaDensity;
   frequency       = inputFrequency;
-  Plasma.inputPlasmaParameters(-1, plasmaDensity, plasmaPotential, inputFrequency, inputPressurePa);
+  Plasma.inputPlasmaParameters(inputTe, plasmaDensity, plasmaPotential, inputFrequency, inputPressurePa);
 }
 
 

@@ -20,6 +20,7 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   commandLine.setFlagName("-plasmaPotential", "Plasma sheath voltage");                      //9
   commandLine.setFlagName("-gridTransparency", "Transparency of the grids in percentage");   //10
   commandLine.setFlagName("-RF", "Frequency (Hz) (input 0 for DC)");                         //11
+  commandLine.setFlagName("-Te", "Electron temperature (eV)");                               //12
   
     
   commandLine.printFlagNameList();
@@ -62,7 +63,10 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   
   if (commandLine.flagValueIsNumber(11))
     radioFrequency = commandLine.returnFloatFlagValue(11);
-  
+
+  if (commandLine.flagValueIsNumber(12))
+    electronTemperature = commandLine.returnFloatFlagValue(12);
+
   cout << endl;
 }
 
@@ -84,7 +88,7 @@ void rfea::setVoltageGrids013C(float g0, float g1, float g3, float c)
 
 void rfea::setElectricField(void)
 {
-  Ez.setPlasma(plasmaPotential, plasmaDensity, radioFrequency, pressurePa);
+  Ez.setPlasma(plasmaPotential, plasmaDensity, radioFrequency, pressurePa, electronTemperature);
   
   Ez.setG0(G0);
   Ez.setG1(G1);
