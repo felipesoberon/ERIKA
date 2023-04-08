@@ -37,18 +37,6 @@ float plasma::returnDischargeCurrent(void)
 { return J; }
 
 
-/* MATRIX DC Sheath */
-
-void plasma::calculateMatrixSheathSize(void)
-{ matrixSheathSize = sqrt( 2.0*epsilon_0*V0/(e*ns) ); }
-float plasma::returnMatrixSheathSize(void)
-{ return matrixSheathSize; }
-float plasma::returnMatrixSheathPotential(float x)
-{ return -0.5*e*ns*x*x/epsilon_0; }
-float plasma::returnMatrixSheathElectricField(float x)
-{ return e*ns*x/epsilon_0; }
-
-
 
 /* CHILD LAW DC Sheath */
 
@@ -74,51 +62,6 @@ float plasma::returnJ0(void)
 
 
 
-/* HOMOGENEOUS RF MODEL, Lieberman book, Capacitive RF Sheath */
-
-void plasma::calculateHomDischargeParameters(void)
-{
-  if (freq > 0)
-    {
-      calculateLambdai();
-      calculateDebyeLength();
-      calculateBohmVelocity();
-      
-      J = 2*M_PI*freq*sqrt(e*ns*epsilon_0*V0/2); 
-      homCapSheathSize = 2* J/(e*ns*2*M_PI*freq); //the fully expanded sheath size
-    }
-  else cout << "ERROR: frequency, " << freq << ", is not >0" << endl;
-}
-
-float plasma::returnHomDischargeSheathSize(void)
-{ return homCapSheathSize; }
-
-float plasma::returnHomDischargeSheathPotential(float x, float t)
-{
-  float wt  = 2*M_PI*freq*t;
-  float s0  = homCapSheathSize/2;
-  float sa  = s0*(1-sin(wt));
-  float fac = e*ns/(2*epsilon_0);
-  float Vpa = -fac*s0*s0*pow(1-sin(wt),2);
-  float Vpp = 0;
-  if (x<=sa) Vpp = -fac*pow(-s0+x+s0*sin(wt),2);
-  return Vpp-Vpa;
-}
-
-float plasma::returnHomDischargeSheathElectricField(float x, float t)
-{
-  float wt  = 2*M_PI*freq*t;
-  float s0  = homCapSheathSize/2;
-  float sa  = s0*(1-sin(wt));
-  float fac = e*ns/epsilon_0;
-  float Ef  = 0;
-  if (x<=sa) Ef = fac*(x-sa);   
-  return Ef;
-}
-
-
-
-
 /* INHOMOGENEOUS RF DISCHARGE MODEL, Lieberman 1988 */
 
 void plasma::calculateInhomDischargeParameters(void)
@@ -134,7 +77,7 @@ void plasma::calculateInhomDischargeParameters(void)
       J = returnJ(V0); //collisional
 
       float T = 1/freq;
-      inHomCapSheathSize = returnInhomDischargeSheathPosition(T/2.);
+      inhomCapSheathSize = returnInhomDischargeSheathPosition(T/2.);
       setPairsXPHI();
     }
   else cout << "ERROR: frequency, " << freq << ", is not >0" << endl;
@@ -168,7 +111,7 @@ float plasma::returnInhomDischargeSheathPosition(float t)
 }
 
 float plasma::returnInhomDischargeSheathSize(void)
-{ return inHomCapSheathSize; }
+{ return inhomCapSheathSize; }
 
 void plasma::setPairsXPHI(void)
 {
@@ -236,7 +179,7 @@ float plasma::returnInhomDischargeSheathElectricField(float z, float t)
 {
   float w    = 2.*M_PI*freq;
   float wt   = w*t;
-  float sm   = inHomCapSheathSize;
+  float sm   = inhomCapSheathSize;
   float fac  = J/(epsilon_0*w);
   float st   = returnInhomDischargeSheathPosition(t);
   float Ef  = 0;

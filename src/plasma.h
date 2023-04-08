@@ -26,10 +26,9 @@ private:
   float J0; //Ion current (A/m2)
   float J; //The discharge current (A/m2)
   
-  float matrixSheathSize;
   float ChildLawSheathSize;
   float homCapSheathSize;
-  float inHomCapSheathSize;
+  float inhomCapSheathSize;
   
   float X[64+1], PHI[64+1]; //for RF inhomogenous solution
   
@@ -51,11 +50,6 @@ public:
 
   float returnDischargeCurrent(void);
   
-  void calculateMatrixSheathSize(void);
-  float returnMatrixSheathSize(void);
-  float returnMatrixSheathPotential(float x);
-  float returnMatrixSheathElectricField(float x);
-  
   void calculateChildLawSheathSize(void);
   float returnChildLawSheathSize(void);
   float returnChildLawSheathPotential(float x);
@@ -63,11 +57,6 @@ public:
   
   void calculateJ0(void);
   float returnJ0(void);
-  
-  void calculateHomDischargeParameters(void);
-  float returnHomDischargeSheathSize(void);
-  float returnHomDischargeSheathPotential(float x, float t);
-  float returnHomDischargeSheathElectricField(float x, float t);
   
   void calculateInhomDischargeParameters(void);
   float x(float phi);
