@@ -1,5 +1,5 @@
 \section{\label{Simulation}Simulation Description}
-In this section we provide details of the model. Subsection \ref{SpacePotentialAndField} describe how the space potential and electric field are calculated including the plasma sheath and in the RFEA region. Subsection \ref{IonTrajectory} describe the method to integrate the ion trajectories under the effect of the fields decribed in subsection \ref{SpacePotentialAndField}. Subsection \ref{IonCollision} describes the method to simulate ion collisions with the background gas. Note that in the model, the electron temperature is kept constant with value $T_e=3$~eV.
+In this section we provide details of the model. Subsection \ref{SpacePotentialAndField} describe how the space potential and electric field are calculated including the plasma sheath and in the RFEA region. Subsection \ref{IonTrajectory} describe the method to integrate the ion trajectories under the effect of the fields decribed in subsection \ref{SpacePotentialAndField}. Subsection \ref{IonCollision} describes the method to simulate ion collisions with the background gas.
 
 \subsection{\label{SpacePotentialAndField}Space Potential and Electric Field}
 The space potential and electric field are calculated in two regions: the RFEA region, and the plasma sheath. The model is one-dimensional, therefore only space potential and electric field in the z-axis is calculated in these regions. In this geometry, the RFEA is located at $z \leq 0$ and its extension in the negative direction of the z-axis depends on the spaces between the grids and the collector; subsection \ref{RFEA}. The plasma sheath starts at $z=0$ and extends to the plasma, which is located at some $z_\text{plasma} > 0$. The location of the plasma sheath boundary edge depends on the plasma sheath model and is further described in subsection \ref{SheathModel}.   
@@ -72,7 +72,7 @@ In the case of the collisional regime solution it is not possible to solve analy
 \begin{equation}
 V_0 = \frac{J s_0}{\epsilon_0 \omega} \left(  2 + \frac{125}{192} H \pi \right)
 \end{equation}
-Where the expression for $H$ is given later in this section. The inverse expression, $J(V_0)$, can be solved numerically. In the simulation program, 64 pairs $(V_0(J),J)$ for $J$ from 0 to 500~A/m$^2$ are generated. The value of $J$ is determined by linear interpolation of the two nearest pairs.
+Where the expression for $H$ is given later in this section. The inverse expression, $J(V_0)$, can be solved numerically.
  
 The $H$ parameter for the collisionless regime is given by~\cite{Lieberman1988}
 \begin{equation}
