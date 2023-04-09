@@ -184,11 +184,12 @@ void rfea::integrateIonTrajectory(long randomSeed)
   float T = 300;                 //Kelvin
   float nGas = pressurePa/(k*T); //m-3
   
-  float collisionProbability;
+  float collisionProbability = 0.0;
   float crossSection;
   float collisionRate;
-  float collisionsindt;
+  float collisionsindt = 0.0;
   bool  crossedzG0 = false;
+  int   gridNo = -1;
 
   float period = 0;
   float phase = 0;
@@ -200,21 +201,22 @@ void rfea::integrateIonTrajectory(long randomSeed)
   if(saveTrajectory) file << "Time(s), z(m), vz(m/s), vp(m/s)" << endl;
   
   while ( zP >= z && z >= zC && t < simulationTime )
-    {      
-      /* 
-	 The formula for the collision rate is 
-	 collisionRate = nGas * cross section(E) * magnitude(v) 
-      */
-      crossSection = collisionCrossSectionArPhelps( ionAr.kineticEnergyeV(v,v_,v__) );
-      collisionRate = nGas * crossSection * ionAr.magnitude(v,v_,v__);
-      collisionsindt = collisionRate * dt; 
-      collisionProbability = ran2(randomSeed);
+    {
+
+      if (pressurePa > 0.0) {
+	/* The formula for the collision rate is 
+	   collisionRate = nGas * cross section(E) * magnitude(v)  */
+	crossSection   = collisionCrossSectionArPhelps( ionAr.kineticEnergyeV(v,v_,v__) );
+	collisionRate  = nGas * crossSection * ionAr.magnitude(v,v_,v__);
+	collisionsindt = collisionRate * dt; 
+	collisionProbability = ran2(randomSeed);
+      }
       
-      if (collisionProbability < collisionsindt)
+      if (pressurePa > 0.0 && collisionProbability < collisionsindt)
 	{
 	  int type = collisionType();
-	  if (type == 1) ionAr.elasticCollision(v, v_, v__);
-	  else /*2*/ ionAr.cxCollision(v, v_, v__);
+	  if    (type == 1)  ionAr.elasticCollision(v, v_, v__);
+	  else /*type == 2*/ ionAr.cxCollision(v, v_, v__);
 	}
       else
 	{
@@ -234,7 +236,7 @@ void rfea::integrateIonTrajectory(long randomSeed)
 	  file3.close();
 	} 
       
-      if ( isAtGrid(z,z_) && random01()*100 > gridTransparency ) break;
+      if ( isAtGrid(z,z_,gridNo) && random01()*100 > gridTransparency ) break;
       
       t = t + dt;
       z_= z;
@@ -249,8 +251,9 @@ void rfea::integrateIonTrajectory(long randomSeed)
 
   if (saveLastPosition == true)
     {
+      if ( z <= zC ) gridNo = 4;
       ofstream file3("output/spaceCharge.csv", ios::app);
-      file3 << z << "," << v << "," << v_ << endl;
+      file3 << z << "," << v << "," << v_ << "," << gridNo << endl;
       file3.close();
     }
 }
@@ -323,7 +326,7 @@ void rfea::executeSimulation(void)
 
 
 
-bool rfea::isAtGrid(float zi, float zii)
+bool rfea::isAtGrid(float zi, float zii, int & gridNumber)
 {
   bool atGrid = false;
   
@@ -342,10 +345,10 @@ bool rfea::isAtGrid(float zi, float zii)
 	  zii = zz;
 	}
       
-      if      (zi > zG0 && zG0 > zii) atGrid = true;
-      else if (zi > zG1 && zG1 > zii) atGrid = true;
-      else if (zi > zG2 && zG2 > zii) atGrid = true;
-      else if (zi > zG3 && zG3 > zii) atGrid = true;
+      if      (zi > zG0 && zG0 > zii) { atGrid = true; gridNumber = 0; }
+      else if (zi > zG1 && zG1 > zii) { atGrid = true; gridNumber = 1; }
+      else if (zi > zG2 && zG2 > zii) { atGrid = true; gridNumber = 2; }
+      else if (zi > zG3 && zG3 > zii) { atGrid = true; gridNumber = 3; }
       else atGrid = false; 
     }
   return atGrid;

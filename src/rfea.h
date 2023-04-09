@@ -67,7 +67,7 @@ public:
   
   void executeSimulation(void);
 
-  bool isAtGrid(float zi, float zii);
+  bool isAtGrid(float zi, float zii, int & gridNumber);
 
 };
 
