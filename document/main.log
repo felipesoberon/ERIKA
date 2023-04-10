@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.6.7)  9 APR 2023 17:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.6.7)  10 APR 2023 19:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -570,33 +570,30 @@ Package natbib Warning: Citation `Davis1963' on page 4 undefined on input line
 Package natbib Warning: Citation `Davis1963' on page 4 undefined on input line 
 154.
 
-<Figures/CrossSections.jpg, id=30, 1505.625pt x 940.51375pt>
+[4 <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/VEz0.5Pa13.56M
+Hz2kVStack2332.jpeg> <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figu
+res/ionTrajectory0.5Pa13.56MHz2kVStack2332_Collisionless.jpeg>]
+<Figures/CrossSections.jpg, id=34, 1505.625pt x 940.51375pt>
 File: Figures/CrossSections.jpg Graphic file (type jpg)
 <use Figures/CrossSections.jpg>
 Package pdftex.def Info: Figures/CrossSections.jpg  used on input line 158.
 (pdftex.def)             Requested size: 229.49844pt x 143.35278pt.
 
-Package natbib Warning: Citation `Phelps1994' on page 4 undefined on input line
+
+Package natbib Warning: Citation `Phelps1994' on page 5 undefined on input line
  159.
 
 
-Package natbib Warning: Citation `LXCat' on page 4 undefined on input line 159.
+Package natbib Warning: Citation `LXCat' on page 5 undefined on input line 159.
 
 
 
-Package natbib Warning: Citation `Phelps1994' on page 4 undefined on input line
+Package natbib Warning: Citation `Phelps1994' on page 5 undefined on input line
  159.
 
 
-Package natbib Warning: Citation `LXCat' on page 4 undefined on input line 159.
+Package natbib Warning: Citation `LXCat' on page 5 undefined on input line 159.
 
-
-[4 <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/VEz0.5Pa13.56M
-Hz2kVStack2332.jpeg> <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figu
-res/ionTrajectory0.5Pa13.56MHz2kVStack2332_Collisionless.jpeg>]
-
-LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
- on input line 164.
 
 
 LaTeX Warning: Reference `fig:CollisionACtrajectory' on page 5 undefined on inp
@@ -616,20 +613,20 @@ File: Figures/ionTrajectory0.5Pa13.56MHz2kVStack2332.jpeg Graphic file (type jp
 g)
 <use Figures/ionTrajectory0.5Pa13.56MHz2kVStack2332.jpeg>
 Package pdftex.def Info: Figures/ionTrajectory0.5Pa13.56MHz2kVStack2332.jpeg  u
-sed on input line 182.
+sed on input line 184.
 (pdftex.def)             Requested size: 229.49844pt x 286.85858pt.
 
 LaTeX Warning: Reference `fig:ACpotentialField' on page 5 undefined on input li
-ne 183.
+ne 185.
 
 
 LaTeX Warning: Reference `fig:ACpotentialField' on page 5 undefined on input li
-ne 183.
+ne 185.
 
-) (//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document\results.tex [5 <//wsl.l
-ocalhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/CrossSections.jpg> <//wsl
-.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/ionTrajectory0.5Pa13.56
-MHz2kVStack2332.jpeg>]
+) (//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document\resultsDiscussion.tex
+[5 <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/CrossSections.
+jpg> <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/ionTrajector
+y0.5Pa13.56MHz2kVStack2332.jpeg>]
 
 LaTeX Warning: Reference `fig:IVcurve' on page 6 undefined on input line 15.
 
@@ -733,13 +730,13 @@ LaTeX Warning: Reference `fig:IVcurve' on page 7 undefined on input line 52.
 Package natbib Warning: Citation `Hutchinson1987' on page 7 undefined on input 
 line 61.
 
-
-Package natbib Warning: Citation `Baloniak2010' on page 7 undefined on input li
-ne 73.
-
 [7 <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/IVcurve_Freque
 ncyScan.jpeg> <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/Fre
 quencyScan.jpeg>]
+
+Package natbib Warning: Citation `Baloniak2010' on page 8 undefined on input li
+ne 73.
+
 
 Package natbib Warning: Citation `Baloniak2010' on page 8 undefined on input li
 ne 80.
@@ -768,80 +765,130 @@ nput line 102.
 LaTeX Warning: Reference `eq:CollisionalTrasparency' on page 8 undefined on inp
 ut line 102.
 
+
+LaTeX Warning: Reference `fig:CollisionalTransparency' on page 8 undefined on i
+nput line 104.
+
 <Figures/CollisionalTransparency.jpeg, id=53, 1505.625pt x 903.375pt>
 File: Figures/CollisionalTransparency.jpeg Graphic file (type jpg)
 <use Figures/CollisionalTransparency.jpeg>
 Package pdftex.def Info: Figures/CollisionalTransparency.jpeg  used on input li
-ne 106.
+ne 112.
 (pdftex.def)             Requested size: 229.49844pt x 137.69211pt.
 
-! LaTeX Error: Unknown float option `H'.
+LaTeX Warning: Reference `table:CollisionalTransparency' on page 8 undefined on
+ input line 113.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.112 \begin{table}[H]
-                      
+
+LaTeX Warning: Reference `table:CollisionalTransparency' on page 8 undefined on
+ input line 113.
+
+
+LaTeX Warning: Reference `fig:CollisionalTransparency' on page 8 undefined on i
+nput line 121.
+
+
+LaTeX Warning: Reference `fig:CollisionalTransparency' on page 8 undefined on i
+nput line 121.
+
+! Undefined control sequence.
+l.125 Pressur\n
+               (Pa) & \multicolumn{2}{c}{Collisional Transparency\n(Pc)} & D...
+
 ? r
 OK, entering \nonstopmode...
+! Undefined control sequence.
+\@sharp ->Collisional Transparency\n 
+                                     (Pc)
+l.125 ...umn{2}{c}{Collisional Transparency\n(Pc)}
+                                                   & Discharge Current\n(A/m...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.125 ...Transparency\n(Pc)} & Discharge Current\n
+                                                  (A/m2) & Ion mean free pat...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.125 ...ge Current\n(A/m2) & Ion mean free path\n
+                                                  (cm) & Sheath size\n(cm) \\
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.125 ... Ion mean free path\n(cm) & Sheath size\n
+                                                  (cm) \\
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
 
 LaTeX Warning: Reference `fig:IVcurves2332' on page 8 undefined on input line 1
-30.
+40.
 
 
 LaTeX Warning: Reference `fig:IVcurves2772' on page 8 undefined on input line 1
-30.
+40.
 
 
 LaTeX Warning: Reference `fig:PressureScan2332' on page 8 undefined on input li
-ne 130.
+ne 140.
 
 
 LaTeX Warning: Reference `fig:PressureScan2772' on page 8 undefined on input li
-ne 130.
+ne 140.
 
 
 Package natbib Warning: Citation `Gahan2008' on page 8 undefined on input line 
-130.
+140.
 
 [8 <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/CollisionalTra
 nsparency.jpeg>]
-
-LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
- on input line 135.
-
 <Figures/IVcurve2332.jpeg, id=59, 1505.625pt x 903.375pt>
 File: Figures/IVcurve2332.jpeg Graphic file (type jpg)
 <use Figures/IVcurve2332.jpeg>
-Package pdftex.def Info: Figures/IVcurve2332.jpeg  used on input line 138.
+Package pdftex.def Info: Figures/IVcurve2332.jpeg  used on input line 148.
 (pdftex.def)             Requested size: 229.49844pt x 137.69211pt.
 <Figures/PressureScan2332.jpeg, id=60, 1505.625pt x 1505.625pt>
 File: Figures/PressureScan2332.jpeg Graphic file (type jpg)
 <use Figures/PressureScan2332.jpeg>
-Package pdftex.def Info: Figures/PressureScan2332.jpeg  used on input line 145.
+Package pdftex.def Info: Figures/PressureScan2332.jpeg  used on input line 155.
 
 (pdftex.def)             Requested size: 229.49844pt x 229.48686pt.
 <Figures/IVcurve2772.jpeg, id=61, 1505.625pt x 903.375pt>
 File: Figures/IVcurve2772.jpeg Graphic file (type jpg)
 <use Figures/IVcurve2772.jpeg>
-Package pdftex.def Info: Figures/IVcurve2772.jpeg  used on input line 152.
+Package pdftex.def Info: Figures/IVcurve2772.jpeg  used on input line 162.
 (pdftex.def)             Requested size: 229.49844pt x 137.69211pt.
 <Figures/PressureScan2772.jpeg, id=62, 1505.625pt x 1505.625pt>
 File: Figures/PressureScan2772.jpeg Graphic file (type jpg)
 <use Figures/PressureScan2772.jpeg>
-Package pdftex.def Info: Figures/PressureScan2772.jpeg  used on input line 159.
+Package pdftex.def Info: Figures/PressureScan2772.jpeg  used on input line 169.
 
 (pdftex.def)             Requested size: 229.49844pt x 229.48686pt.
 )
+(//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document\conclusion.tex)
 No file main.bbl.
 
 Package natbib Warning: There were undefined citations.
 
 [9 <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/IVcurve2332.jp
 eg> <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/PressureScan2
-332.jpeg>] [10 <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/IV
-curve2772.jpeg> <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/P
+332.jpeg> <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/IVcurve
+2772.jpeg>] [10 <//wsl.localhost/Ubuntu-18.04/home/fso/ERIKA/document/Figures/P
 ressureScan2772.jpeg>] (main.aux)
 
 LaTeX Font Warning: Size substitutions with differences
@@ -858,13 +905,13 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 6052 strings out of 478582
- 93043 string characters out of 2844345
- 414438 words of memory out of 3000000
- 24138 multiletter control sequences out of 15000+600000
+ 6061 strings out of 478582
+ 93362 string characters out of 2844345
+ 415453 words of memory out of 3000000
+ 24144 multiletter control sequences out of 15000+600000
  482042 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 69i,9n,76p,1700b,431s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 69i,9n,76p,1710b,431s stack positions out of 10000i,1000n,20000p,200000b,80000s
  <C:\Users\felip\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1000.pk><C:/Users/felip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
 ts/cm/cmbx10.pfb><C:/Users/felip/AppData/Local/Programs/MiKTeX/fonts/type1/publ
@@ -890,7 +937,7 @@ C:/Users/felip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cms
 y10.pfb><C:/Users/felip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
 ts/cm/cmsy7.pfb><C:/Users/felip/AppData/Local/Programs/MiKTeX/fonts/type1/publi
 c/amsfonts/cm/cmsy8.pfb>
-Output written on main.pdf (10 pages, 5828409 bytes).
+Output written on main.pdf (10 pages, 5831706 bytes).
 PDF statistics:
  159 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
