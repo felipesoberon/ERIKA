@@ -347,9 +347,13 @@ bool rfea::isAtGrid(float zi, float zii, int & gridNumber)
 	}
       
       if      (zi > zG0 && zG0 > zii) { atGrid = true; gridNumber = 0; }
+      else if (zi < zG0 && zG0 < zii) { atGrid = true; gridNumber = 0; }
       else if (zi > zG1 && zG1 > zii) { atGrid = true; gridNumber = 1; }
+      else if (zi < zG1 && zG1 < zii) { atGrid = true; gridNumber = 1; }
       else if (zi > zG2 && zG2 > zii) { atGrid = true; gridNumber = 2; }
+      else if (zi < zG2 && zG2 < zii) { atGrid = true; gridNumber = 2; }
       else if (zi > zG3 && zG3 > zii) { atGrid = true; gridNumber = 3; }
+      else if (zi < zG3 && zG3 < zii) { atGrid = true; gridNumber = 3; }
       else atGrid = false; 
     }
   return atGrid;
