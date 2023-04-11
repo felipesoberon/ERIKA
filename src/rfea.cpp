@@ -237,6 +237,7 @@ void rfea::integrateIonTrajectory(long randomSeed)
 	} 
       
       if ( isAtGrid(z,z_,gridNo) && random01()*100 > gridTransparency ) break;
+      else gridNo = -1;
       
       t = t + dt;
       z_= z;
