@@ -42,7 +42,7 @@ Figure~\ref{fig:IVcurve_FrequencyScan} shows the characteristic current-voltage 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.45\textwidth]{Figures/IVcurve_FrequencyScan.jpeg}
-\caption{Current-voltage characteristic curves where the current is represented by the ion count collected at the collector position. The curves correspond to frequency settings from 2~Mhz to 27.12~MHz. The pressure was set to 0.5~Pa. }
+\caption{Current-voltage characteristic curves where the current is represented by the ion count collected at the collector position. The curves correspond to radio-frequency settings from 2~MHz to 27.12~MHz. The pressure was set to 0.5~Pa. }
 \label{fig:IVcurve_FrequencyScan}
 \end{figure}
 
@@ -60,6 +60,61 @@ Figure~\ref{fig:IVcurve_FrequencyScan} shows the characteristic current-voltage 
 \subsection{Space charge inside the RFEA}
 In high density plasmas, the ion current may be sufficiently high to allow for the build up of space charge within the RFEA~\cite{Hutchinson1987}. The charge build up may be highest for G$_2$ voltages at which most of the ion current is cut off. The model is used by simulating multiple ion trajectories through the plasma sheath and the RFEA. The trajectories are run for a maximum time of 1~$\mu$s. For each trajectory a random number is generated between 0 and 1 and is multiplied by the maximum time. This simulates the condition that not all ions depart the plasma at the same time and allow for spatial charge build up from the plasma sheath. The grid transparency is set to 50~\% to simulate ions collected by the grids and therefore removed from the space charge build up. The final position of the ions for each trajectory, if not collected by a grid or the collector, is recorded and a space charge density can be plotted. This simulation can be repeated for various G$_2$ voltages, pressures, sheath voltage, and radio-frequency.  
 
+Two simulations were run with the following common settings: 2000~V peak, radio-frequency 13.56~MHz, pressure 1~Pa, and discrimination voltage G$_2$ 950~V. The difference between the simualtions is the RFEA stack setting: 2332 and 2772. The purpose of the simualtion is to explore the space charge build up inside the RFEA. 
+
+Figure~\ref{fig:ionPhaseSpace2332} shows the ion phase space for the 2332 configuration. Similarly, Figure~\ref{fig:ionPhaseSpace2772} shows the ion phase space for the 2772 configuration. The ion counts have been rescaled by the power of 1/4 in both phase space graphs to accentuate the features of the plot which otherwise would be lost due to the difference in order of magnitude. The figures shows the ion flux across the sheath with ions gaining energy and eventually bouncing off the discriminator grid G$_2$, which was set to 950~V, just under the maximum ion energy in the energy distribution as seen in the IEDF curve at 1~Pa in Figure~\ref{fig:PressureScan}. The phase space reveals the ion energy distribution structure developing as the ions transit across the sheath. But it also shows that a small number of ions bounce off G$_2$ and return to the sheath. As these ions return to the sheath with high energy, depending on the phase of the radio-frequency modulation may be able to return to the plasma bulk with more kinetic energy than that they had when they entered the sheath in the first instance; i.e., with the Bohm velocity.  
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/ionPhaseSpace2332.jpeg}
+\caption{Ion phase space density plot for simulation at 1~Pa pressure and RFEA button stack 2332. The ion counts are rescaled by the power of 1/4. }
+\label{fig:ionPhaseSpace2332}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/ionPhaseSpace2772.jpeg}
+\caption{Ion phase space density plot for simulation at 1~Pa pressure and RFEA button stack 2772. The ion counts are rescaled by the power of 1/4. }
+\label{fig:ionPhaseSpace2772}
+\end{figure}
+
+Figure~\ref{fig:RFEAPhaseSpace2332} and Figure~\ref{fig:RFEAPhaseSpace2772} show scatter plots of the ion phase space inside the RFEA for the 2332 and 2772 configurations. Vertical dashed lines indicate the position of the RFEA grids. The combination of transparency (50~\%) and the setting of the discrimination grid (G$_2$ = 950~V) results in most ions limited to the space between grids G$_0$ and G$_1$ first, and then between grids G$_1$ and G$_2$ second. The first grid introduces an acceleration of ions towards the collector, while the second pair of grids repels most of the incoming ions. Only a small number of ions make it past G$_2$, which get accelerated past the grid. The phase space in both graphs show a small number of ions with lower speed than the main stream of ions. These are ions that experienced a collisions. 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/RFEAPhaseSpace2332.jpeg}
+\caption{Scatter plot of ion phase space with RFEA button stack 2332.}
+\label{fig:RFEAPhaseSpace2332}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/RFEAPhaseSpace2772.jpeg}
+\caption{Scatter plot of ion phase space with RFEA button stack 2772.}
+\label{fig:RFEAPhaseSpace2772}
+\end{figure}
+
+As it occurs in the sheath, when a field accelerates the ions, the ion density decreases with increased velocity to conserve ion current. This is also observed in the ion phase space within the RFEA; for instance, between grids G$_0$ and G$_1$. On the other hand, when the field repels ions, the ion density is maintained across the space as is the case between grids G$_1$ and G$_2$. In fact, the ion density spikes near G$_2$ when this grid is set to discriminate against most ions. The ion density across the sheath and the RFEA space is plotted in Figure~\ref{fig:ionDensity2332} for RFEA configuration 2332 and Figure~\ref{fig:ionDensity2772} for RFEA configuration 2772. The plasma density in both cases is $10^{16}$~m$^{-3}$ at the sheath edge. However, in both figures, the vertical axis is limited to $0.25 \times 10^{16}$~m$^{-3}$ to appreciate better the ion density variation within the RFEA. Vertical dashed lines indicate the position of the RFEA grids in both figures. 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/ionDensity2332.jpeg}
+\caption{Ion density across the RFEA and sheath for configuration with RFEA button stack 2332.}
+\label{fig:ionDensity2332}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{Figures/ionDensity2772.jpeg}
+\caption{Ion density across the RFEA and sheath for configuration with RFEA button stack 2772.}
+\label{fig:ionDensity2772}
+\end{figure}
+
+Hutchinson~\cite{Hutchinson1987} states that space charge can build up and contribute to the space voltage and electric field, in particular when the RFEA is discriminating against most ions. This may affect the RFEA operation, albeit it is expected only at high plasma density. Note that the ion density at G$_0$ in the simualtion results presented here is one order of magnitude lower than the plasma density at the edge of the sheath. 
+
+The RFEA dimension condition reported by Hutchinson to prevent the space charge effect inside the RFEA is 
+FORMULA with Debye length. 
+Can we test this? To see if the current simulations meet the requirements? and if they do, set a simulation with the conditions that it would be affected. Also, use the Poisson equation to estimate the potential due to the space charge inside the RFEA. Find the point at which this breaks the RFEA operation. 
 
 
 
