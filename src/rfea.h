@@ -21,7 +21,7 @@ private:
   ion ionAr;        
   commandline commandLine;  
 
-  int simulationType = 0; //0:trj, 1:scan, 2:space charge
+  int simulationType = 0; //0:trj, 1:scan, 2:space charge, 3:IED
   
   float sheathSize; 
   float G0G1d, G1G2d, G2G3d, G3Cd;
@@ -64,6 +64,7 @@ public:
   void integrateIonTrajectory(long randomSeed);
   void energyScan(void);
   void spaceCharge(void);
+  void ionEnergyDistribution(void);
   
   void executeSimulation(void);
 

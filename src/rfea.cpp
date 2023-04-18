@@ -8,13 +8,13 @@ void rfea::setParametersFromCommandLineInput(int numberOfArguments, char* valueO
   commandLine.setArgumentList(numberOfArguments, valueOfArgument);
   commandLine.printArgumentList();
   
-  commandLine.setFlagName("-max_eV", "Scan's maximum energy in eV.");                     //0
-  commandLine.setFlagName("-step_eV", "Scan's energy step in eV.");                       //1
-  commandLine.setFlagName("-no._ion", "Scan's number of ions per step.");                 //2
-  commandLine.setFlagName("-pressure_Pa", "Argon gas pressure in Pa.");                   //3
-  commandLine.setFlagName("-sim_time", "Maximum simulation time per ion (s).");           //4
-  commandLine.setFlagName("-sim_type", "Trajectory (0), Scan (1), or Space Charge (2) "); //5
-  commandLine.setFlagName("-G2", "Grid 2 voltage");                                       //6
+  commandLine.setFlagName("-max_eV", "Scan's maximum energy in eV.");                      //0
+  commandLine.setFlagName("-step_eV", "Scan's energy step in eV.");                        //1
+  commandLine.setFlagName("-no._ion", "Scan's number of ions per step.");                  //2
+  commandLine.setFlagName("-pressure_Pa", "Argon gas pressure in Pa.");                    //3
+  commandLine.setFlagName("-sim_time", "Maximum simulation time per ion (s).");            //4
+  commandLine.setFlagName("-sim_type", "Traj. (0), Scan (1), Space Charge (2), IED (3)");  //5
+  commandLine.setFlagName("-G2", "Grid 2 voltage");                                        //6
   commandLine.setFlagName("-spacerStack", "No. of 100um spacers between grids (e.g. 2332)"); //7
   commandLine.setFlagName("-plasmaDensity", "Density of plasma at edge of sheath (m-3)");    //8
   commandLine.setFlagName("-plasmaPotential", "Plasma sheath voltage");                      //9
@@ -196,11 +196,15 @@ void rfea::integrateIonTrajectory(long randomSeed)
   if (radioFrequency>0)
     { period = 1/radioFrequency;
       phase = random01()*period; }
+
+  float zlimit;
+  if (simulationType == 3 /*IED sim.*/) zlimit = zG0;
+  else /*0, 1, 2*/                      zlimit = zC;
   
   ofstream file("output/trajectory.csv");
   if(saveTrajectory) file << "Time(s), z(m), vz(m/s), vp(m/s)" << endl;
   
-  while ( zP >= z && z >= zC && t < simulationTime )
+  while ( zP >= z && z >= zlimit && t < simulationTime )
     {
 
       if (pressurePa > 0.0) {
@@ -292,6 +296,21 @@ void rfea::spaceCharge(void)
 
 
 
+
+
+void rfea::ionEnergyDistribution(void)
+{
+  for(int j=1; j<=ionsPerEnergy; j++)
+    {
+      integrateIonTrajectory(long(1+j));
+    }
+}
+
+
+
+
+
+
 void rfea::executeSimulation(void)
 {
   switch (simulationType)
@@ -316,6 +335,12 @@ void rfea::executeSimulation(void)
 	spaceCharge();
 	break;
       }
+    case 3:
+      {
+	cout << "\nComputing IED at G0 (only)" << endl;
+	ionEnergyDistribution();
+	break;
+      }      
     default:
       {
 	cout << "\nERROR: simulation type option, " << simulationType << ", invalid." << endl;
