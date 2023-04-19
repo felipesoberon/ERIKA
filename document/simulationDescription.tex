@@ -50,8 +50,10 @@ Figure~\ref{fig:DCpotentialField} shows the space potential and electric field f
 
 
 
-The space potential and electric field for the AC sheath are calculated using the capacitive sheath solution of Lieberman~\cite{Lieberman1988,Lieberman1989}. The sheath edge of the capacitive radio-frequency discharge changes through the cycle, from collapsing when the voltage across the sheath drops to its minimum to full expansion when the voltage is maximum. The size of the sheath is given by, 
-\begin{eqnarray}
+The space potential and electric field for the AC sheath are calculated using the capacitive sheath solution of Lieberman~\cite{Lieberman1988,Lieberman1989}. The sheath edge of the capacitive radio-frequency discharge changes through the cycle, from collapsing when the voltage across the sheath drops to its minimum to full expansion when the voltage is maximum. 
+
+The size of the sheath, in the collisionless case, is given by, 
+\begin{eqnarray}\label{eq:CollisionlessSheathEdge}
 s(\phi) &=& s_0 ( 1 - \cos(\phi) + \frac{H}{8} \{ \frac32 \sin(\phi)  + \frac{11}{18} \sin(3 \phi) \nonumber \\ 
         & & - 3 \phi \cos(\phi)  - \frac13 \phi \cos(3 \phi)  \} )
 \end{eqnarray}
@@ -68,11 +70,21 @@ $J$ is the total current through the plasma discharge (mainly displacement curre
 \begin{equation}
 J = \frac{2 \omega}{5} \sqrt{\frac25} \sqrt{e n_s \epsilon_0} \sqrt{ \sqrt{3 T_e} \sqrt{192 T_e + 125 V_0} -24 T_e    }
 \end{equation}
-In the case of the collisional regime solution it is not possible to solve analytically the plasma discharge current. Instead, the maximum voltage across the sheath can be expressed in terms of the current and other plasma parameters ~\cite{Lieberman1989}
+
+For the collisional case, the sheath edge has to be solved numerically as follows (equation (14) in reference~\cite{Lieberman1989}), 
+\begin{equation}\label{eq:CollisionalSheathEdge}
+s(\phi) = s_0  H \int_0^{\pi} (\sin \zeta - \zeta \cos \zeta)^{1/2} \sin \zeta d \zeta 
+\end{equation}
+
+In the case of the collisional regime solution, it is not possible to solve analytically the plasma discharge current. Instead, the maximum voltage across the sheath can be expressed in terms of the current and other plasma parameters~\cite{Lieberman1989}. If we use the sheath edge expression for the collisionless solution (\ref{eq:CollisionlessSheathEdge}) then the maximum voltage across the sheath results, 
 \begin{equation}
 V_0 = \frac{J s_0}{\epsilon_0 \omega} \left(  2 + \frac{125}{192} H \pi \right)
 \end{equation}
-Where the expression for $H$ is given later in this section. The inverse expression, $J(V_0)$, can be solved numerically.
+Note that this expression is the result of the following integration (equation (24) in reference~\cite{Lieberman1989} for t=0) using the collisionless sheath edge expression (\ref{eq:CollisionlessSheathEdge}),
+\begin{equation}
+V_0 = \frac{J}{\epsilon_0 \omega} \int_0^{\pi} (1- \cos \phi) \frac{d x}{d \phi} d \phi 
+\end{equation}
+Where the expression for $H$ in the collisional case is given later in this section. The inverse expression, $J(V_0)$, can be solved numerically. Otherwise, strictly, the integration shall be carried out using the collisional sheath edge expression~(\ref{eq:CollisionalSheathEdge}). 
  
 The $H$ parameter for the collisionless regime is given by~\cite{Lieberman1988}
 \begin{equation}
