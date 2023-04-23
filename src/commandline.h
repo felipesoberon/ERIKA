@@ -31,11 +31,11 @@ class commandline
   void setFlagValues(void);
   void printFlagValues(void);
   
-  string returnFlagValue(int flagIndex);
-  float returnFloatFlagValue(int flagIndex);
+  string returnFlagValue(unsigned int flagIndex);
+  float returnFloatFlagValue(unsigned int flagIndex);
 
-  bool flagValueIsEMPTY(int flagIndex);
-  bool flagValueIsNumber(int flagIndex);
+  bool flagValueIsEMPTY(unsigned int flagIndex);
+  bool flagValueIsNumber(unsigned int flagIndex);
 
   
 };

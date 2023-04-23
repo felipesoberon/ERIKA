@@ -1,5 +1,5 @@
 CC      = g++
-CFLAGS  = -O3 -std=c++11
+CFLAGS  = -O3 -std=c++11 -Wall
 EXE     = rfea
 OBJECTS = electricField.o rfea.o ion.o random.o commandline.o functions.o XSection.o plasma.o
 INSTDIR = /usr/bin

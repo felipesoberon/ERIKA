@@ -21,7 +21,7 @@ void commandline::setArgumentList(int inputNumberOfArguments, char* valueOfArgum
 void commandline::printArgumentList(void)
 {
   cout << "\nECHO COMMAND: ";
-  for (int i=0; i<argument.size(); i++)
+  for (unsigned int i=0; i<argument.size(); i++)
     {
       cout << argument[i];
       cout << " ";
@@ -44,7 +44,7 @@ void commandline::setFlagName(string flagTag, string flagDescriptionValue)
 void commandline::printFlagNameList(void)
 {
   cout << endl;
-  for (int i=0; i<flagName.size(); i++)
+  for (unsigned int i=0; i<flagName.size(); i++)
     cout << i << "   " << setw(12) << flagName[i] << "\t" << flagDescription[i] << endl;
 }
 
@@ -55,13 +55,15 @@ void commandline::printFlagNameList(void)
 void commandline::setFlagValues(void)
 {
   cout << endl;
-  for (int i=0; i<flagName.size(); i++)
+  for (unsigned int i=0; i<flagName.size(); i++)
     {
-      for (int j=0; j<argument.size(); j++)
+      for (unsigned int j=0; j<argument.size(); j++)
 	{
 	  if ( flagName[i] == argument[j])
-	    if( j+1 < argument.size() ) flagValue[i] = argument[j+1];
-	    else flagValue[i] = "EMPTY";
+	    {
+	      if( j+1 < argument.size() ) flagValue[i] = argument[j+1];
+	      else                        flagValue[i] = "EMPTY";
+	    }
 	}
     }
 }
@@ -72,7 +74,7 @@ void commandline::setFlagValues(void)
 
 void commandline::printFlagValues(void)
 {
-  for (int i=0; i<flagName.size(); i++)
+  for (unsigned int i=0; i<flagName.size(); i++)
     {
       cout << i << "   " << setw(12) << flagName[i] << "\t" << flagValue[i] <<  endl;
     }
@@ -81,7 +83,7 @@ void commandline::printFlagValues(void)
 
 
 
-string commandline::returnFlagValue(int flagIndex)
+string commandline::returnFlagValue(unsigned int flagIndex)
 {
   if (flagIndex < flagValue.size())
     return flagValue[flagIndex];
@@ -92,7 +94,7 @@ string commandline::returnFlagValue(int flagIndex)
 
 
 
-float commandline::returnFloatFlagValue(int flagIndex)
+float commandline::returnFloatFlagValue(unsigned int flagIndex)
 {
   float result = 0.0;
   if (flagValueIsNumber(flagIndex))
@@ -105,7 +107,7 @@ float commandline::returnFloatFlagValue(int flagIndex)
 
 
 
-bool commandline::flagValueIsEMPTY(int flagIndex)
+bool commandline::flagValueIsEMPTY(unsigned int flagIndex)
 {
   bool result = false;
   if (flagIndex < flagValue.size())
@@ -117,7 +119,7 @@ bool commandline::flagValueIsEMPTY(int flagIndex)
 
 
 
-bool commandline::flagValueIsNumber(int flagIndex)
+bool commandline::flagValueIsNumber(unsigned int flagIndex)
 {
   if (flagIndex < flagValue.size())
     {
