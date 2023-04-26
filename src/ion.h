@@ -13,7 +13,8 @@ class ion
 {
 private:
 
-  const float k = 1.3806503E-23; //m2 kg s-1 K-1
+  const float k  = 1.3806503E-23; //m2 kg s-1 K-1
+  const float pi = 3.141592653589793;
   const float T = 300.0; //Kelvin
   const float mass = 6.6335209e-26;    // Mass of Argon ion in kg
   const float charge = 1.60217662e-19; // Charge of Argon ion in Coulombs

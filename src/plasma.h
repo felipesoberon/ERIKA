@@ -11,7 +11,8 @@ class plasma
 private:
   
   const float epsilon_0 = 8.8541878128e-12; //F m^-1
-  const float e = 1.60217662e-19; // Coulomb
+  const float e  = 1.60217662e-19; // Coulomb
+  const float pi = 3.141592653589793;
   
   float Te = 3.0;   //electron temperature in eV
   float ns = 1.e15; //plasma density at edge of sheath (m^-3)

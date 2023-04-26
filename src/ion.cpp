@@ -55,8 +55,8 @@ float ion::totalKineticEnergy(float v1x, float v1y, float v1z, float v2x, float 
 void ion::randomAverageVelocityVector(float& vx, float& vy, float& vz)
 {
   float meanV  = averageVelocity();
-  float psi    = M_PI * random01();
-  float theta  = 2 * M_PI * random01();
+  float psi    = pi * random01();
+  float theta  = 2 * pi * random01();
   
   vx = meanV * cos(psi);
   vy = meanV * sin(psi) * cos(theta);
@@ -83,7 +83,7 @@ void ion::elasticCollision(float& v1z, float& v1y, float& v1x)
   float beta = alpha(vz, vy);
   rotateVector(vz, vy, beta);
   float v = vz;
-  float theta = 0.5 * M_PI * random01();
+  float theta = 0.5 * pi * random01();
   float costheta = cos(theta);
   float sintheta = sin(theta);
   vz = v * costheta * costheta;
