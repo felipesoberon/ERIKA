@@ -73,8 +73,12 @@ J = \frac{2 \omega}{5} \sqrt{\frac25} \sqrt{e n_s \epsilon_0} \sqrt{ \sqrt{3 T_e
 
 For the collisional case, the sheath edge has to be solved numerically as follows (equation (14) in reference~\cite{Lieberman1989}), 
 \begin{equation}\label{eq:CollisionalSheathEdge}
-s(\phi) = s_0  H \int_0^{\pi} (\sin \zeta - \zeta \cos \zeta)^{1/2} \sin \zeta d \zeta 
+s(\phi) = s_0  H \int_0^{\phi} (\sin \zeta - \zeta \cos \zeta)^{1/2} \sin \zeta d \zeta 
 \end{equation}
+Note that the sheath is fully expanded at $\phi = \pi$. And that the integral in the equation above,
+\begin{equation}
+\int_0^{\pi} (\sin \zeta - \zeta \cos \zeta)^{1/2} \sin \zeta d \zeta = 1.94858
+\end{equation} 
 
 In the case of the collisional regime solution, it is not possible to solve analytically the plasma discharge current. Instead, the maximum voltage across the sheath can be expressed in terms of the current and other plasma parameters~\cite{Lieberman1989}. If we use the sheath edge expression for the collisionless solution (\ref{eq:CollisionlessSheathEdge}) then the maximum voltage across the sheath results, 
 \begin{equation}

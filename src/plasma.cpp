@@ -66,7 +66,7 @@ float plasma::returnJ0(void)
 
 
 
-/* INHOMOGENEOUS RF DISCHARGE MODEL, Lieberman 1988 */
+/* INHOMOGENEOUS RF DISCHARGE MODEL, Lieberman 1988, 1989 */
 
 void plasma::calculateInhomDischargeParameters(void)
 {
@@ -80,6 +80,8 @@ void plasma::calculateInhomDischargeParameters(void)
       if (pressurePa > 0.0) J = returnJ(V0); //collisional
       else                  J = w*(2./5.)*sqrt(2./5.)*sqrt(e*ns*epsilon_0)*
 			      sqrt(sqrt(3.*Te)*sqrt(192.*Te+125.*V0)-24.*Te); //collisionless
+
+      if (pressurePa > 0.0) setFunctionxs(); //collisional sheath edge function
       
       float T = 1/freq;
       inhomCapSheathSize = returnInhomDischargeSheathPosition(T/2.);
@@ -95,24 +97,13 @@ float plasma::x(float phi) /* 0 to pi */
   float DL = returnDebyeLength();
   float H;
   float xoutput;
-  float zeta, dzeta;
-  int   imax;
   
   if (pressurePa > 0.0) H = sqrt(2.*Lambdai*s0/(pi*pi*DL*DL)); //collisional  
   else                  H = (1./pi)*(s0*s0/(DL*DL)); //collisionless
 
-  if (false) //pressurePa > 0.0) this numerical integration takes too long - NEEDS OPTIMIZATION
+  if (pressurePa > 0.0) //there is a bug somewhere for the Voltage calculation due to this function returnxs
     {
-      dzeta   = pi/180.;
-      imax    = int(180.*phi/pi);
-      xoutput = 0.0;
-      for (int i=0; i<=imax; i++)
-	{
-	  zeta    = i*dzeta;
-	  xoutput = xoutput + sqrt(sin(zeta)-zeta*cos(zeta))*sin(zeta);
-	}
-      xoutput = xoutput*dzeta;
-      xoutput = xoutput*s0*H;
+      xoutput = returnxs(phi)*s0*H;
     }
   else
     {
@@ -191,10 +182,10 @@ float plasma::returnPhi(float xinput)
 
 float plasma::returnInhomDischargeSheathPotential(float z, float t)
 {
-  int   Nz = 1000;
+  int   Nz = 128;
   float dz = z/Nz;
   float sum = 0.;
-  
+
   for (int i=0; i<=Nz; i++) sum = sum-returnInhomDischargeSheathElectricField(i*dz,t);
   sum = sum * dz;    
   return sum;
@@ -249,4 +240,74 @@ float plasma::returnJ(float Vinput)
 	}
     }
   return j;
+}
+
+
+
+
+void plasma::setFunctionxs(void)
+{
+  float phi;
+  int i;
+  for (i=0; i<=64; i++)
+    {
+      phi    = float( i*pi/64.);
+      PHI[i] = phi;
+    }
+
+  int   Npoints = 64+1;
+  float dphi    = pi/(Npoints-1);
+  float table[Npoints];
+  float zeta;
+
+  xs[0] = 0.0;
+  
+  for (i=0; i<Npoints; i++)
+    {
+      zeta = float(i*dphi);
+      table[i] = sqrt(sin(zeta)-zeta*cos(zeta))*sin(zeta);
+      if (i>0) xs[i] = xs[i-1] + table[i];
+    }
+  for (i=0; i<Npoints; i++) xs[i] = xs[i]*dphi;
+}
+
+
+
+
+float plasma::returnxs(float phiinput)
+{	
+  float xsout = -1.;
+  int i, i1, i2, i3;
+  int M = 65; //M-1 = 2^n 
+  i1 = 0;
+  i2 = (M-1)/2;  
+  i3 = (M-1);
+  
+  //The search algorithm
+  for (i=0; i<=M-1; i++)
+    {
+      if ( PHI[i1] <= phiinput && phiinput < PHI[i2] )
+	{
+	  if (i1+1 == i2) 
+	    {
+	      xsout = (xs[i2] - xs[i1])/(PHI[i2]-PHI[i1])*(phiinput - PHI[i1]) + xs[i1];
+	      break;
+	    }
+	  i3 = i2;
+	  i2 = (i3+i1)/2;
+	}//if
+      else if ( PHI[i2] <= phiinput && phiinput <= PHI[i3] )
+	{
+	  if (i2+1 == i3) 
+	    {
+	      xsout = (xs[i3] - xs[i2])/(PHI[i3]-PHI[i2])*(phiinput - PHI[i2]) + xs[i2];
+	      break;
+	    }
+	  i1 = i2;
+	  i2 = (i3+i1)/2;
+	}//else
+    }//for
+  
+  if (xsout == -1.0) cout << "ERROR, " << phiinput << ", is out of function range" << endl;
+  return xsout;
 }

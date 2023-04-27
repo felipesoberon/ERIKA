@@ -15,4 +15,4 @@ plot_IEF_histogram <- function(energyStep) {
 
 plot_IEF_histogram(5)
 
-while(1) { plot_IEF_histogram(5);  Sys.sleep(1)}
+#while(1) { plot_IEF_histogram(5);  Sys.sleep(1)}
