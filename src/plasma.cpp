@@ -77,11 +77,15 @@ void plasma::calculateInhomDischargeParameters(void)
       calculateDebyeLength();
       calculateBohmVelocity();
 
-      if (pressurePa > 0.0) J = returnJ(V0); //collisional
-      else                  J = w*(2./5.)*sqrt(2./5.)*sqrt(e*ns*epsilon_0)*
-			      sqrt(sqrt(3.*Te)*sqrt(192.*Te+125.*V0)-24.*Te); //collisionless
-
-      if (pressurePa > 0.0) setFunctionxs(); //collisional sheath edge function
+      if (pressurePa > 0.0) // collisional 
+	{
+	  J = 0.953845*w*pow(ns, 2./5.)* pow(Te*V0*V0, 1./5.)* pow(epsilon_0, 3./5.) * pow(e, 2./5.)/ pow(Lambdai, 1./5.);
+	  setFunctionxs(); //collisional sheath edge function
+	}
+      else //collisionless 
+	{
+	  J = w*(2./5.)*sqrt(2./5.)*sqrt(e*ns*epsilon_0)* sqrt(sqrt(3.*Te)*sqrt(192.*Te+125.*V0)-24.*Te);
+	}
       
       float T = 1/freq;
       inhomCapSheathSize = returnInhomDischargeSheathPosition(T/2.);
@@ -101,7 +105,7 @@ float plasma::x(float phi) /* 0 to pi */
   if (pressurePa > 0.0) H = sqrt(2.*Lambdai*s0/(pi*pi*DL*DL)); //collisional  
   else                  H = (1./pi)*(s0*s0/(DL*DL)); //collisionless
 
-  if (pressurePa > 0.0) //there is a bug somewhere for the Voltage calculation due to this function returnxs
+  if (pressurePa > 0.0)
     {
       xoutput = returnxs(phi)*s0*H;
     }
@@ -220,38 +224,7 @@ float plasma::returnInhomDischargeSheathElectricField(float z, float t)
 
 
 
-/*Functions to help find J for a given V0 in the collisional
-  AC sheath*/
-
-float plasma::SS0(float J)
-{ float w  = 2.*pi*freq;  
-  return J /(e*ns*w); }
-float plasma::HH(float J)
-{ return sqrt(2.*Lambdai*SS0(J)) / (pi * DebyeLength); }
-float plasma::VV(float J)
-{  float w  = 2.*pi*freq;  
-  return J*SS0(J)*(2.+125.*pi*HH(J)/192.)/(epsilon_0*w); }
-
-
-float plasma::returnJ(float Vinput)
-{
-  float j = 0;
-  float dj = 1;
-  while ( abs( VV(j)-Vinput) > 0.01 )
-    {
-      j = j + dj;
-      if ( VV(j)>Vinput )
-	{
-	  j = j - dj;
-	  dj = dj/2.;
-	}
-    }
-  return j;
-}
-
-
-
-
+/* X/PHI for the collisional solution */
 void plasma::setFunctionxs(void)
 {
   float phi;

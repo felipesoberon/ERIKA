@@ -17,6 +17,13 @@ The space potential between grids is calculated by linear interpolation. Similar
 \subsubsection{\label{SheathModel}Sheath Model}
 The space potential and electric field in the sheath region of the plasma is determined from the Child Law sheath model for direct-current sheath~\cite{Lieberman2005}, and from the analytical solution of capacitive radio-frequency sheath for alternate-current sheath~\cite{Lieberman1988,Lieberman1989}. These Child Law solutions is collisionless and therefore not valid when the background pressure of neutral argon is high. Therefore this limits the model simulating pressure parameter. Nonetheless, RFEAs are most useful in low pressure plasmas where the ion energy gain is not impeded by frequent collisions and we shall limit simulations to a maximum pressure of 10~Pa (75~mTorr, 100~$\mu$bar). The capacitive radio-frequency solution has been reported for a collisionless regime~\cite{Lieberman1988} and a collisional regime~\cite{Lieberman1989} and, hence, the latter is used in the model as it accounts for pressure parameter. The formulae for both regimes are summarized here as they only differ by a couple of scaling parameters. 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  DC SHEATH COLLISIONLESS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Collisionless DC Sheath}
+
 For the DC case, the Child Law sheath size is calculated 
 \begin{equation}
 s_\text{Child Law} = \frac{\sqrt{2}}{3} \lambda_D \left( \frac{2 V_0}{T_e} \right)^{3/4}
@@ -49,6 +56,11 @@ Figure~\ref{fig:DCpotentialField} shows the space potential and electric field f
 \end{figure}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  AC SHEATH COLLISIONLESS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Collisionless AC Sheath}
 
 The space potential and electric field for the AC sheath are calculated using the capacitive sheath solution of Lieberman~\cite{Lieberman1988,Lieberman1989}. The sheath edge of the capacitive radio-frequency discharge changes through the cycle, from collapsing when the voltage across the sheath drops to its minimum to full expansion when the voltage is maximum. 
 
@@ -71,6 +83,18 @@ $J$ is the total current through the plasma discharge (mainly displacement curre
 J = \frac{2 \omega}{5} \sqrt{\frac25} \sqrt{e n_s \epsilon_0} \sqrt{ \sqrt{3 T_e} \sqrt{192 T_e + 125 V_0} -24 T_e    }
 \end{equation}
 
+The $H$ parameter for the collisionless regime is given by~\cite{Lieberman1988}
+\begin{equation}
+H = \frac1{\pi} \frac{s_0^2}{\lambda_D^2}
+\end{equation}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  AC SHEATH COLLISIONAL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Collisional AC Sheath}
+
 For the collisional case, the sheath edge has to be solved numerically as follows (equation (14) in reference~\cite{Lieberman1989}), 
 \begin{equation}\label{eq:CollisionalSheathEdge}
 s(\phi) = s_0  H \int_0^{\phi} (\sin \zeta - \zeta \cos \zeta)^{1/2} \sin \zeta d \zeta 
@@ -89,12 +113,19 @@ Note that this expression is the result of the following integration (equation (
 V_0 = \frac{J}{\epsilon_0 \omega} \int_0^{\pi} (1- \cos \phi) \frac{d x}{d \phi} d \phi 
 \end{equation}
 Where the expression for $H$ in the collisional case is given later in this section. The inverse expression, $J(V_0)$, can be solved numerically. Otherwise, strictly, the integration shall be carried out using the collisional sheath edge expression~(\ref{eq:CollisionalSheathEdge}). 
- 
-The $H$ parameter for the collisionless regime is given by~\cite{Lieberman1988}
+
+In the collisional regime solution, the maximum voltage drop across the sheath when the sheath is fully extended at $t=0$ is, 
 \begin{equation}
-H = \frac1{\pi} \frac{s_0^2}{\lambda_D^2}
+V(t=0) = V_0 = 2.5 H \frac{e n_s {s_0}^2}{\epsilon}
 \end{equation}
-And in the collisional regime is given by~\cite{Lieberman1989}
+And from this expression the discharge current density amplitude $J$ can be expressed as, 
+\begin{equation}
+J = 0.953845 \omega \left( \frac{ {n_s}^2 e^2 T_e {V_0}^2 {\epsilon_0}^3 }{\lambda_i}  \right)^{1/5}
+\end{equation}
+Alternatively, this expression can be used to determine the plasma density at the edge of the sheath ($n_s$) given the voltage drop across the sheath ($V_0$) and the current density ($J$). 
+
+ 
+The $H$ parameter in the collisional regime is given by~\cite{Lieberman1989}
 \begin{equation}
 H = \sqrt{  \frac{2 \lambda_i s_0}{\pi^2 \lambda_D^2}  }
 \end{equation}
@@ -103,6 +134,14 @@ Where $\lambda_i$ is the ion mean free path (in m). This parameter is estimated 
 \lambda_i = (30 p /0.13332237)^{-1}
 \end{equation}
 With $p$ the neutral argon gas pressure in Pascal. The ion mean free path is assumed to be constant, i.e., independent of the ion energy, for the purpose of the sheath solution~\cite{Lieberman1989}. For similar discharge current and radio-frequency voltage, the effect of ion collisions in the sheath is to reduce the size of the plasma sheath~\cite{Lieberman1989}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  AC SHEATH BOTH solutions collisionless and collisional
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Electric Field and Potential: common expression to both solutions in the AC Sheath}
+
 
 From here on, the sheath size, the electric field and the space potential across the sheath described below differ between the two regimes only by the scaling parameters $H$ and $s_0$ and the discharge current $J$.
 

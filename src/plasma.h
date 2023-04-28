@@ -69,13 +69,6 @@ public:
   float returnInhomDischargeSheathPotential(float z, float t);
   float returnInhomDischargeSheathElectricField(float z, float t);
 
-  /*Functions to help find J for a given V0 in the collisional
-    AC sheath*/
-  float SS0(float J);
-  float HH(float J);
-  float VV(float J);
-  float returnJ(float Vinput);
-
   void setFunctionxs(void);
   float returnxs(float phiinput);
 
