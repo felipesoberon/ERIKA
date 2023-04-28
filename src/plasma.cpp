@@ -133,13 +133,12 @@ float plasma::returnInhomDischargeSheathSize(void)
 void plasma::setPairsXPHI(void)
 {
   float phi;
-  cout << "\n setPairsXPHI \n";
+  
   for (int i=0; i<=64; i++)
     {
       phi    = float( i*pi/64.);
       PHI[i] = phi;
       X[i]   = x(phi);
-      cout << X[i] << "\t" << PHI[i] << endl;
     }
 }
 
@@ -181,14 +180,6 @@ float plasma::returnPhi(float xinput)
   
   if (phiout == -1.0) cout << "ERROR, " << xinput << ", is out of function range" << endl;
   
-  if (isnan(phiout)) 
-    {
-      cout << "NaN found" << endl;
-      cout << "xinput  = " << xinput << endl;
-      char ch;
-      cin.get(ch);
-    }
-  
   return phiout;
 }
 
@@ -202,16 +193,6 @@ float plasma::returnInhomDischargeSheathPotential(float z, float t)
   for (int i=0; i<=Nz; i++) 
     {
       sum = sum-returnInhomDischargeSheathElectricField(i*dz,t);
-      if (isnan(sum) && false) 
-	{
-	  cout << "NaN found" << endl;
-	  cout << "i  = " << i << endl;
-	  cout << "dz = " << dz << endl;
-	  cout << "t  = " << t  << endl;
-	  cout << "returnInhomDischargeSheathElectricField(i*dz,t) = " << returnInhomDischargeSheathElectricField(i*dz,t) << endl;
-	  char ch;
-	  cin.get(ch);
-	}  
     }
   sum = sum * dz;    
   return sum;
@@ -232,17 +213,6 @@ float plasma::returnInhomDischargeSheathElectricField(float z, float t)
       float phix = returnPhi(sm-z);
       Ef = -fac*(cos(wt)-cos(phix));
     }
-  
-  if (isnan(Ef) && false) 	
-    {
-      cout << "NaN found" << endl;
-      cout << "sm = " << sm << endl;
-      cout << "z  = " << z  << endl;
-      cout << "wt = " << wt << endl;
-      cout << "returnPhi(sm-z) = " << returnPhi(sm-z) << endl;
-      char ch;
-      cin.get(ch);
-    }  
   
   return Ef;
 }
@@ -307,8 +277,8 @@ void plasma::setFunctionxs(void)
     }
   for (i=0; i<Npoints; i++) xs[i] = xs[i]*dphi;
 
-  cout << "\n setFunctionxs values \n";
-  for (i=0; i<Npoints; i++) cout << xs[i] << "\t" << PHI[i] << endl;
+  /*add a small increment to last value to fix bug on returnPhi()*/
+  xs[Npoints-1] = xs[Npoints-1] + 1e-5; 
 }
 
 
