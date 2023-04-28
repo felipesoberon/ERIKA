@@ -133,11 +133,13 @@ float plasma::returnInhomDischargeSheathSize(void)
 void plasma::setPairsXPHI(void)
 {
   float phi;
-  for (int i =0; i<=64; i++)
+  cout << "\n setPairsXPHI \n";
+  for (int i=0; i<=64; i++)
     {
       phi    = float( i*pi/64.);
       PHI[i] = phi;
       X[i]   = x(phi);
+      cout << X[i] << "\t" << PHI[i] << endl;
     }
 }
 
@@ -158,6 +160,7 @@ float plasma::returnPhi(float xinput)
 	  if (i1+1 == i2) 
 	    {
 	      phiout = (PHI[i2] - PHI[i1])/(X[i2]-X[i1])*(xinput - X[i1]) + PHI[i1];
+	      if (isnan(phiout)) cout << X[i1] << " " << X[i2] << endl;
 	      break;
 	    }
 	  i3 = i2;
@@ -168,6 +171,7 @@ float plasma::returnPhi(float xinput)
 	  if (i2+1 == i3) 
 	    {
 	      phiout = (PHI[i3] - PHI[i2])/(X[i3]-X[i2])*(xinput - X[i2]) + PHI[i2];
+	      if (isnan(phiout)) cout << X[i2] << " " << X[i3] << endl;
 	      break;
 	    }
 	  i1 = i2;
@@ -176,6 +180,15 @@ float plasma::returnPhi(float xinput)
     }//for
   
   if (phiout == -1.0) cout << "ERROR, " << xinput << ", is out of function range" << endl;
+  
+  if (isnan(phiout)) 
+    {
+      cout << "NaN found" << endl;
+      cout << "xinput  = " << xinput << endl;
+      char ch;
+      cin.get(ch);
+    }
+  
   return phiout;
 }
 
@@ -185,8 +198,21 @@ float plasma::returnInhomDischargeSheathPotential(float z, float t)
   int   Nz = 128;
   float dz = z/Nz;
   float sum = 0.;
-
-  for (int i=0; i<=Nz; i++) sum = sum-returnInhomDischargeSheathElectricField(i*dz,t);
+  
+  for (int i=0; i<=Nz; i++) 
+    {
+      sum = sum-returnInhomDischargeSheathElectricField(i*dz,t);
+      if (isnan(sum) && false) 
+	{
+	  cout << "NaN found" << endl;
+	  cout << "i  = " << i << endl;
+	  cout << "dz = " << dz << endl;
+	  cout << "t  = " << t  << endl;
+	  cout << "returnInhomDischargeSheathElectricField(i*dz,t) = " << returnInhomDischargeSheathElectricField(i*dz,t) << endl;
+	  char ch;
+	  cin.get(ch);
+	}  
+    }
   sum = sum * dz;    
   return sum;
 }
@@ -201,11 +227,22 @@ float plasma::returnInhomDischargeSheathElectricField(float z, float t)
   float st   = returnInhomDischargeSheathPosition(t);
   float Ef  = 0;
   
-  if ( st<sm-z )
+  if ( st<sm-z )	
     {
       float phix = returnPhi(sm-z);
       Ef = -fac*(cos(wt)-cos(phix));
     }
+  
+  if (isnan(Ef) && false) 	
+    {
+      cout << "NaN found" << endl;
+      cout << "sm = " << sm << endl;
+      cout << "z  = " << z  << endl;
+      cout << "wt = " << wt << endl;
+      cout << "returnPhi(sm-z) = " << returnPhi(sm-z) << endl;
+      char ch;
+      cin.get(ch);
+    }  
   
   return Ef;
 }
@@ -269,6 +306,9 @@ void plasma::setFunctionxs(void)
       if (i>0) xs[i] = xs[i-1] + table[i];
     }
   for (i=0; i<Npoints; i++) xs[i] = xs[i]*dphi;
+
+  cout << "\n setFunctionxs values \n";
+  for (i=0; i<Npoints; i++) cout << xs[i] << "\t" << PHI[i] << endl;
 }
 
 
