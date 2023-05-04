@@ -30,12 +30,23 @@ private:
   float ChildLawSheathSize;
   float homCapSheathSize;
   float inhomCapSheathSize;
-  
-  float X[64+1], PHI[64+1]; //for RF inhomogenous solution
-  float xs[64+1];           //for collisional solution
-  
-  int const static NVJ = 1024;
-  float xV[NVJ+1], yJ[NVJ+1]; //for RF inhomogenous sol, to find J from Vmax across sheath
+
+
+  int const static Npoints = 64+1; 
+  float X[Npoints], PHI[Npoints]; //for RF inhomogenous solution
+  float xs[Npoints];              //for collisional solution
+  float integralFuncData[Npoints] = {  //integral values in x(phi) function for collisional solution
+				     0.0, 4.32137e-6, 0.000048842, 0.000201554, 0.000550385,
+				     0.00119826, 0.00225994, 0.00385949, 0.00612818, 0.00920244,
+				     0.0132221, 0.0183285, 0.024663, 0.032365, 0.0415709, 0.052412,
+				     0.0650132, 0.079492, 0.0959565, 0.114505, 0.135223, 0.158185,
+				     0.18345, 0.211066, 0.241061, 0.27345, 0.308232, 0.345387, 0.384878,
+				     0.426651, 0.470634, 0.516739, 0.564859, 0.61487, 0.666632, 0.719988,
+				     0.774767, 0.830782, 0.887834, 0.94571, 1.00419, 1.06303, 1.12199,
+				     1.18083, 1.23928, 1.29709, 1.35398, 1.4097, 1.46398, 1.51656,
+				     1.56717, 1.61557, 1.66151, 1.70475, 1.74507, 1.78225, 1.81609,
+				     1.84641, 1.87305, 1.89585, 1.91468, 1.92945, 1.94006, 1.94645,
+				     1.94858};
   
 public:
   

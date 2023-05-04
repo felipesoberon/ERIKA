@@ -227,31 +227,15 @@ float plasma::returnInhomDischargeSheathElectricField(float z, float t)
 /* X/PHI for the collisional solution */
 void plasma::setFunctionxs(void)
 {
+  int   Npoints = 64+1;
   float phi;
-  int i;
-  for (i=0; i<=64; i++)
+
+  for (int i=0; i<Npoints; i++)
     {
       phi    = float( i*pi/64.);
       PHI[i] = phi;
+      xs[i]  = integralFuncData[i];
     }
-
-  int   Npoints = 64+1;
-  float dphi    = pi/(Npoints-1);
-  float table[Npoints];
-  float zeta;
-
-  xs[0] = 0.0;
-  
-  for (i=0; i<Npoints; i++)
-    {
-      zeta = float(i*dphi);
-      table[i] = sqrt(sin(zeta)-zeta*cos(zeta))*sin(zeta);
-      if (i>0) xs[i] = xs[i-1] + table[i];
-    }
-  for (i=0; i<Npoints; i++) xs[i] = xs[i]*dphi;
-
-  /*add a small increment to last value to fix bug on returnPhi()*/
-  xs[Npoints-1] = xs[Npoints-1] + 1e-5; 
 }
 
 
