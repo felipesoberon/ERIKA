@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include "integration.h"
 
 using namespace std;
 

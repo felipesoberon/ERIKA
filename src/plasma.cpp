@@ -190,16 +190,14 @@ float plasma::returnPhi(float xinput)
 
 float plasma::returnInhomDischargeSheathPotential(float z, float t)
 {
-  int   Nz = 128;
-  float dz = z/Nz;
-  float sum = 0.;
+  float a = 0;
+  float b = z;
+
+  auto singleVariableFunction = [this, t](float z) { return this->returnInhomDischargeSheathElectricField(z, t); };
+  float result = integration::trapezoidalIntegration(singleVariableFunction, a, b, 128); 
+  result = -1.0* result;
   
-  for (int i=0; i<=Nz; i++) 
-    {
-      sum = sum-returnInhomDischargeSheathElectricField(i*dz,t);
-    }
-  sum = sum * dz;    
-  return sum;
+  return result;
 }
 
 

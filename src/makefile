@@ -1,7 +1,7 @@
 CC      = g++
 CFLAGS  = -O3 -std=c++11 -Wall -g
 EXE     = rfea
-OBJECTS = electricField.o rfea.o ion.o random.o commandline.o functions.o XSection.o plasma.o
+OBJECTS = electricField.o rfea.o ion.o random.o commandline.o functions.o XSection.o plasma.o integration.o
 INSTDIR = /usr/bin
 
 
@@ -17,7 +17,7 @@ electricField.o:electricField.h electricField.cpp plasma.o
 rfea.o:		rfea.h rfea.cpp ion.o electricField.o random.o functions.o
 		$(CC) $(CFLAGS) -c rfea.cpp
 
-ion.o:		ion.h ion.cpp functions.o
+ion.o:		ion.h ion.cpp functions.h functions.cpp
 		$(CC) $(CFLAGS) -c ion.cpp
 
 random.o:	random.h random.cpp
@@ -29,8 +29,11 @@ functions.o:	functions.h functions.cpp
 XSection.o:     XSection.h XSection.cpp
 		$(CC) $(CFLAGS) -c XSection.cpp
 
-plasma.o:	plasma.h plasma.cpp
+plasma.o:	plasma.h plasma.cpp integration.h integration.cpp
 		$(CC) $(CFLAGS) -c plasma.cpp
+
+integration.o:	integration.h integration.cpp
+		$(CC) $(CFLAGS) -c integration.cpp
 
 clean:
 		rm *~ $(EXE) $(OBJECTS)
