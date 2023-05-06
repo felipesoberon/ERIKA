@@ -1,3 +1,6 @@
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
+
 #include <cmath>
 
 
@@ -11,3 +14,5 @@ void addVectors(float& x, float& y, float& z,
 void subtractVectors(float& x, float& y, float& z,
 		     float x1, float y1, float z1,
 		     float x2, float y2, float z2);
+
+#endif /*FUNCTIONS_H*/
