@@ -62,31 +62,58 @@ Figure~\ref{fig:DCpotentialField} shows the space potential and electric field f
 
 \subsubsection{Collisionless AC Sheath}
 
-The space potential and electric field for the AC sheath are calculated using the capacitive sheath solution of Lieberman~\cite{Lieberman1988,Lieberman1989}. The sheath edge of the capacitive radio-frequency discharge changes through the cycle, from collapsing when the voltage across the sheath drops to its minimum to full expansion when the voltage is maximum. 
+The alternating current collisionless sheath is modeled after Lieberman inhomogeneous radio-frequency capacitively coupled sheath solution~\cite{Lieberman1988}. 
 
-The size of the sheath, in the collisionless case, is given by, 
-\begin{eqnarray}\label{eq:CollisionlessSheathEdge}
-s(\phi) &=& s_0 ( 1 - \cos(\phi) + \frac{H}{8} \{ \frac32 \sin(\phi)  + \frac{11}{18} \sin(3 \phi) \nonumber \\ 
-        & & - 3 \phi \cos(\phi)  - \frac13 \phi \cos(3 \phi)  \} )
-\end{eqnarray}
-With $\phi = \omega t$ ($\omega = 2 \pi f$) and $f$ the radio-frequency. The value of $s(t)$ is limited to $\phi$ in the range from 0 ($t=0$) to $\pi$ ($t=T/2$; where $T=1/f$ is the radio-frequency cycle period). The size of the sheath at $t=0$ is zero and its maximum size at $s(t=T/2) = s_m$. The $s(t)$ function can be evaluated at any time value via the following 
-\begin{eqnarray}
-s(t)    &=& \text{abs}(s(\omega \tau(t))) \\
-\tau(t) &=& \text{remainder}\left(t+\frac{T}{2},T\right) - \frac{T}{2} 
-\end{eqnarray}
-The parameter $s_0$ is given by 
+The plasma parameters input to the model include the discharge radio-frequency ($f$, $T=1/f$, $\omega = 2 \pi f$), the electron temperature ($T_e$), and the sheath maximum voltage drop, the voltage peak to peak ($V_0$).
+
+The following parameters are defined in the analytical solution, $s_0$ given by 
 \begin{equation}
 s_0 = \frac{J}{e n_s \omega}
 \end{equation}
-$J$ is the total current through the plasma discharge (mainly displacement current in the sheaths and conduction current in the plasma bulk). The current can be calculated from the plasma density at the sheath edge ($n_s$), the maximum voltage across the sheath ($V_0$), the radio-frequency and the electron temperature in the collisionless regime solution~\cite{Lieberman1988}
+And the $H$ parameter for the collisionless regime is given by
+\begin{equation}
+H = \frac1{\pi} \frac{s_0^2}{\lambda_D^2}
+\end{equation}
+
+Two additional parameters are required, the plasma density at the edge of the sheath ($n_s$), and the total plasma discharge current density amplitude ($J$, mainly displacement current in the sheaths and conduction current in the plasma bulk). However, specifying one combined with the other parameters determines the other one. 
+
+For instance, given the density $n_s$, the current density amplitude $J$ is given by, 
 \begin{equation}
 J = \frac{2 \omega}{5} \sqrt{\frac25} \sqrt{e n_s \epsilon_0} \sqrt{ \sqrt{3 T_e} \sqrt{192 T_e + 125 V_0} -24 T_e    }
 \end{equation}
 
-The $H$ parameter for the collisionless regime is given by~\cite{Lieberman1988}
+Or, alternatively, given the current density amplitude $J$, the density $n_s$ is given by, 
 \begin{equation}
-H = \frac1{\pi} \frac{s_0^2}{\lambda_D^2}
+n_s = \frac{125 J^2}{ 8 e \sqrt{T_e} \epsilon_0 \omega^2 (\sqrt{3}\sqrt{192 T_e + 125 V_0}-24 \sqrt{T_e})  }
 \end{equation}
+
+Once all the parameters are determined, the sheath edge (where the electron density changes in a step-like transition from matching the ion density to zero) can be calculated as follows, 
+\begin{eqnarray}\label{eq:CollisionlessSheathEdge}
+x(\phi) &=& s_0 ( 1 - \cos(\phi) + \frac{H}{8} \{ \frac32 \sin(\phi)  + \frac{11}{18} \sin(3 \phi) \nonumber \\ 
+        & & - 3 \phi \cos(\phi)  - \frac13 \phi \cos(3 \phi)  \} )
+\end{eqnarray}
+The value of $x(\phi)$ is limited to $\phi$ in the range from 0 ($t=0$) to $\pi$ ($t=T/2$). The position of the sheath edge at $t=0$ ($\phi = 0$) is $x=0$ and its position at $t=T/2$  is $x(\pi) = s_m$. The sheath edge position as a function of time can be defined $s(t)$ at any time value via the following 
+\begin{eqnarray}
+s(t)    &=& \text{abs}(x(\omega \tau(t))) \\
+\tau(t) &=& \text{remainder}\left(t+\frac{T}{2},T\right) - \frac{T}{2} 
+\end{eqnarray}
+
+Note that the sheath edge position ($s(t)$) varies through the radio-frequency cycle, from collapsing when the voltage across the sheath drops to its minimum to full expansion when the voltage is maximum. The function $x(\phi)$ in Lieberman's model measures the position of the sheath edge from the plasma bulk position at $x=0$ to the electrode at $x=s_m$. In the model of this document, we measure the one space dimension $z$ using the position of the electrode as a reference. Therefore, $z = s_m - x$, where $z=0$ is the electrode position, and $z=s_m$ is the plasma bulk position.
+
+Noting the space dimension change and using the equations above the electric field is obtained using equation (28) of Lieberman (1988)~\cite{Lieberman1988}.  
+\begin{equation}
+E(z,t) = \frac{J}{\epsilon_0 \omega} \left \{ \cos(\omega t) - \cos(\phi(s_m - z)) \right \} 
+\end{equation}
+If $s(t)<s_m-z$, otherwise the electric field is zero. Note that the function $\phi(s)$ is the inverse of the sheath size $s(\phi)$, and that it does not have an analytical solution. Instead it is numerically solved in the computer code. 64 pairs $(s(\phi), \phi)$ for $\phi$ from 0 to $\pi$ in steps of $\pi/64$ are generated. The value of $\phi$ for a given $s$ is detemined by linear interpolation of the two nearest pairs.   
+
+Finally, the space potential for the capacitive radio-frequency sheath is given by the integral
+\begin{equation}
+V(z,t) = \int_{0}^{z} E(\xi, t) d\xi
+\end{equation}
+With $z$ in the range from $z=0$ to $z=s_m$. The voltage is numerically integrated using the trapezoidal integration method.  
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,77 +122,80 @@ H = \frac1{\pi} \frac{s_0^2}{\lambda_D^2}
 
 \subsubsection{Collisional AC Sheath}
 
-For the collisional case, the sheath edge has to be solved numerically as follows (equation (14) in reference~\cite{Lieberman1989}), 
-\begin{equation}\label{eq:CollisionalSheathEdge}
-s(\phi) = s_0  H \int_0^{\phi} (\sin \zeta - \zeta \cos \zeta)^{1/2} \sin \zeta d \zeta 
-\end{equation}
-Note that the sheath is fully expanded at $\phi = \pi$. And that the integral in the equation above,
-\begin{equation}
-\int_0^{\pi} (\sin \zeta - \zeta \cos \zeta)^{1/2} \sin \zeta d \zeta = 1.94858
-\end{equation} 
+The alternating current collisional sheath is modeled after Lieberman inhomogeneous radio-frequency capacitively coupled sheath solution~\cite{Lieberman1989}. 
 
-In the case of the collisional regime solution, it is not possible to solve analytically the plasma discharge current. Instead, the maximum voltage across the sheath can be expressed in terms of the current and other plasma parameters~\cite{Lieberman1989}. If we use the sheath edge expression for the collisionless solution (\ref{eq:CollisionlessSheathEdge}) then the maximum voltage across the sheath results, 
-\begin{equation}
-V_0 = \frac{J s_0}{\epsilon_0 \omega} \left(  2 + \frac{125}{192} H \pi \right)
-\end{equation}
-Note that this expression is the result of the following integration (equation (24) in reference~\cite{Lieberman1989} for t=0) using the collisionless sheath edge expression (\ref{eq:CollisionlessSheathEdge}),
-\begin{equation}
-V_0 = \frac{J}{\epsilon_0 \omega} \int_0^{\pi} (1- \cos \phi) \frac{d x}{d \phi} d \phi 
-\end{equation}
-Where the expression for $H$ in the collisional case is given later in this section. The inverse expression, $J(V_0)$, can be solved numerically. Otherwise, strictly, the integration shall be carried out using the collisional sheath edge expression~(\ref{eq:CollisionalSheathEdge}). 
+The plasma parameters input to the model include the discharge radio-frequency ($f$, $T=1/f$, $\omega = 2 \pi f$), the electron temperature ($T_e$),  the sheath maximum voltage drop, the voltage peak to peak ($V_0$), and the background gas pressure ($p$).
 
-In the collisional regime solution, the maximum voltage drop across the sheath when the sheath is fully extended at $t=0$ is, 
+The following parameters are defined in the analytical solution, $s_0$ given by (note this is the same as for the collisionless solution) 
 \begin{equation}
-V(t=0) = V_0 = 2.5 H \frac{e n_s {s_0}^2}{\epsilon}
+s_0 = \frac{J}{e n_s \omega}
 \end{equation}
-And from this expression the discharge current density amplitude $J$ can be expressed as, 
-\begin{equation}
-J = 0.953845 \omega \left( \frac{ {n_s}^2 e^2 T_e {V_0}^2 {\epsilon_0}^3 }{\lambda_i}  \right)^{1/5}
-\end{equation}
-Alternatively, this expression can be used to determine the plasma density at the edge of the sheath ($n_s$) given the voltage drop across the sheath ($V_0$) and the current density ($J$). 
-
- 
-The $H$ parameter in the collisional regime is given by~\cite{Lieberman1989}
+And the $H$ parameter for the collisional solution is given by
 \begin{equation}
 H = \sqrt{  \frac{2 \lambda_i s_0}{\pi^2 \lambda_D^2}  }
 \end{equation}
-Where $\lambda_i$ is the ion mean free path (in m). This parameter is estimated for argon gas by~\cite{Lieberman1989}
+
+The neutral background gas pressure is used to estimate $\lambda_i$ the ion mean free path (in m). This parameter is estimated for argon gas by~\cite{Lieberman1989}
 \begin{equation}\label{eq:lambda_i}
 \lambda_i = (30 p /0.13332237)^{-1}
 \end{equation}
-With $p$ the neutral argon gas pressure in Pascal. The ion mean free path is assumed to be constant, i.e., independent of the ion energy, for the purpose of the sheath solution~\cite{Lieberman1989}. For similar discharge current and radio-frequency voltage, the effect of ion collisions in the sheath is to reduce the size of the plasma sheath~\cite{Lieberman1989}.
+With $p$ the neutral argon gas pressure in Pascal. The ion mean free path is assumed to be constant, i.e., independent of the ion energy, for the purpose of the sheath solution~\cite{Lieberman1989}. All parameters kept equal, the effect of ion collisions in the sheath is to reduce the size of the plasma sheath~\cite{Lieberman1989}.
 
+Two additional parameters are required, the plasma density at the edge of the sheath ($n_s$), and the total plasma discharge current density amplitude ($J$, mainly displacement current in the sheaths and conduction current in the plasma bulk). However, specifying one combined with the other parameters determines the other one. 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%  AC SHEATH BOTH solutions collisionless and collisional
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsubsection{Electric Field and Potential: common expression to both solutions in the AC Sheath}
-
-
-From here on, the sheath size, the electric field and the space potential across the sheath described below differ between the two regimes only by the scaling parameters $H$ and $s_0$ and the discharge current $J$.
-
-The electric field in the z-direction is given by 
+For instance, given the density $n_s$, the current density amplitude $J$ is given by, 
 \begin{equation}
-E_{AC}(z,t) = \frac{J}{\epsilon_0 \omega} \left \{ \cos(\omega t) - \cos(\phi(s_m - z)) \right \} 
+J = 0.953845 \omega \left( \frac{ {n_s}^2 e^2 T_e {V_0}^2 {\epsilon_0}^3 }{\lambda_i}  \right)^{1/5}
 \end{equation}
-If $s(t)<s_m-z$, otherwise the electric field is zero. Note that the function $\phi(s)$ is the inverse of the sheath size $s(\phi)$, that it does not have an analytical solution, and that it is numerically solved in the computer code. 64 pairs $(s(\phi), \phi)$ for $\phi$ from 0 to $\pi$ in steps of $\pi/64$ are generated. The value of $\phi$ for a given $s$ is detemined by linear interpolation of the two nearest pairs.   
 
-Finally, the space potential for the capacitive radio-frequency sheath is given by the integral
+Or, alternatively, given the current density amplitude $J$, the density $n_s$ is given by, 
 \begin{equation}
-V_{AC}(z,t) = \int_{0}^{z} E_{AC}(\xi, t) d\xi
+n_s = \frac{1.125395 J^2 }{e V_0 \epsilon_0 \omega^2} \sqrt{\frac{J \lambda_i }{ T_e \epsilon_0 \omega } }
 \end{equation}
-With $z$ in the range from $z=0$ to $z=s_m$. The field is numerically integrated.  
+
+Once all the parameters are determined, the sheath edge (where the electron density changes in a step-like transition from matching the ion density to zero) can be calculated for the collisional case. The sheath edge has to be solved numerically as follows (equation (14) in Lieberman (1989)~\cite{Lieberman1989}), 
+\begin{equation}\label{eq:CollisionalSheathEdge}
+x(\phi) = s_0  H \int_0^{\phi} (\sin \zeta - \zeta \cos \zeta)^{1/2} \sin \zeta d \zeta 
+\end{equation}
+This function is numerically integrated using a trapezoidal method. 
+
+Similar to the collisionless case, in the collisional solution the value of $x(\phi)$ is limited to $\phi$ in the range from 0 ($t=0$) to $\pi$ ($t=T/2$). The position of the sheath edge at $t=0$ ($\phi = 0$) is $x=0$ and its position at $t=T/2$  is $x(\pi) = s_m$. And again, the sheath edge position as a function of time can be defined $s(t)$ at any time value via the following 
+\begin{eqnarray}
+s(t)    &=& \text{abs}(x(\omega \tau(t))) \\
+\tau(t) &=& \text{remainder}\left(t+\frac{T}{2},T\right) - \frac{T}{2} 
+\end{eqnarray}
+
+Also, the function $x(\phi)$ in Lieberman's model measures the position of the sheath edge from the plasma bulk position at $x=0$ to the electrode at $x=s_m$. In the model of this document, we measure the one space dimension $z$ using the position of the electrode as a reference. Therefore, $z = s_m - x$, where $z=0$ is the electrode position, and $z=s_m$ is the plasma bulk position.
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
 
 The space potential and electric field for the AC sheath solution, with set pressure 0.5~Pa, are shown in Fig.~\ref{fig:ACpotentialField}. The curves plotted show both results at times 0, T/4 and T/2. Note that at T/2 the voltage across the sheath is null and there is no electric field acting on the ions. This modulation affects the ion motion; this is illustrated in the next subsection. 
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.45\textwidth]{Figures/VEz0.5Pa13.56MHz2kVStack2332.jpeg}
-\caption{Space potential across a plasma sheath and RFEA grid stack (top) and corresponding electric field (bottom) for AC sheath solution with maximum voltage across the sheath of $2000$~V. Potential and field curves are shown for time $t=0$, $T/4$, and $T/2$. The sheath if fully expanded at $t=0$, at $z>1$~cm.}
+\caption{Space potential across a plasma sheath and RFEA grid stack (top) and corresponding electric field (bottom) for AC collisionless sheath solution with maximum voltage across the sheath of $2000$~V. Potential and field curves are shown for time $t=0$, $T/4$, and $T/2$. The sheath if fully expanded at $t=0$, at $z \simeq 1$~cm.}
 \label{fig:ACpotentialField}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  AC SHEATH : other solutions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Other AC sheath solutions}
 
 Other sheath models can be found in the literature. Davis and Vanderslice reported a DC sheath model with a linearly varying electric field and compared with ion energy measurements~\cite{Davis1963}. Wild and Koidl reported an AC sheath model and simulated ion energy distributions and experimental IEDF results in a reverse asymmetric capacitive plasma discharge driven at 13.56~MHz with excellent agreement between model and experimental results~\cite{Wild1991}. Robiche et al. reported a capacitive radio frequency sheath solution for two a plasma driven at two frequencies~\cite{Robiche2003}, i.e., a dual-frequency solution counterpart to the single frequency solution of Lieberman~\cite{Lieberman1988}.   
 
